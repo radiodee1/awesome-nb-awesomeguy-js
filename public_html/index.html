@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+
+        <script>
+            function show_readme() {
+                $("#page_normal").hide()
+                $("#page_readme").show()
+            }
+            function hide_readme() {
+                $("#page_normal").show()
+                $("#page_readme").hide()
+            }
+        </script>
+    </head>
+    <body>
+        <ul class="w3-navbar w3-light-grey" style="width:100%;margin-left:0%">
+            <li><a href="javascript:hide_readme()">MENU:</a></li>
+            <li><a href="javascript:hide_readme()">Play Game</a></li> 
+            <li><a href="javascript:show_readme()">Random Notes</a></li> 
+            <!-- 
+            <li><a href="#">Link 3</a></li> 
+            <li><a href="#">Link 4</a></li> 
+            -->
+            
+        </ul>
+        <div class="w3-container w3-khaki" id="page_content" style="margin-left:0%;height:100%">
+            
+            <div style="display:inline;height:100%" id="page_normal"> ... page content ... </div>
+            
+            <div style="display:none" id="page_readme">TODO write some content here</div>
+
+            
+        </div>
+    </body>
+</html>
