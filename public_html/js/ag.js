@@ -11,6 +11,7 @@ AG.UP = 38;
 AG.DOWN = 40;
 AG.LEFT = 37;
 AG.RIGHT = 39;
+AG.JUMP = 90;
 
 AG.B_START = 5;
 AG.B_SPACE = 0;
