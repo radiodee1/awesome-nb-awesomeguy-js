@@ -11,7 +11,7 @@ $(document).ready( function() {
     //alert("game start");
     //$("img").css("margin",0)
     //$("img").css("line-height", 0)
-    $("#page_content").html("<canvas id='my_canvas' width='256' height='192' style='border:1px solid #000000;' ></canvas>");
+    //$("#page_content").html("<canvas id='my_canvas' width='256' height='192' style='border:1px solid #000000;' ></canvas>");
     
     $(document).keydown(function(e) {
         input_key = e.keyCode;

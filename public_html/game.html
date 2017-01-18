@@ -12,6 +12,7 @@ and open the template in the editor.
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
         <script src="js/ag.js"></script>
+        <script src="js/ag_loop_draw.js"></script>
         <script src="js/ag_loop_test.js"></script>
         <script src="js/game_start.js"></script>
     </head>
@@ -24,7 +25,9 @@ and open the template in the editor.
         </ul>
         
         <div id="page_header" class="w3-container w3-light-grey">Awesome Guy Game</div>
-        <div id="page_content" class="w3-container w3-light-grey"></div>
+        <div id="page_content" class="w3-container w3-light-grey">
+            <canvas id='my_canvas' width='256' height='192' style='border:1px solid #000000;' ></canvas>
+        </div>
         <div id="page_buttons" class="w3-container w3-light-grey">
             <table style="border-collapse: collapse; border: 0px">
                 <tbody>

@@ -5,26 +5,20 @@
  */
 
 
-var Sprite = {
-	x:0, 
-        y:0, 
-        animate:0,
-	facingRight:0, 
-        active:0, 
-        visible:0,
-	leftBB:0, 
-        rightBB:0, 
-        topBB:0, 
-        bottomBB:0
-};
- 
-//Sprite sprite[100];
-var sprite = [];
-for(i = 0; i < 100; i ++){
-    sprite.push(Object.assign({},Sprite));
-}
-//sprite[10].x = 75;
-//alert(sprite.length + " " + sprite[10].x);
 
-var guy = Object.assign({},Sprite); 
-var keySprite = Object.assign({},Sprite);
+$(document).ready( function() {
+    //$("#my_canvas").
+    setGuyData();
+
+    setTileMapData();
+    setMonsterData();
+    setMovingPlatformData();
+    alert(tiles_a);
+
+    drawSprite_16(guy_a, 0,0,0,0, 0, 0);
+    drawScoreWords();
+    
+    
+    
+    //drawLevel(0);
+});

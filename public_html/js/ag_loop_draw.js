@@ -4,41 +4,52 @@
  * and open the template in the editor.
  */
 
-/*
+
 var PAINT_SOLID = 0;
 var PAINT_TRANSPARENT = 1;
  
-uint16_t tiles_a[128][224];
-uint16_t tiles_b[128][224];
-uint16_t tiles_c[128][224];
-uint16_t tiles_d[128][224];
+var tiles_a;//[128][224];
+var tiles_b;//[128][224];
+var tiles_c;//[128][224];
+var tiles_d;//[128][224];
  
-uint16_t guy_a[16][16];
-uint16_t guy_b[16][16];
-uint16_t guy_c[16][16];
-uint16_t guy_d[16][16];
+var guy_a;//[16][16];
+var guy_b;//[16][16];
+var guy_c;//[16][16];
+var guy_d;//[16][16];
  
-uint16_t monster_a[16][16];
-uint16_t monster_b[16][16];
-uint16_t monster_c[16][16];
-uint16_t monster_d[16][16];
+var monster_a;//[16][16];
+var monster_b;//[16][16];
+var monster_c;//[16][16];
+var monster_d;//[16][16];
  
-uint16_t platform_a[8][40];
- 
-var map_level [96][96];
-var map_objects[96][96];
- 
+var platform_a;//[8][40];
 
-uint16_t screen_0 [TEX_DIMENSION][TEX_DIMENSION];
-uint16_t screen_1 [TEX_DIMENSION][TEX_DIMENSION];
+var map_level = [] ; //[96][96];
+var map_objects = [] ; //[96][96];
+ 
+for (i = 0; i < AG.MAP_HEIGHT; i ++) {
+    var temp1 = [];
+    var temp2 = [];
+    for (j = 0; j < AG.MAP_WIDTH; j ++) {
+        temp1.push(0);
+        temp2.push(0);
+    }
+    map_level.push(temp1);
+    map_objects.push(temp2);
+}
+
+//var screen_0 [TEX_DIMENSION][TEX_DIMENSION];
+//var screen_1 [TEX_DIMENSION][TEX_DIMENSION];
 // this array is used as the basis for the opengl texture 
 // which prints the screen contents to the opengl window.
 // it must have dimenstions of powers of 2.
-uint16_t screencounter = 0;
+var screencounter = 0;
  
 var tilesWidthMeasurement = 32;
 var tilesHeightMeasurement = 32;
-*/
+
+var newBG;
 ////////////////////////////////////
 
 var Sprite = {
@@ -134,24 +145,14 @@ function getSoundOw() {
 	return temp;
 }
 
-/**
- *	Returns the flag that is responsible for reporting to the Java code that the
- *	'prize' sound needs to be played.
- *
- *	@return		var prize sound flag
- */
+
 function getSoundPrize() {
 	var temp = sound_prize;
 	sound_prize = false;
 	return temp;
 }
 
-/**
- *	Returns the flag that is responsible for reporting to the Java code that the
- *	'boom' sound needs to be played.
- *
- *	@return		var boom sound flag
- */
+
 function getSoundBoom() {
 	var temp = sound_boom;
 	sound_boom = false;
@@ -171,13 +172,13 @@ function getSoundBoom() {
  *	@param	c	1D integer array of tile map data
  *	@param	d	1D integer array of tile map data
  */
-function setTileMapData(a, b, c, d ) {
+function setTileMapData( ) {
 
 
-	copyArraysExpand_tileset(a, TILEMAP_WIDTH * TILEMAP_HEIGHT, tiles_a);
-	copyArraysExpand_tileset(b, TILEMAP_WIDTH * TILEMAP_HEIGHT, tiles_b);
-	copyArraysExpand_tileset(c, TILEMAP_WIDTH * TILEMAP_HEIGHT, tiles_c);
-	copyArraysExpand_tileset(d, TILEMAP_WIDTH * TILEMAP_HEIGHT, tiles_d);
+	tiles_a = copyArraysExpand_tileset("tiles1.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
+	tiles_b = copyArraysExpand_tileset("tiles2.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
+	tiles_c = copyArraysExpand_tileset("tiles3.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
+	tiles_d = copyArraysExpand_tileset("tiles4.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
 	
 }
  
@@ -192,12 +193,12 @@ function setTileMapData(a, b, c, d ) {
  *	@param	c	1D integer array of guy sprite data
  *	@param	d	1D integer array of guy sprite data
  */
-function setGuyData(a, b, c, d ) {
+function setGuyData() {
             
-	copyArraysExpand_16(a, GUY_WIDTH * GUY_HEIGHT, guy_a);
-	copyArraysExpand_16(b, GUY_WIDTH * GUY_HEIGHT, guy_b);
-	copyArraysExpand_16(c, GUY_WIDTH * GUY_HEIGHT, guy_c);
-	copyArraysExpand_16(d, GUY_WIDTH * GUY_HEIGHT, guy_d);
+	guy_a = copyArraysExpand_tileset("guy0.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
+	guy_b = copyArraysExpand_tileset("guy1.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
+	guy_c = copyArraysExpand_tileset("guy2.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
+	guy_d = copyArraysExpand_tileset("guy3.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
 	
 	guy.topBB = 2; 
 	guy.bottomBB = 16;
@@ -217,13 +218,13 @@ function setGuyData(a, b, c, d ) {
  *	@param	d	1D integer array of monster sprite data
  */ 
  
-function setMonsterData(a,  b,  c,  d ) {
+function setMonsterData() {
 
 
-	copyArraysExpand_16(a, MONSTER_WIDTH * MONSTER_HEIGHT, monster_a);
-	copyArraysExpand_16(b, MONSTER_WIDTH * MONSTER_HEIGHT, monster_b);
-	copyArraysExpand_16(c, MONSTER_WIDTH * MONSTER_HEIGHT, monster_c);
-	copyArraysExpand_16(d, MONSTER_WIDTH * MONSTER_HEIGHT, monster_d);
+	monster_a = copyArraysExpand_tileset("monster_l0.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_b = copyArraysExpand_tileset("monster_l1.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_c = copyArraysExpand_tileset("monster_r0.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_d = copyArraysExpand_tileset("monster_r1.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
 }
  
  
@@ -235,8 +236,8 @@ function setMonsterData(a,  b,  c,  d ) {
  *
  *	@param	a	1D integer array of monster sprite data
  */ 
-function setMovingPlatformData(a) {
-	copyArraysExpand_8_40( a, PLATFORM_WIDTH * PLATFORM_HEIGHT, platform_a);
+function setMovingPlatformData() {
+	platform_a = copyArraysExpand_tileset("concrete.png",40,8);
 }
 
 /**
@@ -247,20 +248,20 @@ function setMovingPlatformData(a) {
  *	@param	a	1D integer array of background definition level data
  *	@param	b	1D integer array of background definition objects data
  */ 
-function setLevelData(var a[MAP_HEIGHT * MAP_WIDTH],  var b[MAP_HEIGHT * MAP_WIDTH]) {
+function setLevelData(a,  b) {
 
 
 	var i,j;
 	
 	// FIRST PASS ///////////////
-	for (i = 0 ; i < MAP_HEIGHT ; i ++ ) {
-		for (j = 0; j < MAP_WIDTH ; j ++ ) {
-			map_level[i][j] = a[ (i * MAP_WIDTH ) + j] ;
-			map_objects[i][j] = b[ (i * MAP_WIDTH ) + j] ;
+	for (i = 0 ; i < AG.MAP_HEIGHT ; i ++ ) {
+		for (j = 0; j < AG.MAP_WIDTH ; j ++ ) {
+			map_level[i][j] = a[ (i * AG.MAP_WIDTH ) + j] ;
+			map_objects[i][j] = b[ (i * AG.MAP_WIDTH ) + j] ;
 			//LOGE("level data %i ", map_level[i][j]);
 
             //detect presence of one or more keys!!
-            if (map_objects[i][j]   == B_KEY) {
+            if (map_objects[i][j]   == AG.B_KEY) {
                 exitblocked = true;
                 keysonlevel = true;
             }
@@ -269,12 +270,12 @@ function setLevelData(var a[MAP_HEIGHT * MAP_WIDTH],  var b[MAP_HEIGHT * MAP_WID
 	}
 
     // SECOND PASS /////////////////
-    for (i = 0 ; i < MAP_HEIGHT ; i ++ ) {
-        for (j = 0; j < MAP_WIDTH ; j ++ ) {
+    for (i = 0 ; i < AG.MAP_HEIGHT ; i ++ ) {
+        for (j = 0; j < AG.MAP_WIDTH ; j ++ ) {
             //LOGE("level data %i ", map_level[i][j]);
 
-            if (map_objects[i][j] == B_GOAL && keysonlevel) {
-                map_objects[i][j] = B_INITIAL_GOAL;
+            if (map_objects[i][j] == AG.B_GOAL && keysonlevel) {
+                map_objects[i][j] = AG.B_INITIAL_GOAL;
             }
         }
     }
@@ -313,7 +314,7 @@ function setLevelData(var a[MAP_HEIGHT * MAP_WIDTH],  var b[MAP_HEIGHT * MAP_WID
  *	@param	scroll_y	y scroll position of the background in pixels
  *	@param	guy_animate	guy sprite animation index
  */ 
-function setGuyPosition(var guy_x, var guy_y, var scroll_x, var scroll_y, var guy_animate) {
+function setGuyPosition(guy_x, guy_y, scroll_x, scroll_y, guy_animate) {
 
 
 	guy.x = guy_x;
@@ -331,7 +332,7 @@ function setGuyPosition(var guy_x, var guy_y, var scroll_x, var scroll_y, var gu
  *	@param	a_score	score to be displayed on screen
  *	@param	a_lives	lives to be displayed on screen
  */ 
-function setScoreLives(long a_score, var a_lives) {
+function setScoreLives(a_score, a_lives) {
 
 
 
@@ -349,7 +350,7 @@ function setScoreLives(long a_score, var a_lives) {
  *	@param	map_y	y position of the cell to change
  *	@param	value	value to assign to cell
  */ 
-function setObjectsDisplay(var map_x, var map_y, var value) {
+function setObjectsDisplay(map_x, map_y, value) {
 	map_objects[map_x][ map_y ] = value;
 } 
 
@@ -362,7 +363,7 @@ function setObjectsDisplay(var map_x, var map_y, var value) {
  *	@param	monster_y		y position of the monster sprite in pixels
  *	@param	monster_animate	monster sprite animation index
  */ 
-function addMonster(var monster_x, var monster_y, var monster_animate) {
+function addMonster(monster_x, monster_y, monster_animate) {
 
 
 
@@ -389,7 +390,7 @@ function addMonster(var monster_x, var monster_y, var monster_animate) {
  *
  *	@param	num	index for the monster to inactivate
  */  
-function inactivateMonster(var num) {
+function inactivateMonster(num) {
 	if (num < sprite_num) {
 		sprite[num].active = false;
 	}
@@ -404,7 +405,7 @@ function inactivateMonster(var num) {
  *	@param	platform_x		x position of the monster sprite in pixels
  *	@param	platform_y		y position of the monster sprite in pixels
  */ 
-function addPlatform(var platform_x, var platform_y) {
+function addPlatform(platform_x, platform_y) {
 
 
 
@@ -431,7 +432,7 @@ function addPlatform(var platform_x, var platform_y) {
  *
  *	@param	number 	index for the monster to make invisible
  */
-function inactivateMonsterView(var num) {
+function inactivateMonsterView(num) {
 	if (num < sprite_num) {
 		sprite[num].visible = false;
 	}
@@ -445,8 +446,9 @@ function inactivateMonsterView(var num) {
  *	@param	y		a y offset
  *	@return			the bounding box for the sprite
  */
-BoundingBox makeSpriteBox(Sprite sprite, var x, var  y) {
-  BoundingBox temp;
+function makeSpriteBox(sprite, x,  y) {
+  //BoundingBox temp;
+  temp = Object.assign({},BoundingBox);
   temp.left = sprite.leftBB + sprite.x + x;
   temp.right = sprite.rightBB + sprite.x + x;
   temp.top = sprite.topBB + sprite.y + y;
@@ -458,8 +460,10 @@ BoundingBox makeSpriteBox(Sprite sprite, var x, var  y) {
  *	Used for overall collision testing
  */
 
-function collisionSimple(BoundingBox boxA, BoundingBox boxB) {
-  var x[4], y[4];
+function collisionSimple(boxA, boxB) {
+  //var x[4], y[4];
+  var x = [0,0,0,0];
+  var y = [0,0,0,0];
   var i, j;
   var test = false;
   var outsideTest, insideTest;
@@ -519,8 +523,10 @@ function collisionSimple(BoundingBox boxA, BoundingBox boxB) {
  *	Used for overall collision testing.
  */
 
-function collisionHelper(BoundingBox boxA, BoundingBox boxB) {
-  var x[4], y[4];
+function collisionHelper(boxA, boxB) {
+  //var x[4], y[4];
+  var x = [0,0,0,0];
+  var y = [0,0,0,0];
   var i,j;
   var test = false;
   var outsideTest, insideTest;
@@ -589,21 +595,23 @@ function collisionHelper(BoundingBox boxA, BoundingBox boxB) {
  *	@param	size_l	size in pixels of 'from' array
  *	@param	to		2D array of sprite data used by library
  */
-function copyArraysExpand_16(jvar from[], var size_l, uint16_t to[GUY_WIDTH][GUY_HEIGHT]) {
+/*
+function copyArraysExpand_16( from, size_l,  to) {
 
 
 	var i,j, k;
-	for (i = 0; i< GUY_HEIGHT; i ++ ) {
-		for (j = 0; j < GUY_WIDTH; j ++ ) {
-			k =( i * GUY_WIDTH ) + j;
+	for (i = 0; i< AG.GUY_HEIGHT; i ++ ) {
+		for (j = 0; j < AG.GUY_WIDTH; j ++ ) {
+			k =( i * AG.GUY_WIDTH ) + j;
 			if ( k < size_l ) {
-				to[i][j] = (uint16_t) from[k];
+				to[i][j] =  from[k];
 				//LOGE("many assignments here %i", from[k]);
 			}
 		}
 	}
 	return;
 }
+*/
 
 /**
  *	Used to copy 40x8 pixel sprite information from the 1D representation that
@@ -614,12 +622,14 @@ function copyArraysExpand_16(jvar from[], var size_l, uint16_t to[GUY_WIDTH][GUY
  *	@param	size_l	size in pixels of 'from' array
  *	@param	to		2D array of sprite data used by library
  */
-function copyArraysExpand_8_40(jvar from[], var size_l, uint16_t to[PLATFORM_HEIGHT][PLATFORM_WIDTH]) {
+
+/*
+function copyArraysExpand_8_40(from,  size_l,  to) {
 
 	var i,j, k;
-	for (i = 0; i< PLATFORM_HEIGHT; i ++ ) {
-		for (j = 0; j < PLATFORM_WIDTH; j ++ ) {
-			k =( i * PLATFORM_WIDTH ) + j;
+	for (i = 0; i< AG.PLATFORM_HEIGHT; i ++ ) {
+		for (j = 0; j < AG.PLATFORM_WIDTH; j ++ ) {
+			k =( i * AG.PLATFORM_WIDTH ) + j;
 			if ( k < size_l ) {
 				to[i][j] = from[k];
 			}
@@ -628,6 +638,7 @@ function copyArraysExpand_8_40(jvar from[], var size_l, uint16_t to[PLATFORM_HEI
 	return;
 
 }
+*/
 
 /**
  *	Used to copy tilesheet pixel information from the 1D representation that
@@ -638,32 +649,34 @@ function copyArraysExpand_8_40(jvar from[], var size_l, uint16_t to[PLATFORM_HEI
  *	@param	size_l	size in pixels of 'from' array
  *	@param	to		2D array of tilesheet data used by library
  */
-function copyArraysExpand_tileset (jvar from[], var size_l, uint16_t to[TILEMAP_HEIGHT][TILEMAP_WIDTH]) {
+function copyArraysExpand_tileset (from, width, height) {
+    
+    var id = from.split(".");
+    //var img = $("<img id='"+ id[0] + "' width="+width + " height="+height +" >");
+    //img.attr("src", "img/" + from);
+    //img.appendTo("body");
+    //var img = new Image();
+    
+    //var img_id = document.getElementById(id[0]);
+    
+    var canvas = $("<canvas id='canvas_" + id[0] + "' width="+ width +" height=" + height +" >" );
+    canvas.appendTo("body");//"head");
+    var canvas_id = document.getElementById("canvas_"+ id[0]);
+    var ctx = canvas_id.getContext("2d");
+    //ctx.drawImage(img_id,width,height);
+    //
+    //var z;
+    var image = new Image(width, height);
+    image.src = "img/"+ from;
 
-	var num, n, l;
-	var i,j, k;
-	for (i = 0; i< TILEMAP_HEIGHT; i ++ ) {
-		for (j = 0; j < TILEMAP_WIDTH; j ++ ) {
-			k =( i * TILEMAP_WIDTH ) + j;
-			if ( k < size_l ) {
-			
-			uint16_t temp = from[k];
-			uint16_t a = (temp & 0xf000) >> 12;
-			uint16_t r = (temp & 0x0f00) >> 8;
-			uint16_t g = (temp & 0x00f0) >> 4;
-			uint16_t b = (temp & 0x000f) ;
-			
-			to[i][j] =  RGBA4444(b,a,r,g);
-			//to[i][j] =  from[k];
-			}
-		}
-	}
-	n = TILEMAP_WIDTH / TILE_HEIGHT; // 224/8 = 28
-	num = 374;
-	k = (num / n); // y pos 
-	l = num - (k * n); // x pos
-	number_alpha = to[k * 8][l * 8];
-	return;
+    image.onload = function() {
+        ctx.drawImage(image,0,0);
+        //z = ctx.getImageData(0,0,width,height);
+        //return z;
+    };
+    var ctx = canvas_id.getContext("2d");
+    var z = ctx.getImageData(0,0, width, height);
+    return z;
 }
 
 /**
@@ -680,30 +693,34 @@ function copyArraysExpand_tileset (jvar from[], var size_l, uint16_t to[TILEMAP_
  *						painted
  *	@param	extra		color value to skip if 'paint_all' function is used
  */
-function drawSprite_16(uint16_t from[GUY_WIDTH][GUY_HEIGHT], var x, var y, var scroll_x, var scroll_y, var paint_all, uint16_t extra) {
+function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) {
 
 
-    	uint16_t  * screen =(function *) getScreenPointer(MY_SCREEN_BACK);
+    var screen = getScreenPointer(0);
 
 
     var i,j,k,l;
     k = x - scroll_x;
     l = y - scroll_y;
-    for (i = 0; i < GUY_HEIGHT; i ++ ) {
-    	for (j = 0; j < GUY_WIDTH; j ++) {
-    		if ( (i + l) >= 0 && (j + k) >= 0 && (j+k) < SCREEN_WIDTH && (i+l) < SCREEN_HEIGHT ) {
+    screen.putImageData(from, k, l);
+
+    /*
+    for (i = 0; i < AG.GUY_HEIGHT; i ++ ) {
+    	for (j = 0; j < AG.GUY_WIDTH; j ++) {
+    		if ( (i + l) >= 0 && (j + k) >= 0 && (j+k) < AG.SCREEN_WIDTH && (i+l) < AG.SCREEN_HEIGHT ) {
     			
-    			if (paint_all == PAINT_TRANSPARENT && from[i][j] == extra ) {
+    			if (paint_all == 1 && from[i][j] == extra ) {
     				
     			}
     			else {
 	    			//screen[i + l][j + k] = color_pixel( from[i][j]);
-				screen[((l + i) * SCREEN_WIDTH )  +(j +k ) ] = color_pixel(from[i][j]);
+				screen[((l + i) * AG.SCREEN_WIDTH )  +(j +k ) ] = color_pixel(from[i][j]);
 	    		}
 
     		}
     	}
     }
+    */
     return;
 }
  
@@ -722,28 +739,32 @@ function drawSprite_16(uint16_t from[GUY_WIDTH][GUY_HEIGHT], var x, var y, var s
  *						painted
  *	@param	extra		color value to skip if 'paint_all' function is used
  */
-function drawSprite_40_8(uint16_t from[PLATFORM_HEIGHT][PLATFORM_WIDTH], var x, var y, var scroll_x, var scroll_y, var paint_all, uint16_t extra) {
+function drawSprite_40_8(from,  x,  y, scroll_x,  scroll_y,  paint_all,  extra) {
 	
-	var i,j,k,l;
-    	uint16_t  * screen =(function *) getScreenPointer(MY_SCREEN_BACK);
+    var i,j,k,l;
+    var screen = getScreenPointer(0);
 	
     k = x - scroll_x;
     l = y - scroll_y;
-    for (i = 0; i < PLATFORM_HEIGHT; i ++ ) {
-    	for (j = 0; j < PLATFORM_WIDTH; j ++) {
-    		if ( (i + l) >= 0 && (j + k) >= 0 && (j+k) < SCREEN_WIDTH && (i+l) < SCREEN_HEIGHT ) {
+    screen.putImageData(from, k, l);
+
+    /*
+    for (i = 0; i < AG.PLATFORM_HEIGHT; i ++ ) {
+    	for (j = 0; j < AG.PLATFORM_WIDTH; j ++) {
+    		if ( (i + l) >= 0 && (j + k) >= 0 && (j+k) < AG.SCREEN_WIDTH && (i+l) < AG.SCREEN_HEIGHT ) {
     			
-    			if (paint_all == PAINT_TRANSPARENT && from[i][j] == extra ) {
+    			if (paint_all == 1 && from[i][j] == extra ) {
     				
     			}
     			else {
 	    			//screen[i + l][j + k] =color_pixel( from[i][j]);
-				screen[((l + i) * SCREEN_WIDTH )  +(j +k ) ] = color_pixel(from[i][j]);
+				screen[((l + i) * AG.SCREEN_WIDTH )  +(j +k ) ] = color_pixel(from[i][j]);
 	    		}
 
     		}
     	}
     }
+    */
     return;
 }
  
@@ -761,32 +782,37 @@ function drawSprite_40_8(uint16_t from[PLATFORM_HEIGHT][PLATFORM_WIDTH], var x, 
  *						painted
  *	@param	extra		color value to skip if 'paint_all' function is used
  */
-function drawTile_8(uint16_t tile[TILE_WIDTH][TILE_HEIGHT], var screen_x, var screen_y, var scroll_x, var scroll_y, var paint_all, uint16_t extra) {
+function drawTile_8( tile,  screen_x, screen_y,  scroll_x,  scroll_y,  paint_all,  extra) {
    
     var i,j,m,n;
-    uint16_t  *  screen =(function *) (getScreenPointer(MY_SCREEN_BACK));
+    var screen = (getScreenPointer(0));
     
 	m = (screen_x ) - scroll_x;
 
 	n = (screen_y ) - scroll_y;
 
+    //var offscreen_data = offscreen_context.getImageData(x, y, width, height);
+
+    screen.putImageData(tile, m,n);//n * AG.SCREEN_WIDTH, m);
     
-    for (i = 0; i < TILE_HEIGHT; i ++ ) {
-    	for (j = 0; j < TILE_WIDTH; j ++) {
-    		if ( (i + n) >= 0 && (j + m) >= 0 && (i+n) < SCREEN_HEIGHT  && (j+m) <  SCREEN_WIDTH ) {
-    			if ( paint_all == PAINT_TRANSPARENT && tile[i][j] == extra ) {
+    /*
+    for (i = 0; i < AG.TILE_HEIGHT; i ++ ) {
+    	for (j = 0; j < AG.TILE_WIDTH; j ++) {
+    		if ( (i + n) >= 0 && (j + m) >= 0 && (i+n) < AG.SCREEN_HEIGHT  && (j+m) <  AG.SCREEN_WIDTH ) {
+    			if ( paint_all == 1 && tile[i][j] == extra ) {
     				//
     			}
     			else {
     			
 	    			//screen[i + n ][j + m] = tile[i][j];
 	    			//screen[i + n ][j + m] = color_pixel( tile[i][j]);
-				    screen[((n + i) * SCREEN_WIDTH )  +(j +m ) ] = color_pixel(tile[i][j]);
+				    screen[((n + i) * AG.SCREEN_WIDTH )  +(j +m ) ] = color_pixel(tile[i][j]);
 	    			//LOGE("drawing tile %i", tile[i][j]);
 	    		}
     		} 
     	}
     }
+    */
     return;
 }
 /**
@@ -799,22 +825,25 @@ function drawTile_8(uint16_t tile[TILE_WIDTH][TILE_HEIGHT], var screen_x, var sc
  *	@param	num		the number that indicates which tile to copy from the 
  *					tileset image
  */
-function cutTile(uint16_t tileset[TILEMAP_HEIGHT][TILEMAP_WIDTH], uint16_t tile[TILE_HEIGHT][TILE_WIDTH], var num) {
+function cutTile( tileset, tile_ignore ,  num) {
 
 
     var i,j,k,l,m,n, p;
 
-    m = TILEMAP_HEIGHT / TILE_HEIGHT; // 128/8 = 16
-    n = TILEMAP_WIDTH / TILE_HEIGHT; // 224/8 = 28
+    m = AG.TILEMAP_HEIGHT / AG.TILE_HEIGHT; // 128/8 = 16
+    n = AG.TILEMAP_WIDTH / AG.TILE_HEIGHT; // 224/8 = 28
     
     
     k = (num / n); // y pos 
     l = num - (k * n); // x pos
-    for ( i = 0 ; i < TILE_HEIGHT; i ++ ) {
-    	for (j = 0; j < TILE_WIDTH; j ++) {
-    		p = tileset[i + (k * TILE_WIDTH)][j+(l* TILE_HEIGHT)];
+    var offscreen_data = tileset.getImageData(l, k, 8, 8);
 
-            if ((num + 1 == B_GOAL || num + 1 == B_INITIAL_GOAL ) && p != 0 && !exitblocked) {
+    /*
+    for ( i = 0 ; i < AG.TILE_HEIGHT; i ++ ) {
+    	for (j = 0; j < AG.TILE_WIDTH; j ++) {
+    		p = tileset[i + (k * AG.TILE_WIDTH)][j+(l* AG.TILE_HEIGHT)];
+
+            if ((num + 1 == AG.AG.B_GOAL || num + 1 == AG.AG.B_INITIAL_GOAL ) && p != 0 && !exitblocked) {
                 p = 0x000f;
             }
     		tile[i][j] = p;
@@ -822,7 +851,13 @@ function cutTile(uint16_t tileset[TILEMAP_HEIGHT][TILEMAP_WIDTH], uint16_t tile[
     		
     	}
     }
+    */
+    return offscreen_data;
 }
+
+
+
+
 
 /**
  *	Used to draw the words 'score' and 'lives' on the library's screen array.
@@ -830,29 +865,29 @@ function cutTile(uint16_t tileset[TILEMAP_HEIGHT][TILEMAP_WIDTH], uint16_t tile[
 function drawScoreWords() {
 
 
-		var i;
-    	var topScore[] = {374,375,376,377,378,383};
+	var i;
+    	var topScore = [374,375,376,377,378,383];
 
-    	var topLives[] = {379,380,381,378,382,383};
+    	var topLives = [379,380,381,378,382,383];
 
     	var scorePos, livesPos;
     	scorePos = 2 ;
     	livesPos = 16  ;
-        uint16_t square[TILE_HEIGHT][TILE_WIDTH];
+        //var square[TILE_HEIGHT][TILE_WIDTH];
     	//mTiles = new TileCutter(bMapNum);
 		
 		
     	if (guy.y > 16) {
     			//prvar SCORE:
     			for (i = 0; i < 6; i ++) {
-       				cutTile(tiles_a, square, topScore[i]);
+       				square = cutTile(tiles_a, square, topScore[i]);
 
-    				drawTile_8(square, (scorePos + i) * TILE_WIDTH + scrollx, (1) * TILE_HEIGHT + scrolly, 
+    				drawTile_8(square, (scorePos + i) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
-       				cutTile(tiles_a, square, topScore[i] +28);
+       				square = cutTile(tiles_a, square, topScore[i] +28);
 
-    				drawTile_8(square, (scorePos + i) * TILE_WIDTH  + scrollx, (2) * TILE_HEIGHT + scrolly, 
+    				drawTile_8(square, (scorePos + i) * AG.TILE_WIDTH  + scrollx, (2) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
     				
 
@@ -860,14 +895,14 @@ function drawScoreWords() {
     			//prvar LEVEL:
     			for (i = 0; i < 6; i ++) {
     				
-    				cutTile(tiles_a, square, topLives[i]);
+    				square = cutTile(tiles_a, square, topLives[i]);
 
-    				drawTile_8(square, (livesPos + i) * TILE_WIDTH + scrollx, (1) * TILE_HEIGHT + scrolly, 
+    				drawTile_8(square, (livesPos + i) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
-       				cutTile(tiles_a, square, topLives[i] +28);
+       				square = cutTile(tiles_a, square, topLives[i] +28);
 
-    				drawTile_8(square, (livesPos + i) * TILE_WIDTH +scrollx , (2) * TILE_HEIGHT + scrolly , 
+    				drawTile_8(square, (livesPos + i) * AG.TILE_WIDTH +scrollx , (2) * AG.TILE_HEIGHT + scrolly , 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
     				
     				
@@ -888,15 +923,15 @@ function drawScoreWords() {
  *	@param	num	actual numerical value to be used as the score or lives number
  *	@param	p	maximum number of decimal places of 'num'	
  */
-function drawScoreNumbers( var pos, var num, var p) {
+function drawScoreNumbers( pos,  num,  p) {
 
 
     
     var i, a, b, c, placesValue;
-    	var places[] = {0,0,0,0,0,0,0,0,0,0};//ten spots
-    	var topNumbers[] = {364,365,366, 367, 368, 369, 370, 371, 372, 373};
+    	var places = [0,0,0,0,0,0,0,0,0,0];//ten spots
+    	var topNumbers = [364,365,366, 367, 368, 369, 370, 371, 372, 373];
     	var showZeros = 0;
-        uint16_t square[TILE_HEIGHT][TILE_WIDTH];
+        //var square[TILE_HEIGHT][TILE_WIDTH];
     	//mTiles = new TileCutter(bMapNum);
 
     	for (i = 0; i < 10; i ++) {
@@ -914,14 +949,14 @@ function drawScoreNumbers( var pos, var num, var p) {
     				c = p - i;
     			}
     			
-					cutTile(tiles_a, square, topNumbers[placesValue]);
+				square = cutTile(tiles_a, square, topNumbers[placesValue]);
 
-    				drawTile_8(square, (pos + i - p + c) * TILE_WIDTH + scrollx, (1) * TILE_HEIGHT +
+    				drawTile_8(square, (pos + i - p + c) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT +
     					scrolly, scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
-       				cutTile(tiles_a, square, topNumbers[placesValue] +28);
+       				square = cutTile(tiles_a, square, topNumbers[placesValue] +28);
 
-    				drawTile_8(square, (pos + i - p + c) * TILE_WIDTH +scrollx , (2) * TILE_HEIGHT +
+    				drawTile_8(square, (pos + i - p + c) * AG.TILE_WIDTH +scrollx , (2) * AG.TILE_HEIGHT +
     					scrolly , scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
     				
     		}
@@ -963,8 +998,8 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x + move;
 					// marker test
-					if( map_objects[x+2][y] == B_BLOCK  ) markerTest = true;
-					if( map_objects[x+2][y] == B_MARKER ) markerTest = true;
+					if( map_objects[x+2][y] == AG.B_BLOCK  ) markerTest = true;
+					if( map_objects[x+2][y] == AG.B_MARKER ) markerTest = true;
 					if( map_objects[ x+2][y+1] == 0) markerTest = true;
 					// turn monster
 					if (sprite[i].x > level_w * 8  - 16 || markerTest == true) {
@@ -976,8 +1011,8 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x - move;
 					// marker test
-					if(map_objects[x][y] == B_BLOCK) markerTest = true;
-					if(map_objects[x][y] == B_MARKER) markerTest = true;
+					if(map_objects[x][y] == AG.B_BLOCK) markerTest = true;
+					if(map_objects[x][y] == AG.B_MARKER) markerTest = true;
 					if(map_objects[x-1][y+1] == 0) markerTest = true;
 					// turn monster
 					if (sprite[i].x < 0 || markerTest == true) {
@@ -1083,8 +1118,8 @@ function drawMovingPlatform() {
         // marker test
         y_right = y;
         x_right = x + width + cheat ;
-        if(map_objects[x_right][y_right] == B_BLOCK) markerTest = true;
-        if(map_objects[x_right][y_right] == B_MARKER) markerTest = true;
+        if(map_objects[x_right][y_right] == AG.B_BLOCK) markerTest = true;
+        if(map_objects[x_right][y_right] == AG.B_MARKER) markerTest = true;
 
         // turn platform
         if (sprite[i].x > level_w   * 8   - PLATFORM_WIDTH || markerTest == true) {
@@ -1098,8 +1133,8 @@ function drawMovingPlatform() {
         // marker test
         y_left = y;
         x_left = x + cheat ;
-        if(map_objects[x_left][y_left ] == B_BLOCK) markerTest = true;
-        if(map_objects[x_left][y_left ] == B_MARKER) markerTest = true;
+        if(map_objects[x_left][y_left ] == AG.B_BLOCK) markerTest = true;
+        if(map_objects[x_left][y_left ] == AG.B_MARKER) markerTest = true;
 
         // turn platform
         if (sprite[i].x <= 0 || markerTest == true) {
@@ -1144,11 +1179,11 @@ function collisionWithMonsters() {
 	//else index_num = monster_num;
 	
 	
-		  BoundingBox guyBox = makeSpriteBox( guy , 0, 0 );
+		  var guyBox = makeSpriteBox( guy , 0, 0 );
 
 		  
 		  for (i = 0  ; i < monster_num ; i++) {   
-		    BoundingBox monsterBox = makeSpriteBox(sprite[i] , 0, 0 );
+		    var monsterBox = makeSpriteBox(sprite[i] , 0, 0 );
 		    var test =  collisionSimple(guyBox, monsterBox);
 		    if (test && sprite[i].active   == true) {
 		    
@@ -1184,7 +1219,7 @@ function collisionWithMonsters() {
  *  Used to detect collision with keys.
  */
 
-function collisionWithObjects(var j, var i, var num) {
+function collisionWithObjects( j,  i,  num) {
     if (!keysonlevel) return;
 
     keySprite.x = j * 8;
@@ -1194,20 +1229,20 @@ function collisionWithObjects(var j, var i, var num) {
     keySprite.topBB = 0;
     keySprite.bottomBB = 8;
 
-    BoundingBox guyBox = makeSpriteBox( guy , 0, 0 );
-    BoundingBox keyBox = makeSpriteBox( keySprite , 0, 0 );
-    if (num == B_KEY) {
+    var guyBox = makeSpriteBox( guy , 0, 0 );
+    var keyBox = makeSpriteBox( keySprite , 0, 0 );
+    if (num == AG.B_KEY) {
         var test = collisionSimple(guyBox,keyBox);
         if (test == true ) {
             exitblocked = false;
             setObjectsDisplay(j,i,0);
         }
     }
-    if (num == B_GOAL || num == B_INITIAL_GOAL) {
+    if (num == AG.B_GOAL || num == AG.B_INITIAL_GOAL) {
         var test = collisionSimple(guyBox,keyBox);
         if (test == true && !exitblocked) {
             //endlevel = true;
-            setObjectsDisplay(j,i,B_GOAL);
+            setObjectsDisplay(j,i,AG.B_GOAL);
         }
     }
 
@@ -1244,69 +1279,69 @@ function animate_vars() {
  *	@param	unused	formerly a number used to decide which version of the tileset
  *							is used, providing animated appearance of rings
  */
-function drawLevel(var unused) {
+function drawLevel( unused) {
     
     var i,j,k,l;
     var xx = 0;
     var baseX, baseY;//, startX, startY;
     var mapcheat = 1;
     var levelcheat = 1;
-    uint16_t square[TILE_HEIGHT][TILE_WIDTH];
+    //var square[TILE_HEIGHT][TILE_WIDTH];
     
-    uint16_t  **  screen = (getScreenPointer(MY_SCREEN_BACK));
+    //var  screen = (getScreenPointer(0));
     
     //animate = animate_level;
     animate = newBG + 1;
     
     /* clear screen */
-    memset(screen, 0x0, SCREEN_HEIGHT * SCREEN_WIDTH * 2);
+    //memset(screen, 0x0, SCREEN_HEIGHT * SCREEN_WIDTH * 2);
     
     /* draw background */
-    baseX = scrollx / TILE_WIDTH;
-    baseY = scrolly / TILE_HEIGHT;
+    baseX = scrollx / AG.TILE_WIDTH;
+    baseY = scrolly / AG.TILE_HEIGHT;
     
 	for ( j = baseX - 1; j <  baseX + tilesWidthMeasurement + 3; j++) { //32
     	for ( i = baseY - 1 ; i < baseY + tilesHeightMeasurement + 3; i ++ ) { //24
     		
     		
-    		if (i >= 0 && j >= 0  && i < MAP_HEIGHT && j < MAP_WIDTH) { 
+    		if (i >= 0 && j >= 0  && i < AG.MAP_HEIGHT && j < AG.MAP_WIDTH) { 
     			if(  map_level[j][i] != 0 ) { //is tile blank??
-    				cutTile(tiles_a, square, map_level[j][i] - levelcheat);
-    				drawTile_8(square, j * TILE_WIDTH, i * TILE_HEIGHT , 
+    				square = cutTile(tiles_a, square, map_level[j][i] - levelcheat);
+    				drawTile_8(square, j * AG.TILE_WIDTH, i * AG.TILE_HEIGHT , 
     					scrollx , scrolly, PAINT_SOLID, 0);
 			}
 			
 				// special animated tiles
 				k = map_objects[j][i];
-				if ( k != B_START && k != B_MONSTER && k != B_DEATH
-    				&& k != B_PLATFORM && k != B_MARKER && k != B_BLOCK
-    				&& k != B_LADDER  && k != B_SPACE) {
+				if ( k != AG.B_START && k != AG.B_MONSTER && k != AG.B_DEATH
+    				&& k != AG.B_PLATFORM && k != AG.B_MARKER && k != AG.B_BLOCK
+    				&& k != AG.B_LADDER  && k != AG.B_SPACE) {
 
                     collisionWithObjects(j,i,k);
 
                     xx = k;
-                    if (k == B_INITIAL_GOAL) {
-                        xx = B_GOAL;
+                    if (k == AG.B_INITIAL_GOAL) {
+                        xx = AG.B_GOAL;
                     }
 
                     if (animate == 0 || animate == 1 || animate == 8) {
 
-    		    		cutTile(tiles_a, square, xx - mapcheat);
+    		    		square = cutTile(tiles_a, square, xx - mapcheat);
     				}
     				else if (animate == 2 || animate == 4 || animate == 6) {
 
-    		    		cutTile(tiles_b, square, xx - mapcheat);
+    		    		square = cutTile(tiles_b, square, xx - mapcheat);
     				}
     				else if (animate == 3 || animate == 7) {
 
-    		    		cutTile(tiles_c, square, xx - mapcheat);
+    		    		square = cutTile(tiles_c, square, xx - mapcheat);
     				}
     				else if (animate == 5) {
 
-    		    		cutTile(tiles_d, square, xx - mapcheat);
+    		    		square = cutTile(tiles_d, square, xx - mapcheat);
     				}
 
-                    drawTile_8(square, j * TILE_WIDTH, i * TILE_HEIGHT ,
+                    drawTile_8(square, j * AG.TILE_WIDTH, i * AG.TILE_HEIGHT ,
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
     			
     			}
@@ -1352,9 +1387,15 @@ function drawLevel(var unused) {
  * test out this pointer returning function
  */
  
-uint16_t **  getScreenPointer(var screen_enum) {
-	//return (uint16_t **)screen;
-	//return  (uint16_t **)screen;
+function getScreenPointer( screen_enum) {
+	//return (var **)screen;
+	//return  (var **)screen;
+        //
+        var screen = (document.getElementById("my_canvas")).getContext("2d");
+        //var screen = ($("#my_canvas")).getContext("2d");
+        //alert(screen)
+        return screen;
+        /*
 	///////////////////////////
 	var local_index = 0;
 	if (screen_enum == MY_SCREEN_FRONT) {
@@ -1365,11 +1406,12 @@ uint16_t **  getScreenPointer(var screen_enum) {
 	}
 	//////////////////////////
 	if (local_index) {
-		return (uint16_t **) screen_0;
+		return (var **) screen_0;
 	}
 	else {
-		return (uint16_t **) screen_1;
+		return (var **) screen_1;
 	}
+        */
 }
 
 function incrementScreenCounter() {
@@ -1379,442 +1421,3 @@ function incrementScreenCounter() {
 ////////////////////////////////////////
 // Java interfaces here
 ////////////////////////////////////////
-
-/**
- *	Used to establish all tileset map arrays at the time of instatiation of the 
- *	Panel constructor.
- *
- *	@param	env			required by all java jni
- *	@param	obj			required by all java jni
- *	@param	a_bitmap	1D tileset pixel array
- *	@param	b_bitmap	1D tileset pixel array
- *	@param	c_bitmap	1D tileset pixel array
- *	@param	d_bitmap	1D tileset pixel array
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setTileMapData(JNIEnv * env, jobject  obj, jintArray a_bitmap, jintArray b_bitmap, jintArray c_bitmap, jintArray d_bitmap)
-{
-  //jsize a_len = (*env)->GetArrayLength(env, a_bitmap);
-  jvar *a = (*env)->GetIntArrayElements(env, a_bitmap, 0);
-  //jsize b_len = (*env)->GetArrayLength(env, b_bitmap);
-  jvar *b = (*env)->GetIntArrayElements(env, b_bitmap, 0);
-  //jsize c_len = (*env)->GetArrayLength(env, c_bitmap);
-  jvar *c = (*env)->GetIntArrayElements(env, c_bitmap, 0);
-  //jsize d_len = (*env)->GetArrayLength(env, d_bitmap);
-  jvar *d = (*env)->GetIntArrayElements(env, d_bitmap, 0);
-  setTileMapData(a, b, c, d );
-}
-
-/**
- *	Used to establish all character sprite arrays at the time of instatiation of
- *	the Panel constructor.
- *
- *	@param	env			required by all java jni
- *	@param	obj			required by all java jni
- *	@param	a_bitmap	1D sprite pixel array
- *	@param	b_bitmap	1D sprite pixel array
- *	@param	c_bitmap	1D sprite pixel array
- *	@param	d_bitmap	1D sprite pixel array
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setGuyData(JNIEnv * env, jobject  obj, jintArray a_bitmap, jintArray b_bitmap, jintArray c_bitmap, jintArray d_bitmap)
-{
-
-  jvar *a = (*env)->GetIntArrayElements(env, a_bitmap, 0);
-  jvar *b = (*env)->GetIntArrayElements(env, b_bitmap, 0);
-  jvar *c = (*env)->GetIntArrayElements(env, c_bitmap, 0);
-  jvar *d = (*env)->GetIntArrayElements(env, d_bitmap, 0);
-  
-  setGuyData(a, b, c, d );
-}
- 
-/**
- *	Used to establish all monster sprite arrays at the time of instatiation of 
- *	the Panel constructor.
- *
- *	@param	env			required by all java jni
- *	@param	obj			required by all java jni
- *	@param	a_bitmap	1D monster pixel array
- *	@param	b_bitmap	1D monster pixel array
- *	@param	c_bitmap	1D monster pixel array
- *	@param	d_bitmap	1D monster pixel array
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setMonsterData(JNIEnv * env, jobject  obj, jintArray a_bitmap, jintArray b_bitmap, jintArray c_bitmap, jintArray d_bitmap)
-{
-  //jsize a_len = (*env)->GetArrayLength(env, a_bitmap);
-  jvar *a = (*env)->GetIntArrayElements(env, a_bitmap, 0);
-  //jsize b_len = (*env)->GetArrayLength(env, b_bitmap);
-  jvar *b = (*env)->GetIntArrayElements(env, b_bitmap, 0);
-  //jsize c_len = (*env)->GetArrayLength(env, c_bitmap);
-  jvar *c = (*env)->GetIntArrayElements(env, c_bitmap, 0);
-  //jsize d_len = (*env)->GetArrayLength(env, d_bitmap);
-  jvar *d = (*env)->GetIntArrayElements(env, d_bitmap, 0);
-  setMonsterData(a, b, c, d );
-}
-
-/**
- *	Used to establish the platform sprite array at the time of instatiation of 
- *	the Panel constructor.
- *
- *	@param	env			required by all java jni
- *	@param	obj			required by all java jni
- *	@param	a_bitmap	1D platform pixel array
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setMovingPlatformData(JNIEnv * env, jobject  obj, jintArray a_bitmap) 
-{
-
-	jvar *a = (*env)->GetIntArrayElements(env, a_bitmap, 0);
-	
-	setMovingPlatformData(a) ;
-
-}
-/**
-
- *	used to add a monster's sprite record to the list of monster sprite records
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	monster_mapx	the x map coordinates of the monster's starting 
- *							point.
- *	@param	monster_mapy	the y map coordinates of the monster's starting
- *							point.
- *	@param	animate_index	starting animation index of monster.
-
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_addMonster(JNIEnv * env, jobject  obj, jvar monster_mapx, jvar monster_mapy,  jvar animate_index)
-{
-	addMonster(monster_mapx, monster_mapy,  animate_index);	
-
-}
-
-/**
- *	used to add a platform's sprite record to the list of sprite records
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	platform_mapx	the x map coordinates of the platform's starting 
- *							point.
- *	@param	platform_mapy	the y map coordinates of the platform's starting
- *							point.
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_addPlatform(JNIEnv * env, jobject  obj, jvar platform_mapx, jvar platform_mapy)
-{
-	addPlatform(platform_mapx, platform_mapy);	
-
-}
-
-/**
- *	used to inactivate a monster's sprite record in the list of monster sprite 
- *	records
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	monster_num		the x monster's index num
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_inactivateMonster(JNIEnv * env, jobject  obj, jvar monster_num)
-{
-	inactivateMonster(monster_num);	
-
-}
-
-/**
- *	Used to set x and y screen postions for the 'guy' sprite, as well as set the
- *	scrollx and scrolly of the screen and the animate index for the background
- *
- *	@param	env			required by all java jni
- *	@param	obj			required by all java jni
- *	@param	x_pos		x position of the 'guy' sprite
- *	@param	y_pos		y position of the 'guy' sprite
- *	@param	scroll_x	x scroll of background
- *	@param	scroll_y	y scroll of background
- *	@param	animate		animate value for background
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setGuyPosition(JNIEnv * env, jobject  obj, jvar x_pos, jvar y_pos, jvar scroll_x, jvar scroll_y, jvar animate)
-{
-	setGuyPosition(x_pos, y_pos, scroll_x, scroll_y, newGuy);	
-
-}
-
-/**
- *	Used to set the 'score' and 'lives' values to be displayed on the screen
- *
- *	@param	env		required by all java jni
- *	@param	obj		required by all java jni
- *	@param	score	the score
- *	@param	lives	the lives
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setScoreLives(JNIEnv * env, jobject  obj, jlong score, jvar lives)
-{
-	setScoreLives(score,lives);	
-
-}
-
-/**
- *	Used to set the 'score' and 'lives' values to be displayed on the screen
- *
- *	@param	env		required by all java jni
- *	@param	obj		required by all java jni
- *	@param	monsters 	weather monsters will be shown on the level
- *	@param	collision	weather collision with monsters will affect game play
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setMonsterPreferences(JNIEnv * env, jobject  obj, jvar monsters, jvar collision)
-{
-	preferences_monsters = monsters;
-	preferences_collision = collision;
-
-}
-
-/**
- *	Used to set the animate_only boolean value
- *
- *	@param	env			required by all java jni
- *	@param	obj			required by all java jni
- *	@param	animate 	weather animate_only is set
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setJNIAnimateOnly(JNIEnv * env, jobject  obj, jvar animate)
-{
-
-	animate_only = animate;
-
-}
-
-/**
- *	Used to set the useable screen size for the program
- *
- *	@param	env			required by all java jni
- *	@param	obj			required by all java jni
- *	@param	screenH 	screen horizontal tile measurement
- *	@param	screenV		screen vertical tile measurement
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setScreenData(JNIEnv * env, jobject  obj, jvar screenH, jvar screenV)
-{
-	tilesWidthMeasurement = screenH;
-	tilesHeightMeasurement = screenV;
-
-}
-
-/**
- *	Used to copy the 'level' and 'ojects' arrays to the library at the time of
- *	Panel instantiation. Also copy width and height of the two arrays.
- *
- *	@param	env		required by all java jni
- *	@param	obj		required by all java jni
- *	@param	level	1D array of level data
- *	@param	objects	1D array of objects data
- *	@param	width	value representing the arrays' 2D width
- *	@param	height	value representing the arrays' 2D height
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setLevelData(JNIEnv * env, jobject  obj, jintArray level, jintArray objects, jvar width, jvar height)
-{
-	
-	jvar *a = (*env)->GetIntArrayElements(env, level, 0); // zero??
-  	jvar *b = (*env)->GetIntArrayElements(env, objects, 0);
-  	
-  	level_h = height;
-  	level_w = width;
-  	
-  	sprite_num = 0;
-  	
-	setLevelData(a,b);	
-	//LOGE("level data",0);
-}
-
-/**
- *	Used to set a single 'objects' array cell value during game play.
- *
- *	@param	env		required by all java jni
- *	@param	obj		required by all java jni
- *	@param	map_x	x map coordinates to be changed
- *	@param	map_y	y map coordinated to be changed
- *	@param	value	value used for replacement
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setObjectsDisplay(JNIEnv * env, jobject  obj, jvar map_x, jvar map_y, jvar value)
-{
-	setObjectsDisplay(map_x, map_y, value);	
-
-}
-
-/**
- *	Used to return to the java app the data from the 2D screen array kept by the
- *	library.
- *
- *	@param	env		required by all java jni
- *	@param	obj		required by all java jni				
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_drawLevel(JNIEnv * env, jobject  obj)
-{
-	animate_vars();
-	
-	drawLevel(newBG + 1);
-	
-}
-
-
-/**
- *	Used to tell the java program that the sound can be played
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@return					weather the sound is playable.
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getSoundBoom(JNIEnv * env, jobject  obj)
-{
-	return getSoundBoom();	
-
-}
-
-/**
- *	Used to tell the java program that the sound can be played
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@return					weather the sound is playable.
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getSoundOw(JNIEnv * env, jobject  obj)
-{
-	return getSoundOw();	
-
-}
-
-/**
- *	Used to tell the java program that the sound can be played
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@return					weather the sound is playable.
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getSoundPrize(JNIEnv * env, jobject  obj)
-{
-	return getSoundPrize();	
-
-}
-
-/**
- *	Used to tell the java program how many lives are left
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@return					lives
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getLives(JNIEnv * env, jobject  obj)
-{
-	return lives;	
-
-}
-
-/**
- *	Used to tell the java program that the level is over
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@return					endlevel flag
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getEndLevel(JNIEnv * env, jobject  obj)
-{
-	
-	var temp = endlevel;
-  	endlevel = false;
-	return temp;	
-
-}
-
-/**
- *	Used to tell the java program the score
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@return					score
- */
-JNIEXPORT jlong JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getScore(JNIEnv * env, jobject  obj)
-{
-	return score;	
-
-
-
-}
-
-/**
- *	Used to increment the score in the JNI variable
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	num 			amount to increase score by
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_incrementJniScore(JNIEnv * env, jobject  obj, jlong num)
-{
-	score = score + num;	
-
-}
-
-/**
- *	Used to tell the java program the x coordinates of a sprite
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	num 			index of desired sprite
- *	@return					X coordinate
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getSpriteX(JNIEnv * env, jobject  obj, jvar num)
-{
-	return sprite[num].x;	
-
-}
-
-/**
- *	Used to tell the java program the y coordinates of a sprite
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	num 			index of desired sprite
- *	@return					Y coordinate
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getSpriteY(JNIEnv * env, jobject  obj, jvar num)
-{
-	return sprite[num].y;	
-
-}
-
-/**
- *	Used to tell the java program the 'facingRight' status of a sprite
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	num 			index of desired sprite
- *	@return					facingRight
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getSpriteFacingRight(JNIEnv * env, jobject  obj, jvar num)
-{
-	return sprite[num].facingRight;	
-
-}
-
-/**
- *	Used to set the scroll registers in the JNI library
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	x	 			scroll_x
- *  @param	y				scroll_y
- *	@return					function
- */
-JNIEXPORT function JNICALL Java_org_davidliebman_android_awesomeguy_Panel_setJNIScroll(JNIEnv * env, jobject  obj, jvar x , jvar y)
-{
-	scrollx = x;
-	scrolly = y;
-	
-
-}
-
-/**
- *	Used to query the jni array for map_objects
- *
- *	@param	env				required by all java jni
- *	@param	obj				required by all java jni
- *	@param	x	 			scroll_x
- *  @param	y				scroll_y
- *	@return					function
- */
-JNIEXPORT var JNICALL Java_org_davidliebman_android_awesomeguy_Panel_getObjectsDisplay(JNIEnv * env, jobject  obj, jvar x , jvar y)
-{
-
-    return map_objects[x][y];
-
-}
