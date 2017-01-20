@@ -92,6 +92,8 @@ var BoundingBox = {
 var level_h, level_w, lives, scrollx, scrolly, animate ;
 var score;
 
+scrollx = 0;
+scrolly = 0;
 
 var exitblocked = false;
 var keysonlevel = false;
@@ -790,12 +792,12 @@ function drawTile_8( tile,  screen_x, screen_y,  scroll_x,  scroll_y,  paint_all
     var i,j,m,n;
     //var screen = (getScreenPointer(0));
     
-	m = (screen_x ) - scroll_x;
+	m = screen_x  - scroll_x;
 
-	n = (screen_y ) - scroll_y;
+	n = screen_y  - scroll_y;
 
     //var offscreen_data = offscreen_context.getImageData(x, y, width, height);
-
+    //alert(scroll_x + " " + screen_x);
     screen.putImageData(tile, m,n);//n * AG.SCREEN_WIDTH, m);
     
     /*
@@ -839,7 +841,27 @@ function cutTile( tileset, tile_ignore ,  num) {
     
     k = (num / n); // y pos 
     l = num - (k * n); // x pos
-    var offscreen_data = tileset.getImageData(l, k, 8, 8);
+    
+    
+    var canvas_id = document.getElementById("canvas_"+ tileset);
+    var ctx = canvas_id.getContext("2d");
+    //ctx.drawImage(img_id,0,0);//width,height);
+    //
+    //var z;
+    //var image = new Image(width, height);
+    //image.src = "img/"+ from;
+    /*
+    image.onload = function() {
+        ctx.drawImage(image,0,0);
+        //z = ctx.getImageData(0,0,width,height);
+        //return z;
+    };
+    */
+    //var ctx = canvas_id.getContext("2d");
+    var z = ctx.getImageData(l,k, 8, 8);
+    
+    
+    //var offscreen_data = tileset.getImageData(l, k, 8, 8);
 
     /*
     for ( i = 0 ; i < AG.TILE_HEIGHT; i ++ ) {
@@ -855,7 +877,7 @@ function cutTile( tileset, tile_ignore ,  num) {
     	}
     }
     */
-    return offscreen_data;
+    return z;
 }
 
 
@@ -883,12 +905,12 @@ function drawScoreWords() {
     	if (guy.y > 16) {
     			//prvar SCORE:
     			for (i = 0; i < 6; i ++) {
-       				square = cutTile(tiles_a, square, topScore[i]);
+       				var square = cutTile("tiles1", square, topScore[i]);
 
     				drawTile_8(square, (scorePos + i) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
-       				square = cutTile(tiles_a, square, topScore[i] +28);
+       				var square = cutTile("tiles1", square, topScore[i] +28);
 
     				drawTile_8(square, (scorePos + i) * AG.TILE_WIDTH  + scrollx, (2) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
@@ -898,12 +920,12 @@ function drawScoreWords() {
     			//prvar LEVEL:
     			for (i = 0; i < 6; i ++) {
     				
-    				square = cutTile(tiles_a, square, topLives[i]);
+    				var square = cutTile("tiles1", square, topLives[i]);
 
     				drawTile_8(square, (livesPos + i) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
-       				square = cutTile(tiles_a, square, topLives[i] +28);
+       				var square = cutTile("tiles1", square, topLives[i] +28);
 
     				drawTile_8(square, (livesPos + i) * AG.TILE_WIDTH +scrollx , (2) * AG.TILE_HEIGHT + scrolly , 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
@@ -952,12 +974,12 @@ function drawScoreNumbers( pos,  num,  p) {
     				c = p - i;
     			}
     			
-				square = cutTile(tiles_a, square, topNumbers[placesValue]);
+				var square = cutTile("tiles1", square, topNumbers[placesValue]);
 
     				drawTile_8(square, (pos + i - p + c) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT +
     					scrolly, scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
-       				square = cutTile(tiles_a, square, topNumbers[placesValue] +28);
+       				var square = cutTile("tiles1", square, topNumbers[placesValue] +28);
 
     				drawTile_8(square, (pos + i - p + c) * AG.TILE_WIDTH +scrollx , (2) * AG.TILE_HEIGHT +
     					scrolly , scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
@@ -1309,7 +1331,7 @@ function drawLevel( unused) {
     		
     		if (i >= 0 && j >= 0  && i < AG.MAP_HEIGHT && j < AG.MAP_WIDTH) { 
     			if(  map_level[j][i] != 0 ) { //is tile blank??
-    				square = cutTile(tiles_a, square, map_level[j][i] - levelcheat);
+    				var square = cutTile("tiles1", square, map_level[j][i] - levelcheat);
     				drawTile_8(square, j * AG.TILE_WIDTH, i * AG.TILE_HEIGHT , 
     					scrollx , scrolly, PAINT_SOLID, 0);
 			}
@@ -1329,19 +1351,19 @@ function drawLevel( unused) {
 
                     if (animate == 0 || animate == 1 || animate == 8) {
 
-    		    		square = cutTile(tiles_a, square, xx - mapcheat);
+    		    		var square = cutTile("tiles1", square, xx - mapcheat);
     				}
     				else if (animate == 2 || animate == 4 || animate == 6) {
 
-    		    		square = cutTile(tiles_b, square, xx - mapcheat);
+    		    		var square = cutTile("tiles2", square, xx - mapcheat);
     				}
     				else if (animate == 3 || animate == 7) {
 
-    		    		square = cutTile(tiles_c, square, xx - mapcheat);
+    		    		var square = cutTile("tiles3", square, xx - mapcheat);
     				}
     				else if (animate == 5) {
 
-    		    		square = cutTile(tiles_d, square, xx - mapcheat);
+    		    		var square = cutTile("tiles4", square, xx - mapcheat);
     				}
 
                     drawTile_8(square, j * AG.TILE_WIDTH, i * AG.TILE_HEIGHT ,
