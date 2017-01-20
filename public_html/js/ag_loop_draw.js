@@ -90,10 +90,17 @@ var BoundingBox = {
 ///////////////////////////////////
 
 var level_h, level_w, lives, scrollx, scrolly, animate ;
-var score;
+var score ;
+
+level_h = 0;
+level_w = 0;
+lives = 3;
 
 scrollx = 0;
 scrolly = 0;
+animate = 0;
+
+score = 0;
 
 var exitblocked = false;
 var keysonlevel = false;
