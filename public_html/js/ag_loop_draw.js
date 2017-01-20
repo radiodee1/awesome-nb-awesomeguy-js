@@ -832,7 +832,7 @@ function cutTile( tileset, tile_ignore ,  num) {
     n = (AG.TILEMAP_WIDTH / AG.TILE_HEIGHT); // 224/8 = 28
     
     
-    k = (num / n); // y pos 
+    k = Math.floor(num / n); // y pos 
     l = num - (k * n); // x pos
     //console.log(k + " "+l);
     
@@ -880,10 +880,10 @@ function drawScoreWords() {
         
 		
     	if (guy.y > 16) {
-    			//prvar SCORE:
+    			//print SCORE:
     			for (i = 0; i < 6; i ++) {
        				var square = cutTile("tiles1", square, topScore[i]);
-
+                                console.log(topScore[i]);
     				drawTile_8(square, (scorePos + i) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
@@ -894,7 +894,7 @@ function drawScoreWords() {
     				
 
     			}
-    			//prvar LEVEL:
+    			//print LEVEL:
     			for (i = 0; i < 6; i ++) {
     				
     				var square = cutTile("tiles1", square, topLives[i]);
