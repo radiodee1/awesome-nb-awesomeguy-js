@@ -8,14 +8,15 @@
 
 $(document).ready( function() {
     //$("#my_canvas").
-    setGuyData();
-
-    setTileMapData();
-    setMonsterData();
-    setMovingPlatformData();
-    alert(tiles_a);
-
-    drawSprite_16(guy_a, 0,0,0,0, 0, 0);
+    
+    setupDrawFunctions();
+    
+    alert(platform_a);
+    
+    //var screen = getScreenPointer(0);
+    //screen.putImageData(platform_a, 0,0);
+    drawSprite_40_8(platform_a, 0,0,0,0, 0, 0);
+    drawSprite_16(guy_a, 0,0,0,0, 0,0);
     drawScoreWords();
     
     

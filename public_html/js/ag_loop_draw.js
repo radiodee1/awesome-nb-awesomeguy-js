@@ -25,6 +25,8 @@ var monster_d;//[16][16];
  
 var platform_a;//[8][40];
 
+var screen;// = getScreenPointer(0);
+
 var map_level = [] ; //[96][96];
 var map_objects = [] ; //[96][96];
  
@@ -175,10 +177,10 @@ function getSoundBoom() {
 function setTileMapData( ) {
 
 
-	tiles_a = copyArraysExpand_tileset("tiles1.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
-	tiles_b = copyArraysExpand_tileset("tiles2.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
-	tiles_c = copyArraysExpand_tileset("tiles3.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
-	tiles_d = copyArraysExpand_tileset("tiles4.png", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
+	tiles_a = copyArraysExpand_tileset("tiles1", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
+	tiles_b = copyArraysExpand_tileset("tiles2", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
+	tiles_c = copyArraysExpand_tileset("tiles3", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
+	tiles_d = copyArraysExpand_tileset("tiles4", AG.TILEMAP_WIDTH, AG.TILEMAP_HEIGHT);
 	
 }
  
@@ -195,10 +197,10 @@ function setTileMapData( ) {
  */
 function setGuyData() {
             
-	guy_a = copyArraysExpand_tileset("guy0.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
-	guy_b = copyArraysExpand_tileset("guy1.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
-	guy_c = copyArraysExpand_tileset("guy2.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
-	guy_d = copyArraysExpand_tileset("guy3.png", AG.GUY_WIDTH, AG.GUY_HEIGHT);
+	guy_a = copyArraysExpand_tileset("guy0", AG.GUY_WIDTH, AG.GUY_HEIGHT);
+	guy_b = copyArraysExpand_tileset("guy1", AG.GUY_WIDTH, AG.GUY_HEIGHT);
+	guy_c = copyArraysExpand_tileset("guy2", AG.GUY_WIDTH, AG.GUY_HEIGHT);
+	guy_d = copyArraysExpand_tileset("guy3", AG.GUY_WIDTH, AG.GUY_HEIGHT);
 	
 	guy.topBB = 2; 
 	guy.bottomBB = 16;
@@ -221,10 +223,10 @@ function setGuyData() {
 function setMonsterData() {
 
 
-	monster_a = copyArraysExpand_tileset("monster_l0.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
-	monster_b = copyArraysExpand_tileset("monster_l1.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
-	monster_c = copyArraysExpand_tileset("monster_r0.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
-	monster_d = copyArraysExpand_tileset("monster_r1.png", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_a = copyArraysExpand_tileset("monster_l0", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_b = copyArraysExpand_tileset("monster_l1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_c = copyArraysExpand_tileset("monster_r0", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_d = copyArraysExpand_tileset("monster_r1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
 }
  
  
@@ -237,7 +239,7 @@ function setMonsterData() {
  *	@param	a	1D integer array of monster sprite data
  */ 
 function setMovingPlatformData() {
-	platform_a = copyArraysExpand_tileset("concrete.png",40,8);
+	platform_a = copyArraysExpand_tileset("concrete",40,8);
 }
 
 /**
@@ -657,23 +659,24 @@ function copyArraysExpand_tileset (from, width, height) {
     //img.appendTo("body");
     //var img = new Image();
     
-    //var img_id = document.getElementById(id[0]);
+    var img_id = document.getElementById(id[0]);
     
     var canvas = $("<canvas id='canvas_" + id[0] + "' width="+ width +" height=" + height +" >" );
-    canvas.appendTo("body");//"head");
+    canvas.appendTo("head");
     var canvas_id = document.getElementById("canvas_"+ id[0]);
     var ctx = canvas_id.getContext("2d");
-    //ctx.drawImage(img_id,width,height);
+    ctx.drawImage(img_id,0,0);//width,height);
     //
     //var z;
-    var image = new Image(width, height);
-    image.src = "img/"+ from;
-
+    //var image = new Image(width, height);
+    //image.src = "img/"+ from;
+    /*
     image.onload = function() {
         ctx.drawImage(image,0,0);
         //z = ctx.getImageData(0,0,width,height);
         //return z;
     };
+    */
     var ctx = canvas_id.getContext("2d");
     var z = ctx.getImageData(0,0, width, height);
     return z;
@@ -696,7 +699,7 @@ function copyArraysExpand_tileset (from, width, height) {
 function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) {
 
 
-    var screen = getScreenPointer(0);
+    //var screen = getScreenPointer(0);
 
 
     var i,j,k,l;
@@ -742,7 +745,7 @@ function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) 
 function drawSprite_40_8(from,  x,  y, scroll_x,  scroll_y,  paint_all,  extra) {
 	
     var i,j,k,l;
-    var screen = getScreenPointer(0);
+    //var screen = getScreenPointer(0);
 	
     k = x - scroll_x;
     l = y - scroll_y;
@@ -785,7 +788,7 @@ function drawSprite_40_8(from,  x,  y, scroll_x,  scroll_y,  paint_all,  extra) 
 function drawTile_8( tile,  screen_x, screen_y,  scroll_x,  scroll_y,  paint_all,  extra) {
    
     var i,j,m,n;
-    var screen = (getScreenPointer(0));
+    //var screen = (getScreenPointer(0));
     
 	m = (screen_x ) - scroll_x;
 
@@ -1391,10 +1394,10 @@ function getScreenPointer( screen_enum) {
 	//return (var **)screen;
 	//return  (var **)screen;
         //
-        var screen = (document.getElementById("my_canvas")).getContext("2d");
+        var screen1 = (document.getElementById("my_canvas")).getContext("2d");
         //var screen = ($("#my_canvas")).getContext("2d");
         //alert(screen)
-        return screen;
+        return screen1;
         /*
 	///////////////////////////
 	var local_index = 0;
@@ -1417,6 +1420,17 @@ function getScreenPointer( screen_enum) {
 function incrementScreenCounter() {
 	screencounter = (screencounter + 1)& 1;
 	//LOGE("screencounter %d",screencounter);
+}
+
+function setupDrawFunctions() {
+    screen = getScreenPointer(0);
+    setGuyData();
+
+    setTileMapData();
+    setMonsterData();
+    setMovingPlatformData();
+    
+    // do xml setup here
 }
 ////////////////////////////////////////
 // Java interfaces here
