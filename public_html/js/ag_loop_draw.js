@@ -100,7 +100,7 @@ scrollx = 0;
 scrolly = 0;
 animate = 0;
 
-score = 0;
+score = 10;
 
 var exitblocked = false;
 var keysonlevel = false;
@@ -259,20 +259,20 @@ function setMovingPlatformData() {
  *	@param	a	1D integer array of background definition level data
  *	@param	b	1D integer array of background definition objects data
  */ 
-function setLevelData(a,  b) {
+function setLevelData(a,  b, horizontal, vertical) {
 
 
 	var i,j;
 	
 	// FIRST PASS ///////////////
-	for (i = 0 ; i < AG.MAP_HEIGHT ; i ++ ) {
-		for (j = 0; j < AG.MAP_WIDTH ; j ++ ) {
-			map_level[i][j] = a[ (i * AG.MAP_WIDTH ) + j] ;
-			map_objects[i][j] = b[ (i * AG.MAP_WIDTH ) + j] ;
+	for (i = 0 ; i < vertical ; i ++ ) {
+		for (j = 0; j < horizontal ; j ++ ) {
+			map_level[j][i] = parseInt(a[ (i * horizontal ) + j]) ;
+			map_objects[j][i] = parseInt(b[ (i * horizontal ) + j]) ;
 			//LOGE("level data %i ", map_level[i][j]);
 
             //detect presence of one or more keys!!
-            if (map_objects[i][j]   == AG.B_KEY) {
+            if (map_objects[j][i]   === AG.B_KEY) {
                 exitblocked = true;
                 keysonlevel = true;
             }
@@ -281,12 +281,12 @@ function setLevelData(a,  b) {
 	}
 
     // SECOND PASS /////////////////
-    for (i = 0 ; i < AG.MAP_HEIGHT ; i ++ ) {
-        for (j = 0; j < AG.MAP_WIDTH ; j ++ ) {
+    for (i = 0 ; i < vertical ; i ++ ) {
+        for (j = 0; j < horizontal ; j ++ ) {
             //LOGE("level data %i ", map_level[i][j]);
 
-            if (map_objects[i][j] == AG.B_GOAL && keysonlevel) {
-                map_objects[i][j] = AG.B_INITIAL_GOAL;
+            if (map_objects[j][i] == AG.B_GOAL && keysonlevel) {
+                map_objects[j][i] = AG.B_INITIAL_GOAL;
             }
         }
     }
@@ -663,10 +663,6 @@ function copyArraysExpand_8_40(from,  size_l,  to) {
 function copyArraysExpand_tileset (from, width, height) {
     
     var id = from.split(".");
-    //var img = $("<img id='"+ id[0] + "' width="+width + " height="+height +" >");
-    //img.attr("src", "img/" + from);
-    //img.appendTo("body");
-    //var img = new Image();
     
     var img_id = document.getElementById(id[0]);
     
@@ -675,17 +671,7 @@ function copyArraysExpand_tileset (from, width, height) {
     var canvas_id = document.getElementById("canvas_"+ id[0]);
     var ctx = canvas_id.getContext("2d");
     ctx.drawImage(img_id,0,0);//width,height);
-    //
-    //var z;
-    //var image = new Image(width, height);
-    //image.src = "img/"+ from;
-    /*
-    image.onload = function() {
-        ctx.drawImage(image,0,0);
-        //z = ctx.getImageData(0,0,width,height);
-        //return z;
-    };
-    */
+    
     var ctx = canvas_id.getContext("2d");
     var z = ctx.getImageData(0,0, width, height);
     return z;
@@ -842,13 +828,13 @@ function cutTile( tileset, tile_ignore ,  num) {
 
     var i,j,k,l,m,n, p;
 
-    m = AG.TILEMAP_HEIGHT / AG.TILE_HEIGHT; // 128/8 = 16
-    n = AG.TILEMAP_WIDTH / AG.TILE_HEIGHT; // 224/8 = 28
+    //m = parseInt(AG.TILEMAP_HEIGHT / AG.TILE_HEIGHT); // 128/8 = 16
+    n = (AG.TILEMAP_WIDTH / AG.TILE_HEIGHT); // 224/8 = 28
     
     
     k = (num / n); // y pos 
     l = num - (k * n); // x pos
-    
+    //console.log(k + " "+l);
     
     var canvas_id = document.getElementById("canvas_"+ tileset);
     var ctx = canvas_id.getContext("2d");
@@ -857,33 +843,16 @@ function cutTile( tileset, tile_ignore ,  num) {
     //var z;
     //var image = new Image(width, height);
     //image.src = "img/"+ from;
-    /*
-    image.onload = function() {
-        ctx.drawImage(image,0,0);
-        //z = ctx.getImageData(0,0,width,height);
-        //return z;
-    };
-    */
+    
     //var ctx = canvas_id.getContext("2d");
-    var z = ctx.getImageData(l,k, 8, 8);
-    
-    
+    if (l !== l || k !== k) {
+        l = 0;
+        k = 0;
+    }
+    var z = ctx.getImageData(l * AG.TILE_WIDTH,k * AG.TILE_WIDTH, 8, 8);
+        
     //var offscreen_data = tileset.getImageData(l, k, 8, 8);
 
-    /*
-    for ( i = 0 ; i < AG.TILE_HEIGHT; i ++ ) {
-    	for (j = 0; j < AG.TILE_WIDTH; j ++) {
-    		p = tileset[i + (k * AG.TILE_WIDTH)][j+(l* AG.TILE_HEIGHT)];
-
-            if ((num + 1 == AG.AG.B_GOAL || num + 1 == AG.AG.B_INITIAL_GOAL ) && p != 0 && !exitblocked) {
-                p = 0x000f;
-            }
-    		tile[i][j] = p;
-    		//LOGE("cutting tile %i", tile[i][j]);
-    		
-    	}
-    }
-    */
     return z;
 }
 
@@ -907,7 +876,8 @@ function drawScoreWords() {
     	livesPos = 16  ;
         //var square[TILE_HEIGHT][TILE_WIDTH];
     	//mTiles = new TileCutter(bMapNum);
-		
+	
+        
 		
     	if (guy.y > 16) {
     			//prvar SCORE:
@@ -940,7 +910,7 @@ function drawScoreWords() {
     				
     			}
 
-    			//prvar numbers:
+    			//print numbers:
     			drawScoreNumbers( scorePos + 6, score  , 7); // score
     			drawScoreNumbers( livesPos + 6, lives , 7); // lives
     	}
@@ -975,9 +945,9 @@ function drawScoreNumbers( pos,  num,  p) {
     	c = 0;
     	for(i = 0; i < p; i ++) {
     		placesValue = places[i + (10 - p)];
-    		if (showZeros == 1 || placesValue != 0) {
-    			if(placesValue != 0) showZeros = 1;
-    			if(showZeros == 1 && c == 0) {
+    		if (showZeros === 1 || placesValue !== 0) {
+    			if(placesValue !== 0) showZeros = 1;
+    			if(showZeros === 1 && c === 0) {
     				c = p - i;
     			}
     			
@@ -1020,21 +990,21 @@ function drawMonsters() {
 			markerTest = false; 
 
 			
-			if (sprite[i].active == true ) {
+			if (sprite[i].active === true ) {
 				x = sprite[i].x / 8;
 				y = sprite[i].y / 8;
 				// Must move and stop monsters when they hit bricks or
 				// markers or the end of the screen/room/level.
 
-				if(sprite[i].facingRight == true) {
+				if(sprite[i].facingRight === true) {
 
 					sprite[i].x = sprite[i].x + move;
 					// marker test
-					if( map_objects[x+2][y] == AG.B_BLOCK  ) markerTest = true;
-					if( map_objects[x+2][y] == AG.B_MARKER ) markerTest = true;
-					if( map_objects[ x+2][y+1] == 0) markerTest = true;
+					if( map_objects[x+2][y] === AG.B_BLOCK  ) markerTest = true;
+					if( map_objects[x+2][y] === AG.B_MARKER ) markerTest = true;
+					if( map_objects[ x+2][y+1] === 0) markerTest = true;
 					// turn monster
-					if (sprite[i].x > level_w * 8  - 16 || markerTest == true) {
+					if (sprite[i].x > level_w * 8  - 16 || markerTest === true) {
 
 						sprite[i].facingRight=false;
 					}
@@ -1043,11 +1013,11 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x - move;
 					// marker test
-					if(map_objects[x][y] == AG.B_BLOCK) markerTest = true;
-					if(map_objects[x][y] == AG.B_MARKER) markerTest = true;
-					if(map_objects[x-1][y+1] == 0) markerTest = true;
+					if(map_objects[x][y] === AG.B_BLOCK) markerTest = true;
+					if(map_objects[x][y] === AG.B_MARKER) markerTest = true;
+					if(map_objects[x-1][y+1] === 0) markerTest = true;
 					// turn monster
-					if (sprite[i].x < 0 || markerTest == true) {
+					if (sprite[i].x < 0 || markerTest === true) {
 
 						sprite[i].facingRight=true;
 					}
@@ -1081,28 +1051,28 @@ function drawMonsters() {
 			else z = 0;
 
 			
-			if(sprite[i].visible == true && visibility == show) {
+			if(sprite[i].visible === true && visibility === show) {
 				
-	    		if(sprite[i].facingRight == true) {
-					if(z == 0) {
+	    		if(sprite[i].facingRight === true) {
+					if(z === 0) {
 						//(R.drawable.monster_r0);
 						drawSprite_16(monster_a, sprite[i].x, sprite[i].y, 
 							scrollx, scrolly, PAINT_TRANSPARENT, 0);
 
 					}
-					else if (z == 1) {
+					else if (z === 1) {
 						//(R.drawable.monster_r1);
 						drawSprite_16(monster_b, sprite[i].x, sprite[i].y, 
 							scrollx, scrolly, PAINT_TRANSPARENT, 0);
 					}
 				}
-				else if (!sprite[i].facingRight == true) {
-					if(z == 0) {
+				else if (!sprite[i].facingRight === true) {
+					if(z === 0) {
 						//(R.drawable.monster_l0);
 						drawSprite_16(monster_c, sprite[i].x, sprite[i].y, 
 							scrollx, scrolly, PAINT_TRANSPARENT, 0);
 					}
-					else if (z == 1) {
+					else if (z === 1) {
 						//(R.drawable.monster_l1);
 						drawSprite_16(monster_d, sprite[i].x, sprite[i].y, 
 							scrollx, scrolly, PAINT_TRANSPARENT, 0);
@@ -1133,7 +1103,7 @@ function drawMovingPlatform() {
   var visibility = false;
   var x_right, x_left, y_right, y_left;
     
-  if(platform_num == -1) return;
+  if(platform_num === -1) return;
     
   for (i = monster_num + 1 ; i < platform_num ; i++) {
     markerTest = false; 
@@ -1143,18 +1113,18 @@ function drawMovingPlatform() {
       /* Must move and stop platforms when they hit bricks or
        * markers or the end of the screen/room/level.
        */
-      if(sprite[i].facingRight == true) {
+      if(sprite[i].facingRight === true) {
         sprite[i].x ++;
         x = sprite[i].x / 8;
         markerTest = false; 
         // marker test
         y_right = y;
         x_right = x + width + cheat ;
-        if(map_objects[x_right][y_right] == AG.B_BLOCK) markerTest = true;
-        if(map_objects[x_right][y_right] == AG.B_MARKER) markerTest = true;
+        if(map_objects[x_right][y_right] === AG.B_BLOCK) markerTest = true;
+        if(map_objects[x_right][y_right] === AG.B_MARKER) markerTest = true;
 
         // turn platform
-        if (sprite[i].x > level_w   * 8   - PLATFORM_WIDTH || markerTest == true) {
+        if (sprite[i].x > level_w   * 8   - AG.PLATFORM_WIDTH || markerTest == true) {
           sprite[i].facingRight = false;
         }
       }
@@ -1165,11 +1135,11 @@ function drawMovingPlatform() {
         // marker test
         y_left = y;
         x_left = x + cheat ;
-        if(map_objects[x_left][y_left ] == AG.B_BLOCK) markerTest = true;
-        if(map_objects[x_left][y_left ] == AG.B_MARKER) markerTest = true;
+        if(map_objects[x_left][y_left ] === AG.B_BLOCK) markerTest = true;
+        if(map_objects[x_left][y_left ] === AG.B_MARKER) markerTest = true;
 
         // turn platform
-        if (sprite[i].x <= 0 || markerTest == true) {
+        if (sprite[i].x <= 0 || markerTest === true) {
           sprite[i].facingRight = true;
         }
       } 
@@ -1190,7 +1160,7 @@ function drawMovingPlatform() {
         visibility = hide;
       }
     
-      if(visibility == show) {
+      if(visibility === show) {
       		drawSprite_40_8(platform_a, sprite[i].x, sprite[i].y, scrollx, scrolly, PAINT_TRANSPARENT, 0);
 	  }
     
@@ -1217,7 +1187,7 @@ function collisionWithMonsters() {
 		  for (i = 0  ; i < monster_num ; i++) {   
 		    var monsterBox = makeSpriteBox(sprite[i] , 0, 0 );
 		    var test =  collisionSimple(guyBox, monsterBox);
-		    if (test && sprite[i].active   == true) {
+		    if (test && sprite[i].active   === true) {
 		    
 		      if (guyBox.bottom  < monsterBox.bottom ) {
 		    	//mGameV.getSprite(i).setActive(false);
@@ -1225,7 +1195,7 @@ function collisionWithMonsters() {
 		    	//sprite[i].active = false;
 		    	score = score + 10;
 		    	
-		    	if (preferences_collision == true) {
+		    	if (preferences_collision === true) {
 		    		inactivateMonsterView(i);
 		    		inactivateMonster(i);
 		    	}
@@ -1236,7 +1206,7 @@ function collisionWithMonsters() {
 		      }
 		      else {
 				endlevel = true;
-				if (preferences_collision == true) inactivateMonster(i);
+				if (preferences_collision === true) inactivateMonster(i);
 		    	//level.endLevel = true;
 		        lives --;
 				//mSounds.playSound(SoundPoolManager.SOUND_OW);
@@ -1263,16 +1233,16 @@ function collisionWithObjects( j,  i,  num) {
 
     var guyBox = makeSpriteBox( guy , 0, 0 );
     var keyBox = makeSpriteBox( keySprite , 0, 0 );
-    if (num == AG.B_KEY) {
+    if (num === AG.B_KEY) {
         var test = collisionSimple(guyBox,keyBox);
-        if (test == true ) {
+        if (test === true ) {
             exitblocked = false;
             setObjectsDisplay(j,i,0);
         }
     }
-    if (num == AG.B_GOAL || num == AG.B_INITIAL_GOAL) {
+    if (num === AG.B_GOAL || num === AG.B_INITIAL_GOAL) {
         var test = collisionSimple(guyBox,keyBox);
-        if (test == true && !exitblocked) {
+        if (test === true && !exitblocked) {
             //endlevel = true;
             setObjectsDisplay(j,i,AG.B_GOAL);
         }
@@ -1326,7 +1296,12 @@ function drawLevel( unused) {
     animate = newBG + 1;
     
     /* clear screen */
-    //memset(screen, 0x0, SCREEN_HEIGHT * SCREEN_WIDTH * 2);
+    var c = document.getElementById("my_canvas");
+    var ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.rect(0,0,AG.SCREEN_WIDTH, AG.SCREEN_HEIGHT);
+    ctx.fillStyle = "black";
+    ctx.fill();
     
     /* draw background */
     baseX = scrollx / AG.TILE_WIDTH;
@@ -1337,7 +1312,7 @@ function drawLevel( unused) {
     		
     		
     		if (i >= 0 && j >= 0  && i < AG.MAP_HEIGHT && j < AG.MAP_WIDTH) { 
-    			if(  map_level[j][i] != 0 ) { //is tile blank??
+    			if(  map_level[j][i] !== 0 ) { //is tile blank??
     				var square = cutTile("tiles1", square, map_level[j][i] - levelcheat);
     				drawTile_8(square, j * AG.TILE_WIDTH, i * AG.TILE_HEIGHT , 
     					scrollx , scrolly, PAINT_SOLID, 0);
@@ -1345,30 +1320,30 @@ function drawLevel( unused) {
 			
 				// special animated tiles
 				k = map_objects[j][i];
-				if ( k != AG.B_START && k != AG.B_MONSTER && k != AG.B_DEATH
-    				&& k != AG.B_PLATFORM && k != AG.B_MARKER && k != AG.B_BLOCK
-    				&& k != AG.B_LADDER  && k != AG.B_SPACE) {
+				if ( k !== AG.B_START && k !== AG.B_MONSTER && k !== AG.B_DEATH
+    				&& k !== AG.B_PLATFORM && k !== AG.B_MARKER && k !== AG.B_BLOCK
+    				&& k !== AG.B_LADDER  && k !== AG.B_SPACE) {
 
                     collisionWithObjects(j,i,k);
 
                     xx = k;
-                    if (k == AG.B_INITIAL_GOAL) {
+                    if (k === AG.B_INITIAL_GOAL) {
                         xx = AG.B_GOAL;
                     }
 
-                    if (animate == 0 || animate == 1 || animate == 8) {
+                    if (animate === 0 || animate === 1 || animate === 8) {
 
     		    		var square = cutTile("tiles1", square, xx - mapcheat);
     				}
-    				else if (animate == 2 || animate == 4 || animate == 6) {
+    				else if (animate === 2 || animate === 4 || animate === 6) {
 
     		    		var square = cutTile("tiles2", square, xx - mapcheat);
     				}
-    				else if (animate == 3 || animate == 7) {
+    				else if (animate === 3 || animate === 7) {
 
     		    		var square = cutTile("tiles3", square, xx - mapcheat);
     				}
-    				else if (animate == 5) {
+    				else if (animate === 5) {
 
     		    		var square = cutTile("tiles4", square, xx - mapcheat);
     				}
@@ -1389,23 +1364,23 @@ function drawLevel( unused) {
     drawScoreWords();
     
     /* draw monsters */
-    if (preferences_monsters == true) {
+    if (preferences_monsters === true) {
         drawMonsters();
     }
     
-    if (preferences_monsters == true && preferences_collision == true && animate_only == false) {
+    if (preferences_monsters === true && preferences_collision === true && animate_only === false) {
         collisionWithMonsters();
     }
 
 
     /* draw guy with animation */
-    if (guy.animate == 0) {
+    if (guy.animate === 0) {
 	    drawSprite_16(guy_a, guy.x, guy.y, scrollx, scrolly, PAINT_TRANSPARENT, 0);
 	}
-	else if (guy.animate == 1) {
+	else if (guy.animate === 1) {
 	    drawSprite_16(guy_b, guy.x, guy.y, scrollx, scrolly, PAINT_TRANSPARENT, 0);
 	}
-	else if (guy.animate == 2) {
+	else if (guy.animate === 2) {
 	    drawSprite_16(guy_c, guy.x, guy.y, scrollx, scrolly, PAINT_TRANSPARENT, 0);	
 	}
 	else { // if (guy.animate == 3) {
@@ -1459,7 +1434,37 @@ function setupDrawFunctions() {
     setMonsterData();
     setMovingPlatformData();
     
+    var level = 1;
+    score = 10;
+    lives = 3;
+    
     // do xml setup here
+    $.ajax({
+        type: "GET",
+        url: "xml/awesomeguy.xml",
+        dataType: "xml",
+        success: function(xml){
+            //var xmlDoc = $.parseXML(xml);
+            
+            
+            $(xml).find('game level[number="'+ level +'"]').each(function(){
+                var dim_horizontal = parseInt( $(this).find('horizontal').text());
+                var dim_vertical = parseInt($(this).find('vertical').text());
+                var tiles_level = ($(this).find('tiles_level').text()).replace(" ",""); // a
+                var tiles_objects = ($(this).find('tiles_objects').text()).replace(" ",""); // b
+                var a = tiles_level.split(",");
+                var b = tiles_objects.split(",");
+                setLevelData(a , b, dim_horizontal, dim_vertical);
+                guy.y = 100;
+                //drawScoreWords();
+                drawLevel(0);
+                //alert(a[0] + " "+ typeof a[0]);
+            });
+        },
+        error: function() {
+            alert("An error occurred while processing XML file.");
+        }
+    });
 }
 ////////////////////////////////////////
 // Java interfaces here
