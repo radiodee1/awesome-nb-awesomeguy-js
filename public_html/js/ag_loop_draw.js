@@ -670,10 +670,24 @@ function copyArraysExpand_tileset (from, width, height) {
     canvas.appendTo("head");
     var canvas_id = document.getElementById("canvas_"+ id[0]);
     var ctx = canvas_id.getContext("2d");
-    ctx.drawImage(img_id,0,0);//width,height);
+    ctx.drawImage(img_id,0,0);
     
     var ctx = canvas_id.getContext("2d");
+    
+    /*
+    for (i = 0; i < height; i ++) {
+        for (j = 0; j < width; j ++) {
+            var ccc = ctx.getImageData(j,i,1,1);
+            
+            console.log(ccc);
+            if (ccc[3] ) {
+                //ctx.putImageData([0,0,0,0],1,1) ;
+            }
+        }
+    }
+    */
     var z = ctx.getImageData(0,0, width, height);
+
     return z;
 }
 
@@ -701,7 +715,7 @@ function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) 
     k = x - scroll_x;
     l = y - scroll_y;
     screen.putImageData(from, k, l);
-
+    //screen.drawImage(from, k,l);
     /*
     for (i = 0; i < AG.GUY_HEIGHT; i ++ ) {
     	for (j = 0; j < AG.GUY_WIDTH; j ++) {
@@ -845,10 +859,10 @@ function cutTile( tileset, tile_ignore ,  num) {
     //image.src = "img/"+ from;
     
     //var ctx = canvas_id.getContext("2d");
-    if (l !== l || k !== k) {
-        l = 0;
-        k = 0;
-    }
+    //if (l !== l || k !== k) {
+    //    l = 0;
+    //    k = 0;
+    //}
     var z = ctx.getImageData(l * AG.TILE_WIDTH,k * AG.TILE_WIDTH, 8, 8);
         
     //var offscreen_data = tileset.getImageData(l, k, 8, 8);
@@ -883,7 +897,7 @@ function drawScoreWords() {
     			//print SCORE:
     			for (i = 0; i < 6; i ++) {
        				var square = cutTile("tiles1", square, topScore[i]);
-                                console.log(topScore[i]);
+                                
     				drawTile_8(square, (scorePos + i) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT + scrolly, 
     					scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
@@ -927,8 +941,6 @@ function drawScoreWords() {
  */
 function drawScoreNumbers( pos,  num,  p) {
 
-
-    
     var i, a, b, c, placesValue;
     	var places = [0,0,0,0,0,0,0,0,0,0];//ten spots
     	var topNumbers = [364,365,366, 367, 368, 369, 370, 371, 372, 373];
@@ -1444,8 +1456,6 @@ function setupDrawFunctions() {
         url: "xml/awesomeguy.xml",
         dataType: "xml",
         success: function(xml){
-            //var xmlDoc = $.parseXML(xml);
-            
             
             $(xml).find('game level[number="'+ level +'"]').each(function(){
                 var dim_horizontal = parseInt( $(this).find('horizontal').text());
@@ -1455,14 +1465,15 @@ function setupDrawFunctions() {
                 var a = tiles_level.split(",");
                 var b = tiles_objects.split(",");
                 setLevelData(a , b, dim_horizontal, dim_vertical);
-                guy.y = 100;
+                //guy.y = 100;
                 //drawScoreWords();
+                setGuyPosition(0,0,0,0, 0);
                 drawLevel(0);
                 //alert(a[0] + " "+ typeof a[0]);
             });
         },
         error: function() {
-            alert("An error occurred while processing XML file.");
+            console.log("An error occurred while processing XML file.");
         }
     });
 }
