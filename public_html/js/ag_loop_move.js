@@ -204,7 +204,7 @@
 		/* All sorts of adjustments go here. ladder, jump, gravity, 
 		 * the ground, and solid objects in general.
 		 */
-		BoundingBox guyBox = BoundingBox.makeSpriteBox(mGuySprite,x,y);//mGuySprite,0,0
+		var guyBox = BoundingBox.makeSpriteBox(mGuySprite,x,y);//mGuySprite,0,0
 
 
 		var jumpHeight = 15;
@@ -239,7 +239,7 @@
 		
 		//used to test for jumping
 		
-		SpriteInfo mSprite = mGameV.getSprite(0);
+		var mSprite = mGameV.getSprite(0);
 		var mTestCenterX = mSprite.getMapPosX() + (mSprite.getLeftBB() + mSprite.getRightBB()) /2;
 		var mTestBelowY = mSprite.getMapPosY() + mSprite.getBottomBB() + 2;
 
@@ -289,12 +289,12 @@
 		var mSkip = false;
         mCloseBottomGap = false;
 
-		SpriteInfo mSprite = mGameV.getSprite(0);
+		var mSprite = mGameV.getSprite(0);
 		
-		DetectionPattern mPattern = makeDetectionPattern(mGameV.mBlock, mMovementV.getHMove());
-		DetectionPattern mPatternFloor = makeDetectionPattern(mGameV.mBlock, 1);
-		DetectionPattern mPatternLadder = makeDetectionPattern(mGameV.mLadder,2);
-		DetectionPattern mPatternSpace = makeDetectionPattern(mGameV.mSpace, 3);
+		var mPattern = makeDetectionPattern(mGameV.mBlock, mMovementV.getHMove());
+		var mPatternFloor = makeDetectionPattern(mGameV.mBlock, 1);
+		var mPatternLadder = makeDetectionPattern(mGameV.mLadder,2);
+		var mPatternSpace = makeDetectionPattern(mGameV.mSpace, 3);
 		
 		var mTestBottomY = mSprite.getMapPosY() + mSprite.getBottomBB() - mMovementV.getVMove();
 		var mTestRightSkipX = mSprite.getMapPosX() + mSprite.getRightBB() + (mMovementV.getHMove() + 1);
@@ -393,7 +393,7 @@
 	function collisionWithPlatforms( canFall) {
 		var i, j;
 		//
-          BoundingBox guyBox, platformBox;
+          var guyBox, platformBox;
           var temp =     canJump;
           guyBox = BoundingBox.makeSpriteBox( mGuySprite,0,0);
           var mFacingRight = true;
@@ -405,7 +405,7 @@
 		  for (i = mGameV.getPlatformOffset() + 1 ; i <=  mGameV.getPlatformNum() ; i ++) {
 		    j = i ; // i - 1;
 			/* get info from JNI on platform position */
-		    SpriteInfo mTempSprite = new SpriteInfo( 0, 8, 0, 40);
+		    var mTempSprite = new SpriteInfo( 0, 8, 0, 40);
 		    
 		  	mTempSprite.setMapPosX(    getSpriteX(j));
 		  	mTempSprite.setMapPosY(    getSpriteY(j));
@@ -670,7 +670,7 @@
 		 */
 
 		//BoundingBox guyBoxNext = makeSpriteBox(guy, x, y);
-		BoundingBox guyBox = BoundingBox.makeSpriteBox(mGuySprite, x, y );
+		var guyBox = BoundingBox.makeSpriteBox(mGuySprite, x, y );
 
 		// set ladderTest to false
 		ladderTest = false;
@@ -704,7 +704,7 @@
 						 * Instead of checking the whole field of play.
 						 */
 
-						BoundingBox testMe = BoundingBox.makeBlockBox(j,i);
+						var testMe = BoundingBox.makeBlockBox(j,i);
 						//bool testNext = collisionSimple(guyBoxNext, testMe);
 						var test = BoundingBox.collisionSimple(guyBox, testMe);
 
@@ -977,9 +977,9 @@
     */
 
 	function makeDetectionPattern( type,  cheat){
-		DetectionPattern mTemp = new DetectionPattern();
+		var mTemp = new DetectionPattern();
 		mTemp.setType(type);
-		SpriteInfo mSprite = mGameV.getSprite(0);
+		var mSprite = mGameV.getSprite(0);
 		
 		var mTestCenterX = mSprite.getMapPosX() + (mSprite.getLeftBB() + mSprite.getRightBB()) / 2;
 		var mTestBelowY = mSprite.getMapPosY() + mSprite.getBottomBB() + cheat;
@@ -1068,7 +1068,7 @@
 	
 	function addMonstersJNI() {
 		for (var i = mGameV.getMonsterOffset(); i <= mGameV.getMonsterNum()  ; i ++) {
-			SpriteInfo temp = mGameV.getSprite(i);
+			var temp = mGameV.getSprite(i);
 			addMonster(temp.getMapPosX(), temp.getMapPosY(), temp.getAnimIndex());
 
 		}
@@ -1077,7 +1077,7 @@
 	function addPlatformsJNI() {
 		if (mGameV.getPlatformNum() == -1) return;
 		for (var i = mGameV.getPlatformOffset() ; i <=  mGameV.getPlatformNum(); i++) {
-			SpriteInfo temp = mGameV.getSprite(i);
+			var temp = mGameV.getSprite(i);
 			addPlatform(temp.getMapPosX(), temp.getMapPosY());
 
 		}
