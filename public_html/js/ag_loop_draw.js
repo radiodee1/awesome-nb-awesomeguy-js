@@ -674,18 +674,30 @@ function copyArraysExpand_tileset (from, width, height) {
     
     var ctx = canvas_id.getContext("2d");
     
-    /*
-    for (i = 0; i < height; i ++) {
-        for (j = 0; j < width; j ++) {
-            var ccc = ctx.getImageData(j,i,1,1);
-            
-            console.log(ccc);
-            if (ccc[3] ) {
-                //ctx.putImageData([0,0,0,0],1,1) ;
-            }
+    // work with alpha
+    
+    var p = ctx.getImageData(0,0,width,height);
+    for (i = 0; i < p.data.length ; i += 4 ) {
+        //if (i === 0) console.log(p.data[i]);
+        var r = p.data[i + 0];
+        var g = p.data[i + 1];
+        var b = p.data[i + 2];
+        var a = p.data[i + 3];
+        
+        if (r < 5 && g < 5 && b < 5) {
+            r = 0;
+            g = 0;
+            b = 0;
+            a = 255;
         }
+        
+        p.data[i + 0] = r;
+        p.data[i + 1] = g;
+        p.data[i + 2] = b;
+        p.data[i + 3] = a;
     }
-    */
+    ctx.putImageData(p,0,0);
+    
     var z = ctx.getImageData(0,0, width, height);
 
     return z;
@@ -1467,7 +1479,7 @@ function setupDrawFunctions() {
                 setLevelData(a , b, dim_horizontal, dim_vertical);
                 //guy.y = 100;
                 //drawScoreWords();
-                setGuyPosition(0,0,0,0, 0);
+                setGuyPosition(0,16,0,0, 0);
                 drawLevel(0);
                 //alert(a[0] + " "+ typeof a[0]);
             });
