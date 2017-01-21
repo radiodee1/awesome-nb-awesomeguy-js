@@ -651,6 +651,47 @@ function copyArraysExpand_8_40(from,  size_l,  to) {
 }
 */
 
+function changeImageData(from, x , y,  scroll_x, scroll_y) {
+    //var p = from;
+    
+    var paint_all = 0;
+    var extra = 0;
+    //var screen = getScreenPointer(0);
+    var width = from.width;
+    var height = from.height;
+
+    var i,j,k,l,m;
+    k = ( x - scroll_x) * 4;
+    l = y - scroll_y;
+    //screen.putImageData(from, k, l);
+    var screenz = getScreenImageData();
+    
+    
+    for (i = 0; i < height; i ++ ) {
+    	for (j = 0; j < width * 4 ; j += 4) {
+            var index = i * width *4  + j;
+            var r = from.data[index + 0];
+            var g = from.data[index + 1];
+            var b = from.data[index + 2];
+            var a = from.data[index + 3];
+            
+            if (r < 5 && g < 5 && b < 5) {
+                //do nothing
+            }
+            else {
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +0) ] = r;//(from[i * height + j]);
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +1) ] = g;//(from[i * height + j]);
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +2) ] = b;//(from[i * height + j]);
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +3) ] = a;//(from[i * height + j]);
+            }
+            
+            
+    	}
+    }
+    return screenz;
+}
+
+
 /**
  *	Used to copy tilesheet pixel information from the 1D representation that
  *	is used by the java app to the 2D representation that is used by this 
@@ -674,29 +715,7 @@ function copyArraysExpand_tileset (from, width, height) {
     
     var ctx = canvas_id.getContext("2d");
     
-    // work with alpha
     
-    var p = ctx.getImageData(0,0,width,height);
-    for (i = 0; i < p.data.length ; i += 4 ) {
-        //if (i === 0) console.log(p.data[i]);
-        var r = p.data[i + 0];
-        var g = p.data[i + 1];
-        var b = p.data[i + 2];
-        var a = p.data[i + 3];
-        
-        if (r < 5 && g < 5 && b < 5) {
-            r = 0;
-            g = 0;
-            b = 0;
-            a = 255;
-        }
-        
-        p.data[i + 0] = r;
-        p.data[i + 1] = g;
-        p.data[i + 2] = b;
-        p.data[i + 3] = a;
-    }
-    ctx.putImageData(p,0,0);
     
     var z = ctx.getImageData(0,0, width, height);
 
@@ -719,15 +738,15 @@ function copyArraysExpand_tileset (from, width, height) {
  */
 function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) {
 
-
-    //var screen = getScreenPointer(0);
-
+    var screen = getScreenPointer(0);
+    var p = changeImageData(from,x,y,scroll_x,scroll_y);
 
     var i,j,k,l;
     k = x - scroll_x;
     l = y - scroll_y;
-    screen.putImageData(from, k, l);
-    //screen.drawImage(from, k,l);
+    //screen.putImageData(from, k, l);
+    screen.putImageData(p, 0,0);
+    
     /*
     for (i = 0; i < AG.GUY_HEIGHT; i ++ ) {
     	for (j = 0; j < AG.GUY_WIDTH; j ++) {
@@ -1443,6 +1462,12 @@ function getScreenPointer( screen_enum) {
 		return (var **) screen_1;
 	}
         */
+}
+
+function getScreenImageData() {
+    var ctx = getScreenPointer(0);
+    var image = ctx.getImageData(0,0,AG.SCREEN_WIDTH,AG.SCREEN_HEIGHT);
+    return image;
 }
 
 function incrementScreenCounter() {
