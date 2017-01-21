@@ -94,13 +94,13 @@ var score ;
 
 level_h = 0;
 level_w = 0;
-lives = 3;
+//lives = 3;
 
 scrollx = 0;
 scrolly = 0;
 animate = 0;
 
-score = 10;
+//score = 10;
 
 var exitblocked = false;
 var keysonlevel = false;
@@ -862,7 +862,7 @@ function cutTile( tileset, tile_ignore ,  num) {
     
     
     k = Math.floor(num / n); // y pos 
-    l = num - (k * n); // x pos
+    l = (num - (k * n)); // x pos
     //console.log(k + " "+l);
     
     var canvas_id = document.getElementById("canvas_"+ tileset);
@@ -878,7 +878,9 @@ function cutTile( tileset, tile_ignore ,  num) {
     //    l = 0;
     //    k = 0;
     //}
-    var z = ctx.getImageData(l * AG.TILE_WIDTH,k * AG.TILE_WIDTH, 8, 8);
+    if ( l !== l ) l = 0;
+    if ( k !== k ) k = 0;
+    var z = ctx.getImageData(Math.floor(l * AG.TILE_WIDTH),k * AG.TILE_WIDTH, 8, 8);
         
     //var offscreen_data = tileset.getImageData(l, k, 8, 8);
 
@@ -957,6 +959,7 @@ function drawScoreWords() {
 function drawScoreNumbers( pos,  num,  p) {
 
     var i, a, b, c, placesValue;
+    placesValue = 0;
     	var places = [0,0,0,0,0,0,0,0,0,0];//ten spots
     	var topNumbers = [364,365,366, 367, 368, 369, 370, 371, 372, 373];
     	var showZeros = 0;
@@ -964,10 +967,10 @@ function drawScoreNumbers( pos,  num,  p) {
     	//mTiles = new TileCutter(bMapNum);
 
     	for (i = 0; i < 10; i ++) {
-    		a = num - (num / 10) * 10;
+    		a = num - Math.floor(num / 10) * 10;
     		places[9 - i] = a;
-    		b = (num / 10) * 10;
-    		num = b / 10;
+    		b = Math.floor(num / 10) * 10;
+    		num = Math.floor(b / 10);
     	}
     	c = 0;
     	for(i = 0; i < p; i ++) {
@@ -978,12 +981,12 @@ function drawScoreNumbers( pos,  num,  p) {
     				c = p - i;
     			}
     			
-				var square = cutTile("tiles1", square, topNumbers[placesValue]);
+				var square = cutTile("tiles1", 0, topNumbers[placesValue]);
 
     				drawTile_8(square, (pos + i - p + c) * AG.TILE_WIDTH + scrollx, (1) * AG.TILE_HEIGHT +
     					scrolly, scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
 
-       				var square = cutTile("tiles1", square, topNumbers[placesValue] +28);
+       				var square = cutTile("tiles1", 0, topNumbers[placesValue] +28);
 
     				drawTile_8(square, (pos + i - p + c) * AG.TILE_WIDTH +scrollx , (2) * AG.TILE_HEIGHT +
     					scrolly , scrollx , scrolly, PAINT_TRANSPARENT, number_alpha);
@@ -1488,6 +1491,7 @@ function setupDrawFunctions() {
                 setLevelData(a , b, dim_horizontal, dim_vertical);
                 //guy.y = 100;
                 //drawScoreWords();
+                setScoreLives(10,3);
                 setGuyPosition(0,2,0,0, 0);
                 drawLevel(0);
                 //alert(a[0] + " "+ typeof a[0]);
