@@ -902,6 +902,9 @@
 		//changeX = false;
 		//changeY = false;
 
+                x = move_lr;
+                y = move_ud;
+                /*
 		if(mMovementV.getDirectionLR() == MovementValues.KEY_RIGHT) {
 
 			x =  (var) + (mMovementV.getHMove() * mXMultiplier);
@@ -923,6 +926,7 @@
 			//changeY = true;
 			//keyB = false;
 		}
+                */
 		
 
 	}
