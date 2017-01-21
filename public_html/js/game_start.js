@@ -17,6 +17,11 @@ $(document).ready( function() {
         input_key = e.keyCode;
         $("#page_footer").html("<p>tap " + input_key  + "</p>");
         //// call game fn here
+        if (input_key === 37) guy.x --;
+        if (input_key === 38) guy.y --;
+        if (input_key === 39) guy.x ++;
+        if (input_key === 40) guy.y ++;
+        drawLevel(0);
 
     });
     
