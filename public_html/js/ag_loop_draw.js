@@ -90,7 +90,9 @@ var BoundingBox = {
 ///////////////////////////////////
 
 var level_h, level_w, lives, scrollx, scrolly, animate ;
-var score ;
+var score , level;
+
+level = 0;
 
 level_h = 0;
 level_w = 0;
@@ -123,7 +125,10 @@ var number_alpha = 0;
 
 var sprite_num = 0;
 var monster_num = 0;
+var monster_offset = 0;
 var platform_num = -1;
+var platform_offset = 0;
+
 
 
 //////////////////////////////////////////////////////
@@ -131,7 +136,14 @@ var platform_num = -1;
 //////////////////////////////////////////////////////
 
 
-
+function clearSpriteList() {
+    
+    var sprite = [];
+    for(i = 0; i < 100; i ++){
+        sprite.push(Object.assign({},Sprite));
+    }
+    addSprite(0,0,2,16,4,10);// the guy
+}
 
 
 
@@ -312,7 +324,22 @@ function setLevelData(a,  b, horizontal, vertical) {
 	return;
 }
 
-
+function addSprite(x,y,left,right,top,bottom) {
+    var i = sprite_num;
+    sprite[i].x = x;
+    sprite[i].y = y;
+    sprite[i].animate = 1;
+    sprite[i].facingRight = false;
+    sprite[i].active = true;
+    sprite[i].visible = false;
+    sprite[i].leftBB = left;
+    sprite[i].rightBB = right;
+    sprite[i].topBB = top;
+    sprite[i].bottomBB = bottom;
+    sprite_num ++;
+    monster_num ++;
+    return i;
+}
  
 /**
  *	Used repeatedly by the Panel to set the position of the guy sprite and to
@@ -1462,7 +1489,146 @@ function incrementScreenCounter() {
 	//LOGE("screencounter %d",screencounter);
 }
 
-function setupDrawFunctions() {
+
+function initLevel( mMovementV) {
+		var i,j;
+		var num = 0;
+
+		
+		clearSpriteList();
+		//mGameV.setSpriteStart();
+                
+                monster_offset = 1;
+                monster_num = 0;
+                platform_num = -1;
+                platform_offset = 0;
+		
+		//mGameV.setMonsterOffset(1);
+		//mGameV.setMonsterNum(0);
+		//mGameV.setPlatformNum(-1);
+		//mGameV.setPlatformOffset(0);
+                
+                
+		//find starting guy position
+		for(i = 0; i< level_h ; i ++) { //y
+			for (j = 0; j <  level_w ; j ++) { //x
+				if( map_objects[j][ i] === AG.B_START ) { //32,64
+
+                                        sprite[0].x = j * 8;
+                                        sprite[0].y = i * 8;
+                                        guy.x = j * 8;
+                                        guy.y = i * 8;
+                                        
+					//mGameV.getSprite(0).setMapPosX(j*8);
+					//mGameV.getSprite(0).setMapPosY(i*8);
+
+				}
+				//add monster here
+				if(map_objects[j][i] === AG.B_MONSTER ) { //32,64
+					if (AG.MONSTER_TOTAL >= num) {
+
+						//put monster object in ArrayList here...
+						//temp = new SpriteInfo(R.drawable.monster_l0, 3, 8, 0, 16);
+                                                var i = addSprite(j*8,i*8,3,8,0,16);
+                                                sprite[i].active = true;
+                                                sprite[i].visible = true;
+                                                sprite[i].facingRight = true;
+                                                
+						//temp.setMapPosX(j * 8);
+						//temp.setMapPosY(i * 8);
+						//temp.setActive(true);
+						//temp.setVisible(true);
+						//temp.setFacingRight(true);
+						//temp.setResourceId(R.drawable.monster_l0);
+						//mGameV.addSprite(temp);
+						     
+						num ++;
+                                                monster_num = num;
+						//mGameV.setMonsterNum(num);
+					}
+				}
+
+
+			}
+		}
+		
+		//mGameV.setPlatformOffset(num );
+                platform_offset = num;
+		
+		for(i = 0; i< level_h ; i ++) { //y
+			for (j = 0; j <  level_w ; j ++) { //x
+				if( map_objects[j][i] === AG.B_PLATFORM ) { //32,64
+					if(AG.PLATFORM_TOTAL > num - platform_offset) {
+						//put platform object in ArrayList here...
+                                                var i = addSprite(j*8,i*8,0,8,0,40);
+                                                sprite[i].active = true;
+                                                sprite[i].visible = true;
+                                                sprite[i].facingRight = true;
+                                                
+						//SpriteInfo temp = new SpriteInfo(R.drawable.concrete, 0, 8, 0, 40);
+						//temp.setMapPosX(j * 8);
+						//temp.setMapPosY(i * 8);
+						//temp.setActive(true);
+						//temp.setVisible(true);
+						//temp.setFacingRight(true);
+	
+						//mGameV.addSprite(temp);
+						     
+						num ++;
+                                                platform_num = num;
+                                                
+						//mGameV.setPlatformNum(num);
+					}
+				}
+				
+			}
+		}
+		
+		this.setStartingScrollPosition(mMovementV);
+				
+		//mGameV.setLevelLoading(false);
+
+	}
+
+function setStartingScrollPosition(mMovementV) {
+		//set starting scroll position
+		
+		var i,j;
+		
+		mMovementV.setScrollX(0);
+		mMovementV.setScrollY(0);
+
+
+		var flag = false;
+
+		i = guy.x;//mGameV.getSprite(0).getMapPosX(); 
+		j = guy.y;//mGameV.getSprite(0).getMapPosY();
+
+		//scroll screen to starting location of guy...
+		while(i >  (mGameV.getScreenTilesHMod()  /2 )* 8 && flag == false) {
+
+			if ( mMovementV.getScrollX() + ((mGameV.getScreenTilesHMod()  ) * 8) < mGameV.getMapH()  * 8) {
+				mMovementV.incrementScrollX(8);
+				i = i - 8; // X
+			}
+			else flag = true;
+
+		}
+		flag = false;
+		while( j >  (GameValues.SCREEN_TILES_V /2) * 8 && flag == false) {
+
+
+			if (mMovementV.getScrollY()  + ((GameValues.SCREEN_TILES_V  ) * 8) <  mGameV.getMapV()  * 8) {
+				mMovementV.incrementScrollY(8);
+				j = j - 8; // Y
+			}
+			else flag = true;
+		}
+	}
+
+
+
+function setupDrawFunctionsA() {
     screen = getScreenPointer(0);
     setGuyData();
 
@@ -1470,10 +1636,13 @@ function setupDrawFunctions() {
     setMonsterData();
     setMovingPlatformData();
     
-    var level = 1;
+    level = 1;
     score = 10;
     lives = 3;
     
+}
+
+function setupDrawFunctionsB(){
     // do xml setup here
     $.ajax({
         type: "GET",
@@ -1484,6 +1653,8 @@ function setupDrawFunctions() {
             $(xml).find('game level[number="'+ level +'"]').each(function(){
                 var dim_horizontal = parseInt( $(this).find('horizontal').text());
                 var dim_vertical = parseInt($(this).find('vertical').text());
+                level_h = dim_vertical;
+                level_w = dim_horizontal;
                 var tiles_level = ($(this).find('tiles_level').text()).replace(" ",""); // a
                 var tiles_objects = ($(this).find('tiles_objects').text()).replace(" ",""); // b
                 var a = tiles_level.split(",");

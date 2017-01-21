@@ -31,5 +31,7 @@ $(document).ready( function() {
         input_key = 0;
         $("#page_footer").html("<p>tap " + input_key + "</p>");
         //// call game fn again here
+        move_lr = 0;
+        move_ud = 0;
     });
 });

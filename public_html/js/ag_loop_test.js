@@ -9,8 +9,9 @@
 $(document).ready( function() {
     
     
-    setupDrawFunctions();
+    setupDrawFunctionsA();
     
+    setupDrawFunctionsB();
     //var screen = getScreenPointer(0);
     //screen.putImageData(platform_a, 0,0);
     //drawSprite_40_8(platform_a, 0,0,0,0, 0, 0);
