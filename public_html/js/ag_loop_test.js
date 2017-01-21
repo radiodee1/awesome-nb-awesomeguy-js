@@ -7,9 +7,7 @@
 
 
 $(document).ready( function() {
-    guy.y = 132;
-    guy.x = 16;
-    guy.animate = 0;
+    
     
     setupDrawFunctions();
     

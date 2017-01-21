@@ -679,10 +679,10 @@ function changeImageData(from, x , y,  scroll_x, scroll_y) {
                 //do nothing
             }
             else {
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +0) ] = r;//(from[i * height + j]);
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +1) ] = g;//(from[i * height + j]);
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +2) ] = b;//(from[i * height + j]);
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +3) ] = a;//(from[i * height + j]);
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +0) ] = r;
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +1) ] = g;
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +2) ] = b;
+                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +3) ] = a;
             }
             
             
@@ -747,23 +747,7 @@ function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) 
     //screen.putImageData(from, k, l);
     screen.putImageData(p, 0,0);
     
-    /*
-    for (i = 0; i < AG.GUY_HEIGHT; i ++ ) {
-    	for (j = 0; j < AG.GUY_WIDTH; j ++) {
-    		if ( (i + l) >= 0 && (j + k) >= 0 && (j+k) < AG.SCREEN_WIDTH && (i+l) < AG.SCREEN_HEIGHT ) {
-    			
-    			if (paint_all == 1 && from[i][j] == extra ) {
-    				
-    			}
-    			else {
-	    			//screen[i + l][j + k] = color_pixel( from[i][j]);
-				screen[((l + i) * AG.SCREEN_WIDTH )  +(j +k ) ] = color_pixel(from[i][j]);
-	    		}
-
-    		}
-    	}
-    }
-    */
+    
     return;
 }
  
@@ -1504,7 +1488,7 @@ function setupDrawFunctions() {
                 setLevelData(a , b, dim_horizontal, dim_vertical);
                 //guy.y = 100;
                 //drawScoreWords();
-                setGuyPosition(0,16,0,0, 0);
+                setGuyPosition(0,2,0,0, 0);
                 drawLevel(0);
                 //alert(a[0] + " "+ typeof a[0]);
             });
