@@ -138,14 +138,31 @@ var platform_offset = 0;
 
 function clearSpriteList() {
     
-    var sprite = [];
+    sprite = [];
     for(i = 0; i < 100; i ++){
         sprite.push(Object.assign({},Sprite));
     }
     addSprite(0,0,2,16,4,10);// the guy
+    guy = sprite[0];
+    console.log("clearSpriteList");
 }
 
+function clearMap() {
+    
+    map_level = [] ; //[96][96];
+    map_objects = [] ; //[96][96];
 
+    for (i = 0; i < AG.MAP_HEIGHT; i ++) {
+        var temp1 = [];
+        var temp2 = [];
+        for (j = 0; j < AG.MAP_WIDTH; j ++) {
+            temp1.push(0);
+            temp2.push(0);
+        }
+        map_level.push(temp1);
+        map_objects.push(temp2);
+    }
+}
 
 function setSoundOw() {
 	sound_ow = true;
@@ -391,6 +408,12 @@ function setScoreLives(a_score, a_lives) {
 function setObjectsDisplay(map_x, map_y, value) {
 	map_objects[map_x][ map_y ] = value;
 } 
+
+function getObjectsCell(map_x, map_y) {
+    //console.log(map_x+" "+ map_y);
+    return map_objects[map_x][map_y];
+}
+
 
 /**
  *	Used by the Panel to initialize a monster's sprite object in a list
@@ -1490,7 +1513,7 @@ function incrementScreenCounter() {
 }
 
 
-function initLevel( mMovementV) {
+function initLevel( ) {
 		var i,j;
 		var num = 0;
 
@@ -1584,20 +1607,21 @@ function initLevel( mMovementV) {
 			}
 		}
 		
-		this.setStartingScrollPosition(mMovementV);
+		this.setStartingScrollPosition();
 				
 		//mGameV.setLevelLoading(false);
 
 	}
 
-function setStartingScrollPosition(mMovementV) {
+function setStartingScrollPosition() {
 		//set starting scroll position
 		
 		var i,j;
 		
-		mMovementV.setScrollX(0);
-		mMovementV.setScrollY(0);
-
+		//mMovementV.setScrollX(0);
+		//mMovementV.setScrollY(0);
+                scrollx = 0;
+                scrolly = 0;
 
 		var flag = false;
 
@@ -1605,25 +1629,29 @@ function setStartingScrollPosition(mMovementV) {
 		j = guy.y;//mGameV.getSprite(0).getMapPosY();
 
 		//scroll screen to starting location of guy...
-		while(i >  (mGameV.getScreenTilesHMod()  /2 )* 8 && flag == false) {
+		while(i >  ( AG.SCREEN_TILES_H /2 )* 8 && flag === false) {
 
-			if ( mMovementV.getScrollX() + ((mGameV.getScreenTilesHMod()  ) * 8) < mGameV.getMapH()  * 8) {
-				mMovementV.incrementScrollX(8);
+			if ( scrollx + (( AG.SCREEN_TILES_H  ) * 8) <  level_w  * 8) {
+				//mMovementV.incrementScrollX(8);
+                                scrollx += 8;
 				i = i - 8; // X
 			}
 			else flag = true;
 
 		}
 		flag = false;
-		while( j >  (GameValues.SCREEN_TILES_V /2) * 8 && flag == false) {
+		while( j >  (AG.SCREEN_TILES_V /2) * 8 && flag === false) {
 
 
-			if (mMovementV.getScrollY()  + ((GameValues.SCREEN_TILES_V  ) * 8) <  mGameV.getMapV()  * 8) {
-				mMovementV.incrementScrollY(8);
+			if ( scrolly  + ((AG.SCREEN_TILES_V  ) * 8) <  level_h  * 8) {
+				//mMovementV.incrementScrollY(8);
+                                scrolly += 8;
 				j = j - 8; // Y
 			}
 			else flag = true;
 		}
+                
+            console.log(scrollx + " " + scrolly + " w:" + level_w + " h:" + level_h);
 	}
 
 
@@ -1636,20 +1664,58 @@ function setupDrawFunctionsA() {
     setMonsterData();
     setMovingPlatformData();
     
-    level = 1;
-    score = 10;
-    lives = 3;
+    //level = 0;
+    //score = 10;
+    //lives = 3;
     
 }
 
 function setupDrawFunctionsB(){
     // do xml setup here
+
     $.ajax({
         type: "GET",
         url: "xml/awesomeguy.xml",
         dataType: "xml",
+        async: true,
+        //context: document,
+        
         success: function(xml){
             
+            $(xml).find('game level[number="'+ level +'"]').each(function(){
+                var a, b, dim_horizontal, dim_vertical;
+
+                dim_horizontal = parseInt( $(this).find('horizontal').text());
+                dim_vertical = parseInt($(this).find('vertical').text());
+                level_h = dim_vertical;
+                level_w = dim_horizontal;
+                var tiles_level = ($(this).find('tiles_level').text()).replace(" ",""); // a
+                var tiles_objects = ($(this).find('tiles_objects').text()).replace(" ",""); // b
+                a = tiles_level.split(",");
+                b = tiles_objects.split(",");
+                clearSpriteList();
+                clearMap();
+                
+                
+                setLevelData(a , b, dim_horizontal, dim_vertical);
+                initLevel();
+                
+                preferences_monsters = false;
+                preferences_collision = false;
+                //drawLevel(0);
+                console.log(level_h + " " + level_w + " a:" + a[0] + " m:"+ map_level[3][2]);
+                drawLevel(0);
+                });
+                           
+                //runLoop();
+            //});
+            
+        },
+        error: function() {
+            console.log("An error occurred while processing XML file.");
+        },
+        complete: function() {
+            /*
             $(xml).find('game level[number="'+ level +'"]').each(function(){
                 var dim_horizontal = parseInt( $(this).find('horizontal').text());
                 var dim_vertical = parseInt($(this).find('vertical').text());
@@ -1659,17 +1725,51 @@ function setupDrawFunctionsB(){
                 var tiles_objects = ($(this).find('tiles_objects').text()).replace(" ",""); // b
                 var a = tiles_level.split(",");
                 var b = tiles_objects.split(",");
+                clearSpriteList();
+                clearMap();
                 setLevelData(a , b, dim_horizontal, dim_vertical);
-                //guy.y = 100;
-                //drawScoreWords();
-                setScoreLives(10,3);
-                setGuyPosition(0,2,0,0, 0);
-                drawLevel(0);
+                initLevel();
+                
+                preferences_monsters = false;
+                preferences_collision = false;
+                
+                
+                //setScoreLives(10,3);
+                //setGuyPosition(0,2,0,0, 0);
+                //drawLevel(0);
                 //alert(a[0] + " "+ typeof a[0]);
+                drawLevel(0);
+                //runLoop();
             });
-        },
-        error: function() {
-            console.log("An error occurred while processing XML file.");
+            */
+           
+                //setScoreLives(10,3);
+                //setGuyPosition(0,2,0,0, 0);
+                //drawLevel(0);
+                //alert(a[0] + " "+ typeof a[0]);
+            //drawLevel(0);
+                
+            /*
+            is_finished_loading = true;
+            clearSpriteList();
+            clearMap();
+
+
+            setLevelData(a , b, dim_horizontal, dim_vertical);
+            initLevel();
+
+            preferences_monsters = false;
+            preferences_collision = false;
+
+            console.log(level_h + " " + level_w + " a:" + a[0]);
+            //setScoreLives(10,3);
+            //setGuyPosition(0,2,0,0, 0);
+            //drawLevel(0);
+            //alert(a[0] + " "+ typeof a[0]);
+            drawLevel(0);
+            //drawLevel(0);
+            //runLoop();
+            */
         }
     });
 }
