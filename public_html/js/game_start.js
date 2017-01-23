@@ -11,10 +11,7 @@ var move_jump = 0;
 var MOVE_CONST = 3;
 
 $(document).ready( function() {
-    //alert("game start");
-    //$("img").css("margin",0)
-    //$("img").css("line-height", 0)
-    //$("#page_content").html("<canvas id='my_canvas' width='256' height='192' style='border:1px solid #000000;' ></canvas>");
+    
     setupDrawFunctionsA();
     
     

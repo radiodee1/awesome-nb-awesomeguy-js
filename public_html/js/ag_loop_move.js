@@ -76,7 +76,7 @@ function runLoop() {
                 //preferences_monsters = false;
                 //preferences_collision = false;
                 //checkValues();
-                console.log(level_h + " " + level_w + " m:"+ map_level[3][2]);
+                //console.log(level_h + " " + level_w + " m:"+ map_level[3][2]);
                 //drawLevel(0);
                                 
                 //mGameV.getBackground().setLevel(mGameV.getLevelList().getNum(mGameV.getRoomNo()-1));
@@ -368,7 +368,7 @@ function gameSpeedRegulator() {
 		/* LADDER TEST */
 		if (ladderTest) {
 			canFall = false;
-            mMovementV.setVMoveReset();
+            //mMovementV.setVMoveReset();
             //y = mMovementV.getVMove();
             //mCanFallAtEdge = false;
 			//Log.v("ladder test", "canfall = false;");
@@ -395,17 +395,17 @@ function gameSpeedRegulator() {
 		//used to test for jumping
 		
 		var mSprite = guy;// mGameV.getSprite(0);
-		var mTestCenterX = mSprite.x + (mSprite.leftBB + mSprite.rightBB ) /2;
+		var mTestCenterX = mSprite.x + Math.floor((mSprite.leftBB + mSprite.rightBB ) /2);
 		var mTestBelowY = mSprite.y + mSprite.bottomBB + 2;
 
 		if(jumptime <= 0 && y === 0 &&  keyB &&
-				(povarToBlockNum(mTestCenterX,mTestBelowY - 16) !== AG.B_BLOCK  && 
-				povarToBlockNum(mTestCenterX,mTestBelowY - 8) !== AG.B_BLOCK ) && 
-				(povarToBlockNum(mTestCenterX, mTestBelowY) ===  AG.B_BLOCK || 
+				(pointToBlockNum(mTestCenterX,mTestBelowY - 16) !== AG.B_BLOCK  && 
+				pointToBlockNum(mTestCenterX,mTestBelowY - 8) !== AG.B_BLOCK ) && 
+				(pointToBlockNum(mTestCenterX, mTestBelowY) ===  AG.B_BLOCK || 
 				ladderTest || guyBox.bottom === level_h  * 8 || canJump)) {
 
                         //mMovementV.setVMoveReset();
-			jumptime = mMovementV.getVMove() * jumpHeight;
+			jumptime =  MOVE_CONST * jumpHeight;
 			keyB = false;
 		}
 		
@@ -459,7 +459,7 @@ function gameSpeedRegulator() {
 
 		//skip RIGHT
 		if (x > 0 &&  mCanSkip &&
-				mPattern.isLowerRight() &&
+				mPattern.lowerRight &&
 				pointToBlockNum(mTestRightSkipX, mTestBottomY - 8) !== AG.B_BLOCK  &&
 				pointToBlockNum(mTestRightSkipX, mTestBottomY - 16) !==  AG.B_BLOCK) {
 			canFall = false;
@@ -486,7 +486,7 @@ function gameSpeedRegulator() {
 
 		if ( !mPatternFloor.bottom && !ladderTest && !mSkip &&
 				(mPattern.upperLeft || mPattern.upperRight || mPattern.lowerLeft || mPattern.lowerRight )) {
-			y = mMovementV.getVMove();
+			y = MOVE_CONST;// mMovementV.getVMove();
 
 			if (x < 0 && (mPattern.lowerLeft || mPattern.upperLeft )) {
 				x = 0;
@@ -861,8 +861,8 @@ function gameSpeedRegulator() {
 		
 		var i,j;
 
-		for (j =  mGuySprite.x / 8 -1; j <  mGuySprite.x / 8 + 3; j ++ ) { // x coordinates
-			for (i = mGuySprite.y / 8 - 1; i < mGuySprite.y / 8 + 3; i ++ ) { // y coordinates
+		for (j =  Math.floor(mGuySprite.x / 8) -1; j <  Math.floor(mGuySprite.x / 8) + 3; j ++ ) { // x coordinates
+			for (i = Math.floor(mGuySprite.y / 8) - 1; i < Math.floor(mGuySprite.y / 8) + 3; i ++ ) { // y coordinates
 				if(j >= 0 && j < level_w  && i >= 0 && i < level_h ) {// indexes OK?
 
 					if (getObjectsCell(j,i)  !== 0 ) { // I/J or J/I... which one???
@@ -1107,59 +1107,17 @@ function gameSpeedRegulator() {
 
 	}
 	
-	function povarToBlockNum( x,  y) {
-		var mNewX, mNewY;
-		mNewX = x / 8;
-		mNewY = y / 8;
-		return mGameV.getObjectsCell(mNewX, mNewY);
-	}
 	
-	/*
-	@Override
-	function onDrawFrame(GL10 gl) {
-		//TODO Auto-generated method stub
-		
-		    JNIdraw();
-		//Log.e("tag","score " +     JNItestScore());
-	}
-
-
-	@Override
-	function onSurfaceChanged(GL10 gl, var width, var height) {
-		//TODO Auto-generated method stub
-		    JNIresize(width, height);
-
-	}
-
-
-	@Override
-	function onSurfaceCreated(GL10 gl, EGLConfig config) {
-		//TODO Auto-generated method stub
-		    JNIinit();
-
-		//    JNIresize(mDimensionWidth,mDimensionHeight); // wrong dimensions
-		
-//		if (!mGameV.isUseSavedBundle()) {
-//			mGameV.getHandler().sendEmptyMessage(GameStart.STARTLEVEL);
-//
-//	    }
-//	    else {
-//	    	mGameV.getHandler().sendEmptyMessage(GameStart.REORIENTATION);
-//	    }
-		mGameV.getHandler().sendEmptyMessage(GameStart.STARTLEVEL);
-
-		
-	}
-    */
+	
 
 	function makeDetectionPattern( type,  cheat){
 		//var mTemp = new DetectionPattern();
                 var  mTemp = Object.assign({},DetectionPattern);
 
 		mTemp.type = type; //setType(type);
-		var mSprite = sprite[0];//mGameV.getSprite(0);
+		var mSprite = guy;//sprite[0];//mGameV.getSprite(0);
 		
-		var mTestCenterX = mSprite.x + (mSprite.leftBB + mSprite.rightBB) / 2;
+		var mTestCenterX = mSprite.x + Math.floor((mSprite.leftBB + mSprite.rightBB) / 2);
 		var mTestBelowY = mSprite.y + mSprite.bottomBB + cheat;
 		var mTestAboveY = mSprite.y + mSprite.topBB - cheat;
 		
@@ -1176,7 +1134,7 @@ function gameSpeedRegulator() {
 			mTemp.bottom = true;//setBottom(true);
 
             var height = mSprite.bottomBB - mSprite.topBB;
-            var mTestBlockY =  ((mTestBelowY/8 + 1)*8) - (newMapY + height ) ;
+            var mTestBlockY =  (( Math.floor(mTestBelowY/8) + 1)*8) - (newMapY + height ) ;
 
             if(type ===   AG.B_BLOCK && mTestBlockY  <= 8*4 && mTestBlockY >= 8*3 ) {
                 mCloseBottomGap = true;

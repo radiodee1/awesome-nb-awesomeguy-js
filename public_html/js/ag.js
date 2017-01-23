@@ -183,3 +183,12 @@ AG.FRAMES_PER_SECOND = 3;
 		type : 0
 	}
         
+        var MapInfo = {
+            xdim: 0,
+            ydim: 0,
+            visible: [],
+            hidden: []
+        }
+        
+        var map_list = [];
+        

@@ -25,3 +25,36 @@ $(document).ready( function() {
     
     //drawLevel(0);
 });
+
+function testDraw() {
+    checkRegularCollisions();
+
+    checkPhysicsAdjustments();
+
+    scrollBg(); //always call this last!!
+
+    drawLevel(0);
+}
+
+function testDrawLoop() {
+    setInterval( function() {
+        testDraw();
+        //console.log("30");
+    }, 30);
+}
+
+function testDrawPrep() {
+    var room = 0;
+    var level = 0;
+    level += 1;                
+    room = level - 1;
+    
+    clearSpriteList();
+    clearMap();
+
+    setLevelData(map_list[room].visible , map_list[room].hidden, map_list[room].xdim, map_list[room].ydim);
+    initLevel();
+    
+    //preferences_monsters = true;
+    //preferences_collision = true;
+}

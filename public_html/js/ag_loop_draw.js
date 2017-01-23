@@ -134,7 +134,12 @@ var platform_offset = 0;
 //////////////////////////////////////////////////////
 // function definitions
 //////////////////////////////////////////////////////
-
+function clearMapList() {
+    map_list = [];
+    for (i = 0; i < AG.NUM_LEVELS; i ++) {
+        map_list.push(Object.assign({}, MapInfo));
+    }
+}
 
 function clearSpriteList() {
     
@@ -411,6 +416,7 @@ function setObjectsDisplay(map_x, map_y, value) {
 
 function getObjectsCell(map_x, map_y) {
     //console.log(map_x+" "+ map_y);
+    if (map_x >= level_w || map_y >= level_h) return 0;
     return map_objects[map_x][map_y];
 }
 
@@ -514,6 +520,17 @@ function makeSpriteBox(sprite, x,  y) {
   temp.right = sprite.rightBB + sprite.x + x;
   temp.top = sprite.topBB + sprite.y + y;
   temp.bottom = sprite.bottomBB + sprite.y + y;
+  return temp;
+}
+
+function makeBlockBox( x,  y) {
+  //BoundingBox temp;
+  temp = Object.assign({},BoundingBox);
+  
+  temp.left =  8 * x;
+  temp.right = 8 * x + 8;
+  temp.top = 8 * y;
+  temp.bottom = 8 * y + 8;
   return temp;
 }
 
@@ -1071,8 +1088,8 @@ function drawMonsters() {
 
 			
 			if (sprite[i].active === true ) {
-				x = sprite[i].x / 8;
-				y = sprite[i].y / 8;
+				x = Math.floor(sprite[i].x / 8);
+				y = Math.floor(sprite[i].y / 8);
 				// Must move and stop monsters when they hit bricks or
 				// markers or the end of the screen/room/level.
 
@@ -1189,13 +1206,13 @@ function drawMovingPlatform() {
     markerTest = false; 
 
       //x = sprite[i].x / 8;
-      y = sprite[i].y / 8;
+      y = Math.floor(sprite[i].y / 8);
       /* Must move and stop platforms when they hit bricks or
        * markers or the end of the screen/room/level.
        */
       if(sprite[i].facingRight === true) {
         sprite[i].x ++;
-        x = sprite[i].x / 8;
+        x = Math.floor(sprite[i].x / 8);
         markerTest = false; 
         // marker test
         y_right = y;
@@ -1210,7 +1227,7 @@ function drawMovingPlatform() {
       }
       else {
         sprite[i].x --;
-        x = sprite[i].x / 8;
+        x = Math.floor(sprite[i].x / 8);
         markerTest = false; 
         // marker test
         y_left = y;
@@ -1609,9 +1626,9 @@ function initLevel( ) {
 		
 		this.setStartingScrollPosition();
 				
-		//mGameV.setLevelLoading(false);
+	
 
-	}
+}
 
 function setStartingScrollPosition() {
 		//set starting scroll position
@@ -1654,6 +1671,22 @@ function setStartingScrollPosition() {
             console.log(scrollx + " " + scrolly + " w:" + level_w + " h:" + level_h);
 	}
 
+function checkValues() {
+    var a = map_list[0].visible;
+    var len = map_list[0].xdim * map_list[0].ydim;
+    /*
+    for(i = 0; i < len; i ++) {
+        $("#page_footer").append(" "+ a[i]);
+
+    }
+    
+   for (i = 0; i < 96; i ++) {
+       for(j = 0; j < 96; j ++) {
+        $("#page_footer").append(" "+ map_level[i][j]);   
+       }
+   }
+   */
+}
 
 
 function setupDrawFunctionsA() {
@@ -1664,7 +1697,8 @@ function setupDrawFunctionsA() {
     setMonsterData();
     setMovingPlatformData();
     
-    //level = 0;
+    clearMapList();
+    level = 1;
     //score = 10;
     //lives = 3;
     
@@ -1672,104 +1706,60 @@ function setupDrawFunctionsA() {
 
 function setupDrawFunctionsB(){
     // do xml setup here
+    console.log("before ajax start");
 
     $.ajax({
         type: "GET",
         url: "xml/awesomeguy.xml",
         dataType: "xml",
-        async: true,
+        timeout: 0,
+        //async: true,
         //context: document,
-        
+        //success:
         success: function(xml){
-            
-            $(xml).find('game level[number="'+ level +'"]').each(function(){
-                var a, b, dim_horizontal, dim_vertical;
+            console.log("look for xml");
+            var level_in = 1;
+            for(level_in = 1; level_in <=10; level_in ++) {
+                
+                $(xml).find('game level[number="'+ level_in +'"]').each(function(){
+                    //var a, b, dim_horizontal, dim_vertical;
+                    console.log("xml found");
+                    var dim_horizontal = parseInt( $(this).find('horizontal').text());
+                    var dim_vertical = parseInt($(this).find('vertical').text());
+                    level_h = dim_vertical;
+                    level_w = dim_horizontal;
+                    var tiles_level = ($(this).find('tiles_level').text()).replace(" ",""); // a
+                    var tiles_objects = ($(this).find('tiles_objects').text()).replace(" ",""); // b
+                    var a = tiles_level.split(",");
+                    var b = tiles_objects.split(",");
+                    map_list[level_in - 1 ].xdim = dim_horizontal;
+                    map_list[level_in - 1 ].ydim = dim_vertical;
+                    map_list[level_in - 1 ].hidden = b;
+                    map_list[level_in - 1 ].visible = a;
 
-                dim_horizontal = parseInt( $(this).find('horizontal').text());
-                dim_vertical = parseInt($(this).find('vertical').text());
-                level_h = dim_vertical;
-                level_w = dim_horizontal;
-                var tiles_level = ($(this).find('tiles_level').text()).replace(" ",""); // a
-                var tiles_objects = ($(this).find('tiles_objects').text()).replace(" ",""); // b
-                a = tiles_level.split(",");
-                b = tiles_objects.split(",");
-                clearSpriteList();
-                clearMap();
-                
-                
-                setLevelData(a , b, dim_horizontal, dim_vertical);
-                initLevel();
-                
-                preferences_monsters = false;
-                preferences_collision = false;
-                //drawLevel(0);
-                console.log(level_h + " " + level_w + " a:" + a[0] + " m:"+ map_level[3][2]);
-                drawLevel(0);
+                    //runLoop();
+                    //testDrawPrep();
+                    
+                    //clearSpriteList();
+                    //clearMap();
+
+
+                    //setLevelData(a , b, dim_horizontal, dim_vertical);
+                    //initLevel();
+
+                    //preferences_monsters = false;
+                    //preferences_collision = false;
+                    
+                    //console.log(level_h + " " + level_w + " a:" + a[0] + " m:"+ map_level[3][2]);
+                    //drawLevel(0);
                 });
-                           
-                //runLoop();
-            //});
-            
+            }         
+            //runLoop();
+            testDrawPrep();
+            testDrawLoop();
         },
         error: function() {
             console.log("An error occurred while processing XML file.");
-        },
-        complete: function() {
-            /*
-            $(xml).find('game level[number="'+ level +'"]').each(function(){
-                var dim_horizontal = parseInt( $(this).find('horizontal').text());
-                var dim_vertical = parseInt($(this).find('vertical').text());
-                level_h = dim_vertical;
-                level_w = dim_horizontal;
-                var tiles_level = ($(this).find('tiles_level').text()).replace(" ",""); // a
-                var tiles_objects = ($(this).find('tiles_objects').text()).replace(" ",""); // b
-                var a = tiles_level.split(",");
-                var b = tiles_objects.split(",");
-                clearSpriteList();
-                clearMap();
-                setLevelData(a , b, dim_horizontal, dim_vertical);
-                initLevel();
-                
-                preferences_monsters = false;
-                preferences_collision = false;
-                
-                
-                //setScoreLives(10,3);
-                //setGuyPosition(0,2,0,0, 0);
-                //drawLevel(0);
-                //alert(a[0] + " "+ typeof a[0]);
-                drawLevel(0);
-                //runLoop();
-            });
-            */
-           
-                //setScoreLives(10,3);
-                //setGuyPosition(0,2,0,0, 0);
-                //drawLevel(0);
-                //alert(a[0] + " "+ typeof a[0]);
-            //drawLevel(0);
-                
-            /*
-            is_finished_loading = true;
-            clearSpriteList();
-            clearMap();
-
-
-            setLevelData(a , b, dim_horizontal, dim_vertical);
-            initLevel();
-
-            preferences_monsters = false;
-            preferences_collision = false;
-
-            console.log(level_h + " " + level_w + " a:" + a[0]);
-            //setScoreLives(10,3);
-            //setGuyPosition(0,2,0,0, 0);
-            //drawLevel(0);
-            //alert(a[0] + " "+ typeof a[0]);
-            drawLevel(0);
-            //drawLevel(0);
-            //runLoop();
-            */
         }
     });
 }
