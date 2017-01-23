@@ -33,6 +33,8 @@ function testDraw() {
 
     scrollBg(); //always call this last!!
 
+    animate_vars();
+
     drawLevel(0);
 }
 
