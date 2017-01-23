@@ -52,6 +52,7 @@ var tilesWidthMeasurement = 32;
 var tilesHeightMeasurement = 32;
 
 var newBG;
+var animate_var = 0;
 ////////////////////////////////////
 
 var Sprite = {
@@ -947,7 +948,7 @@ function cutTile( tileset, tile_ignore ,  num) {
     //}
     if ( l !== l ) l = 0;
     if ( k !== k ) k = 0;
-    var z = ctx.getImageData(Math.floor(l * AG.TILE_WIDTH),k * AG.TILE_WIDTH, 8, 8);
+    var z = ctx.getImageData(Math.floor(l * AG.TILE_WIDTH),Math.floor(k * AG.TILE_WIDTH), 8, 8);
         
     //var offscreen_data = tileset.getImageData(l, k, 8, 8);
 
@@ -1401,8 +1402,8 @@ function drawLevel( unused) {
     ctx.fill();
     
     /* draw background */
-    baseX = scrollx / AG.TILE_WIDTH;
-    baseY = scrolly / AG.TILE_HEIGHT;
+    baseX = Math.floor(scrollx / AG.TILE_WIDTH);
+    baseY = Math.floor(scrolly / AG.TILE_HEIGHT);
     
 	for ( j = baseX - 1; j <  baseX + tilesWidthMeasurement + 3; j++) { //32
     	for ( i = baseY - 1 ; i < baseY + tilesHeightMeasurement + 3; i ++ ) { //24
@@ -1440,7 +1441,7 @@ function drawLevel( unused) {
 
     		    		var square = cutTile("tiles3", square, xx - mapcheat);
     				}
-    				else if (animate === 5) {
+    				else if (animate === 5 || true) {
 
     		    		var square = cutTile("tiles4", square, xx - mapcheat);
     				}

@@ -27,6 +27,10 @@ $(document).ready( function() {
 });
 
 function testDraw() {
+    
+    newBG ++;
+    animate = newBG;
+    
     checkRegularCollisions();
 
     checkPhysicsAdjustments();
@@ -53,6 +57,9 @@ function testDrawPrep() {
     
     clearSpriteList();
     clearMap();
+
+    level_h = map_list[room].ydim;
+    level_w = map_list[room].xdim;
 
     setLevelData(map_list[room].visible , map_list[room].hidden, map_list[room].xdim, map_list[room].ydim);
     initLevel();

@@ -267,21 +267,18 @@ function gameSpeedRegulator() {
 		}
 		return mIsNotLate;
 	}
-	
+	/*
 	function setInitialBackgroundGraphics() {
 		mHighScores = mGameV.getGuyScore();
 
 		
-		/*** set initial scroll positions ***/ 
 		scrollX = mMovementV.getScrollX();
 		scrollY = mMovementV.getScrollY();
 
-		/*** Load sprites for level ***/
 		mGameV.setSpriteStart();
 		mGuySprite = mGameV.getSpriteStart();
 		mGameV.adjustSpriteStartPos();
 
-		/* JNI Monster Collision setting */
 		var monsters = JNI_FALSE;
 		var collision = JNI_FALSE;
 		if(true) monsters = JNI_TRUE;
@@ -290,6 +287,7 @@ function gameSpeedRegulator() {
 
 
 	}
+        */
 
         /*
 	function setReturnBackgroundGraphics() {
@@ -331,9 +329,9 @@ function gameSpeedRegulator() {
 	function setPanelScroll( x,  y) {
 		scrollX = x;
 		scrollY = y;
-		mGuySprite = mGameV.getSpriteStart();
-		var mGuyX = mGuySprite.getMapPosX();
-		var mGuyY = mGuySprite.getMapPosY();
+		mGuySprite = guy;//mGameV.getSpriteStart();
+		var mGuyX = mGuySprite.x;
+		var mGuyY = mGuySprite.y;
 		
 		setGuyPosition(mGuyX  , mGuyY , scrollX, scrollY, newGuy);
 		
@@ -435,7 +433,8 @@ function gameSpeedRegulator() {
 		}
 
 
-
+                guy.y = y + guy.y;
+                guy.x = x + guy.x;
         //Log.e("Platforms",   " y=" + y	+ "  " + mCloseBottomGap);
 
     }
@@ -443,17 +442,18 @@ function gameSpeedRegulator() {
 	function collisionWithBlocks() {
 		var mSkip = false;
                 mCloseBottomGap = false;
-
+                var x = move_lr;
+                var y = move_ud;
 		var mSprite = sprite[0];// mGameV.getSprite(0);
 		
-		var mPattern = makeDetectionPattern( AG.B_BLOCK, move_lr);// mMovementV.getHMove());
+		var mPattern = makeDetectionPattern( AG.B_BLOCK, MOVE_CONST);// mMovementV.getHMove());
 		var mPatternFloor = makeDetectionPattern( AG.B_BLOCK, 1);
 		var mPatternLadder = makeDetectionPattern( AG.B_LADDER,2);
 		var mPatternSpace = makeDetectionPattern( AG.B_SPACE, 3);
 		
-		var mTestBottomY = mSprite.y  + mSprite.bottomBB - move_ud;// mMovementV.getVMove();
-		var mTestRightSkipX = mSprite.x  + mSprite.rightBB + (move_lr + 1) ;//(mMovementV.getHMove() + 1);
-		var mTestLeftSkipX = mSprite.x  + mSprite.leftBB - (move_lr + 1);//(mMovementV.getHMove() + 1);
+		var mTestBottomY = mSprite.y  + mSprite.bottomBB - MOVE_CONST;// mMovementV.getVMove();
+		var mTestRightSkipX = mSprite.x  + mSprite.rightBB + (MOVE_CONST + 1) ;//(mMovementV.getHMove() + 1);
+		var mTestLeftSkipX = mSprite.x  + mSprite.leftBB - (MOVE_CONST + 1);//(mMovementV.getHMove() + 1);
 		
 		mCanFallAtEdge = true;
 
@@ -531,7 +531,7 @@ function gameSpeedRegulator() {
 		
 		//no HANGING
 		if (jumptime >=0 && !ladderTest && mPattern.top ) {
-			y = move_ud;//mMovementV.getVMove();
+			y = MOVE_CONST;//move_ud;//mMovementV.getVMove();
 			canFall = true;
                         mCanFallAtEdge = true;
 			jumptime = -1;
@@ -613,7 +613,7 @@ function gameSpeedRegulator() {
 		    //advanceMesh();
 
 		/* scroll registers for background */
-        var mRejectUp = false;
+                var mRejectUp = false;
 
 		canScroll = true;
 		oldX = scrollx;// mMovementV.getScrollX();
@@ -626,8 +626,14 @@ function gameSpeedRegulator() {
 		mapX = guy.x;//mGuySprite.getMapPosX();
 		mapY = guy.y;//mGuySprite.getMapPosY();
 
+                x = move_lr;
+                y = move_ud;
+                
 		newMapX = mapX;
 		newMapY = mapY;
+                
+                //mapH = level_h;
+                //mapW = level_w;
 
 		//newX = mGuySprite.getX();
 		//newY = mGuySprite.getY();
@@ -637,17 +643,13 @@ function gameSpeedRegulator() {
 
 		var tilesMeasurement;
 
-		if (false) {
-			tilesMeasurement = ((    mDisplayViewWidth / 2 ) / 8) ;
-			if (tilesMeasurement > 32 ) tilesMeasurement = 32;
-			    mScreenW = tilesMeasurement * 8;
-			//if (tilesMeasurement * 16 <     mDisplayWidth) tilesMeasurement ++;
-
-		}
-		else {
-			    mScreenW =     mDisplayViewWidth;
+		
+		if (true) {
+			    //mScreenW =     mDisplayViewWidth;
 			tilesMeasurement = 32;
-			//tilesMeasurement =     mDisplayViewWidth /8 ;// TODO: test me!!
+                        mScreenW = AG.SCREEN_TILES_H *8;
+                        
+			//tilesMeasurement =  AG.SCREEN_TILES_H;//    mDisplayViewWidth /8 ;// TODO: test me!!
 		}
 		
 		/* 
@@ -695,7 +697,7 @@ function gameSpeedRegulator() {
 				newMapX = mapH * 8  - guyWidth;
 				newX = mScreenW - guyWidth;
                 mRejectUp = true;
-                if(mCanFallAtEdge) y = mMovementV.getVMove();
+                if(mCanFallAtEdge) y = MOVE_CONST;//mMovementV.getVMove();
 			}
 
 		}  
@@ -821,10 +823,15 @@ function gameSpeedRegulator() {
                 guy.y = newMapY;
                 scrollX = screenX;
                 scrollY = screenY;
-		
+                
+                scrollx = screenX;
+                scrolly = screenY;
+		//x = guy.x;
+                //y = guy.y;
 		//mMovementV.setScrollX(screenX);
 		//mMovementV.setScrollY(screenY);
 	}
+        
 	function checkRegularCollisions() {
 
 		/*
@@ -873,7 +880,7 @@ function gameSpeedRegulator() {
 						 * Instead of checking the whole field of play.
 						 */
 
-						var testMe = makeBlockBox(j,i);
+						var testMe = makeBlockBox(j,i); // j,i
 						//bool testNext = collisionSimple(guyBoxNext, testMe);
 						var test = collisionSimple(guyBox, testMe);
 
@@ -1056,13 +1063,7 @@ function gameSpeedRegulator() {
 	*/
 
 
-	  function readKeys( num) {
-		mXMultiplier = num;
-		mYMultiplier = num;
-		readKeys();
-		mXMultiplier = 1;
-		mYMultiplier = 1;
-	}
+	  
 
 
 	 function readKeys() {		
@@ -1080,6 +1081,9 @@ function gameSpeedRegulator() {
 
                 x = move_lr;
                 y = move_ud;
+                if (move_jump > 0) setKeyB(true);
+                else setKeyB(false);
+                
                 /*
 		if(mMovementV.getDirectionLR() == MovementValues.KEY_RIGHT) {
 
