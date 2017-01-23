@@ -17,7 +17,7 @@ function runLoop() {
 		//Date startDate = new Date();
 		//nextGameTick = performance.now();// startDate.getTime();
                 console.log("start");
-
+                var room = 0;
 		  ///////////////////////////////////////////////////////
 		  // PLAY THE GAME
 		  while(mPlayAgain && is_game_running ) {
@@ -32,7 +32,7 @@ function runLoop() {
 		    // set lives
 		    lives = 3;
                     score = 10;
-                    level = 1;
+                    level = 0;
                     
 		    //if (!mGameV.isUseSavedBundle()) mGameV.setLives(3);
 		    // set room num
@@ -64,7 +64,20 @@ function runLoop() {
 				//mGameV.setFinishedLoading(false);
                                 //is_finished_loading = false;
                 level += 1;                
-                setupDrawFunctionsB();
+                room = level - 1;
+                //setupDrawFunctionsB();
+                clearSpriteList();
+                clearMap();
+
+
+                setLevelData(map_list[room].visible , map_list[room].hidden, map_list[room].xdim, map_list[room].ydim);
+                initLevel();
+
+                //preferences_monsters = false;
+                //preferences_collision = false;
+                //checkValues();
+                console.log(level_h + " " + level_w + " m:"+ map_level[3][2]);
+                //drawLevel(0);
                                 
                 //mGameV.getBackground().setLevel(mGameV.getLevelList().getNum(mGameV.getRoomNo()-1));
 
@@ -79,39 +92,7 @@ function runLoop() {
 		    }
 
 		    
-    		//mHandler.removeMessages(GameStart.MOVEMENTVALUES);
-
-		   
-
-		    /*
-		    if (!mGameV.isUseSavedBundle() ) {
-		    	mMovementV.setScrollX(0);
-		    	mMovementV.setScrollY(0);
-		    	
-		    	//mGameV.getBackground().initLevel(mMovementV);
-		    
-		    	mPanel.setLevelData(mGameV.getLevelArray(), mGameV.getObjectsArray(), mGameV.getMapH(), mGameV.getMapV());
-		    
-		    	mPanel.addMonstersJNI();
-		    	mPanel.addPlatformsJNI();
-		    }
-		    else {
-		    	
-		    	
-		    }
-                    */
-		    
-		    
-		    //end of restore from bundle
-		    //mGameV.setUseSavedBundle(false);
-		    //mGameV.setXmlMode(GameValues.XML_USE_BOTH);
-		    
-		    //get guy sprite reference 
-			//mGuySprite = mGameV.getSpriteStart();
-		    //mPanel.setGuySprite(mGuySprite);
-			
-		    //mGameV.setEndLevel(false);
-		    //mGameV.setGameDeath(false);
+    		
                     
                     is_end_level = false;
                     is_game_death = false;
@@ -141,16 +122,16 @@ function runLoop() {
 		    		/* formerly above 'draw' */
 		    		//mGameV.getPanel().setScoreLives(mGameV.getScore(), mGameV.getLives());
 		    		
-		    		//checkRegularCollisions();
+		    		checkRegularCollisions();
 
-				//checkPhysicsAdjustments();
+				checkPhysicsAdjustments();
 									
-				//scrollBg(); //always call this last!!
+				scrollBg(); //always call this last!!
 					
 					/* JNI method now calls 'drawLevel()' with animate var */
 				drawLevel(0);
 				//console.log("loop " + is_finished_loading );
-                                //is_end_level = true;// just for testing!!
+                                is_end_level = true;// just for testing!!
                                 
 					/* at end of level -- call after 'drawLevel()' */
 		    		if(is_end_level === true) {
