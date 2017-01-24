@@ -19,8 +19,8 @@ function runLoop() {
                 console.log("start");
                 var room = 0;
 		  ///////////////////////////////////////////////////////
-		  // PLAY THE GAME
-		  while(mPlayAgain && is_game_running ) {
+		  // PLAY THE GAME: 'while'
+		  if(mPlayAgain && is_game_running ) {
 		    mPlayAgain = false;
 		
 			
@@ -45,7 +45,8 @@ function runLoop() {
 		    
                     console.log("b");
                     
-		    while( level <=  AG.NUM_LEVELS  && ! is_end_game 
+                    // USED TO BE WHILE
+		    if( level <=  AG.NUM_LEVELS  && ! is_end_game 
 		    		&& is_game_running && lives > 0) {
 
    
@@ -68,6 +69,9 @@ function runLoop() {
                 //setupDrawFunctionsB();
                 clearSpriteList();
                 clearMap();
+                
+                level_h = map_list[room].ydim;
+                level_w = map_list[room].xdim;
 
 
                 setLevelData(map_list[room].visible , map_list[room].hidden, map_list[room].xdim, map_list[room].ydim);
@@ -81,11 +85,8 @@ function runLoop() {
                                 
                 //mGameV.getBackground().setLevel(mGameV.getLevelList().getNum(mGameV.getRoomNo()-1));
 
-                while (! is_finished_loading && false){
-					
-					//ugly blocking call till level finishes loading!!!
-				}
-				mFirstLoad = false;
+                
+		mFirstLoad = false;
 
 				//mHandler.sendEmptyMessage(GameStart.STARTLEVEL);
 		    	
@@ -101,8 +102,8 @@ function runLoop() {
 		    	//mPanel.setJNIAnimateOnly(Panel.JNI_FALSE);
 		    
 			mLoop = true;
-                        
-		    while(mLoop &&  is_game_running && ! is_end_level ) { // GAME PLAY LOOP
+                    // USED TO BE WHILE
+		    if(mLoop &&  is_game_running && ! is_end_level ) { // GAME PLAY LOOP
 		       var mIsNotLate = false;
 		    	//mCanvas = null;
 		    	if (is_game_running ) mIsNotLate = true;//gameSpeedRegulator(); //call inside 'game play' loop
@@ -150,7 +151,7 @@ function runLoop() {
 					
 		    		/* call after 'drawLevel()' */
 				//playSounds();
-					
+				return;	
 
 					
 		    	}
@@ -826,8 +827,8 @@ function gameSpeedRegulator() {
                 
                 scrollx = screenX;
                 scrolly = screenY;
-		//x = guy.x;
-                //y = guy.y;
+		
+                
 		//mMovementV.setScrollX(screenX);
 		//mMovementV.setScrollY(screenY);
 	}
@@ -928,6 +929,11 @@ function gameSpeedRegulator() {
 							//    incrementJniScore(10);
 							score += 10;
 
+                                                        if (true) { // TESTING ONLY!!
+                                                            is_end_level = true;
+                                                            is_level_death = true;
+                                                            play_again = false;
+                                                        }
 							//mGameV.incrementScore(10);
 							//mmEffect(SFX_PRIZE);
 							//mSounds.playSound(SoundPoolManager.SOUND_PRIZE);
@@ -956,7 +962,7 @@ function gameSpeedRegulator() {
 						if (test && getObjectsCell(j,i) === AG.B_ONEUP  ) {
 
 							
-							mGameV.setObjectsCell(j, i, 0);
+							//setObjectsCell(j, i, 0);
 							
 							setObjectsDisplay(j, i, 0);//jni
 							

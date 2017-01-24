@@ -9,22 +9,45 @@
 $(document).ready( function() {
     
     
-    //setupDrawFunctionsA();
     
-    //setupDrawFunctionsB();
-    //var screen = getScreenPointer(0);
-    //screen.putImageData(platform_a, 0,0);
-    //drawSprite_40_8(platform_a, 0,0,0,0, 0, 0);
-    //drawSprite_16(guy_a,16,16,0,0, 0,0);
-    //drawScoreWords();
-    
-    //var square = cutTile("tiles1", 0, 10);
-    //alert(square);
-    //drawTile_8(square, 0,0,0,0, 0,0)
     
     
     //drawLevel(0);
 });
+
+function testPlayGameAgain() {
+    //level = 0;
+    if (play_again && is_game_running) {
+        testAdvanceLevel() ;
+        
+    }
+    else if (play_again && !is_game_running) {
+        level = 0;
+        is_end_level = true;
+    }
+    else {
+        var play = confirm("Play Again?");
+        if ( ! play ) {
+            clearInterval(loop_handle);
+            play_again = false;
+        }
+        else {
+            play_again = true;
+            is_end_level = true;
+            level = 0;
+            is_game_running = true;
+        }
+    }
+}
+
+function testAdvanceLevel() {
+    if (is_end_level) {
+        level ++;
+        is_end_level = false;
+        testDrawPrep();
+    }
+    testDraw();
+}
 
 function testDraw() {
     
@@ -43,16 +66,21 @@ function testDraw() {
 }
 
 function testDrawLoop() {
-    setInterval( function() {
-        testDraw();
+    is_end_level = true;
+    level = 0;
+    
+    loop_handle = setInterval( function() {
+        testPlayGameAgain();
+        //testDraw();
+        
         //console.log("30");
     }, 30);
 }
 
 function testDrawPrep() {
     var room = 0;
-    var level = 0;
-    level += 1;                
+    //var level = 0;
+    //level += 1;                
     room = level - 1;
     
     clearSpriteList();

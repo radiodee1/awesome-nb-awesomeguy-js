@@ -24,7 +24,7 @@ $(document).ready( function() {
         if (input_key === AG.UP) move_ud = - MOVE_CONST; //guy.y --;
         if (input_key === AG.RIGHT) move_lr = MOVE_CONST;// ++;
         if (input_key === AG.DOWN) move_ud = MOVE_CONST;
-        if (input_key === AG.JUMP) move_jump = 1;
+        if (input_key === AG.JUMP) move_jump = MOVE_CONST;
         //drawLevel(0);
 
     });

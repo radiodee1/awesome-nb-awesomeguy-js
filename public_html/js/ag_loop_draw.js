@@ -130,7 +130,8 @@ var monster_offset = 0;
 var platform_num = -1;
 var platform_offset = 0;
 
-
+var loop_handle = 0;
+var play_again = true;
 
 //////////////////////////////////////////////////////
 // function definitions
