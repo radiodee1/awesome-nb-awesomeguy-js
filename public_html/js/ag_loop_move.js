@@ -667,7 +667,7 @@ function gameSpeedRegulator() {
 
 		if (x > 0) {   
 
-			//if (oldX > mapH * 8 ) oldX =  -1;
+			if (oldX > mapH * 8 ) oldX =  -1;
 
 			if (oldX >= ((mapH - tilesMeasurement) * 8 - x)  ) canScroll = false;
 			else canScroll = true;
@@ -711,7 +711,7 @@ function gameSpeedRegulator() {
 
 		//////////////////////////////////////
 		else if (x < 0) {   
-			//if (oldX > 8 * mapH + 1) oldX = -1;
+			if (oldX > 8 * mapH + 1) oldX = -1;
 
 			if (oldX <= 0 - x) canScroll = false;
 			else canScroll = true;
