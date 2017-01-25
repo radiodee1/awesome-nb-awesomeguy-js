@@ -406,6 +406,7 @@ function gameSpeedRegulator() {
                         //mMovementV.setVMoveReset();
 			jumptime =  MOVE_CONST * jumpHeight;
 			keyB = false;
+                        //console.log("jump");
 		}
 		
 		
@@ -443,9 +444,9 @@ function gameSpeedRegulator() {
 	function collisionWithBlocks() {
 		var mSkip = false;
                 mCloseBottomGap = false;
-                var x = move_lr;
-                var y = move_ud;
-		var mSprite = sprite[0];// mGameV.getSprite(0);
+                //var x = move_lr;
+                //var y = move_ud;
+		var mSprite = guy;//sprite[0];// mGameV.getSprite(0);
 		
 		var mPattern = makeDetectionPattern( AG.B_BLOCK, MOVE_CONST);// mMovementV.getHMove());
 		var mPatternFloor = makeDetectionPattern( AG.B_BLOCK, 1);
@@ -541,6 +542,8 @@ function gameSpeedRegulator() {
         if(mCloseBottomGap && !canFall && ! ladderTest && !mSkip && jumptime <= 0) {
             y = 1;// mMovementV.getVMove();
         }
+        //move_ud = y;
+        //move_lr = x;
 
 		return;
 	}
@@ -627,8 +630,8 @@ function gameSpeedRegulator() {
 		mapX = guy.x;//mGuySprite.getMapPosX();
 		mapY = guy.y;//mGuySprite.getMapPosY();
 
-                x = move_lr;
-                y = move_ud;
+                //x = move_lr;
+                //y = move_ud;
                 
 		newMapX = mapX;
 		newMapY = mapY;
@@ -932,7 +935,8 @@ function gameSpeedRegulator() {
                                                         if (true) { // TESTING ONLY!!
                                                             is_end_level = true;
                                                             is_level_death = true;
-                                                            play_again = false;
+                                                            play_again = true;
+                                                            //console.log(guy.bottomBB +" "+ guy.topBB);
                                                         }
 							//mGameV.incrementScore(10);
 							//mmEffect(SFX_PRIZE);
