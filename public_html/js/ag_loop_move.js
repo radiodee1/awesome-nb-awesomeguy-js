@@ -645,7 +645,7 @@ function gameSpeedRegulator() {
 		//newX = mGuySprite.getX();
 		//newY = mGuySprite.getY();
 
-		guyWidth = (guy.rightBB - guy.leftBB) + 5; // 12 ?
+		guyWidth = (guy.rightBB - guy.leftBB) + 15; // 12 ?
 		guyHeight = guy.bottomBB - guy.topBB;
 
 		var tilesMeasurement;
@@ -667,7 +667,7 @@ function gameSpeedRegulator() {
 
 		if (x > 0) {   
 
-			if (oldX > mapH * 8 ) oldX = -1;
+			//if (oldX > mapH * 8 ) oldX =  -1;
 
 			if (oldX >= ((mapH - tilesMeasurement) * 8 - x)  ) canScroll = false;
 			else canScroll = true;
@@ -703,15 +703,15 @@ function gameSpeedRegulator() {
 			if(mapX + x + guyWidth > mapH * 8 + 1) {
 				newMapX = mapH * 8  - guyWidth;
 				newX = mScreenW - guyWidth;
-                mRejectUp = true;
-                if(mCanFallAtEdge) y = MOVE_CONST;//mMovementV.getVMove();
+                                mRejectUp = true;
+                                if(mCanFallAtEdge) y = MOVE_CONST;//mMovementV.getVMove();
 			}
 
 		}  
 
 		//////////////////////////////////////
 		else if (x < 0) {   
-			if (oldX > 8 * mapH + 1) oldX = -1;
+			//if (oldX > 8 * mapH + 1) oldX = -1;
 
 			if (oldX <= 0 - x) canScroll = false;
 			else canScroll = true;
