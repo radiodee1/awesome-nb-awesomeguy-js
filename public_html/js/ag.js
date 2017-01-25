@@ -122,7 +122,7 @@ AG.FRAMES_PER_SECOND = 3;
 	var y;
 
 	var keyB = false;
-	var jumptime;
+	var jumptime = 0;
 
 	var MOVE_CONSTANT = 3;
 	var mXMultiplier = 1;
