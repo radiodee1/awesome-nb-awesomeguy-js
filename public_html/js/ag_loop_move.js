@@ -932,7 +932,7 @@ function gameSpeedRegulator() {
 							//    incrementJniScore(10);
 							score += 10;
 
-                                                        if (true) { // TESTING ONLY!!
+                                                        if (false) { // TESTING ONLY!!
                                                             is_end_level = true;
                                                             is_level_death = true;
                                                             play_again = true;
