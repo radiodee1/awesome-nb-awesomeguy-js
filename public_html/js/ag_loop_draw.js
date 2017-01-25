@@ -268,10 +268,10 @@ function setGuyData() {
 function setMonsterData() {
 
 
-	monster_a = copyArraysExpand_tileset("monster_l0", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
-	monster_b = copyArraysExpand_tileset("monster_l1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
-	monster_c = copyArraysExpand_tileset("monster_r0", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
-	monster_d = copyArraysExpand_tileset("monster_r1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_a = copyArraysExpand_tileset("monster_r0", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_b = copyArraysExpand_tileset("monster_r1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_c = copyArraysExpand_tileset("monster_l0", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_d = copyArraysExpand_tileset("monster_l1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
 }
  
  

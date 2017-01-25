@@ -636,6 +636,9 @@ function gameSpeedRegulator() {
 		newMapX = mapX;
 		newMapY = mapY;
                 
+                newX = mapX;
+                newY = mapY;
+                
                 //mapH = level_h;
                 //mapW = level_w;
 
@@ -823,8 +826,8 @@ function gameSpeedRegulator() {
 		
 		//mGuySprite.setMapPosX(newMapX);
 		//mGuySprite.setMapPosY(newMapY);
-                guy.x = newMapX;
-                guy.y = newMapY;
+                guy.x = newX;// newMapX;
+                guy.y = newY;// newMapY;
                 //scrollX = screenX;
                 //scrollY = screenY;
                 
