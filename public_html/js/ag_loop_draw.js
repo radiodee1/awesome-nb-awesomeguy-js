@@ -149,7 +149,7 @@ function clearSpriteList() {
     for(i = 0; i < 100; i ++){
         sprite.push(Object.assign({},Sprite));
     }
-    addSprite(0,0,2,16,4,10);// the guy
+    addSprite(0,0,4,10,2,16);// the guy
     guy = sprite[0];
     console.log("clearSpriteList");
 }
@@ -1571,7 +1571,7 @@ function initLevel( ) {
 
 						//put monster object in ArrayList here...
 						//temp = new SpriteInfo(R.drawable.monster_l0, 3, 8, 0, 16);
-                                                var i = addSprite(j*8,i*8,3,8,0,16);
+                                                var i = addSprite(j*8,i*8,0,16,3,8);
                                                 sprite[i].active = true;
                                                 sprite[i].visible = true;
                                                 sprite[i].facingRight = true;
@@ -1602,7 +1602,7 @@ function initLevel( ) {
 				if( map_objects[j][i] === AG.B_PLATFORM ) { //32,64
 					if(AG.PLATFORM_TOTAL > num - platform_offset) {
 						//put platform object in ArrayList here...
-                                                var i = addSprite(j*8,i*8,0,8,0,40);
+                                                var i = addSprite(j*8,i*8,0,40,0,8);
                                                 sprite[i].active = true;
                                                 sprite[i].visible = true;
                                                 sprite[i].facingRight = true;
