@@ -1072,12 +1072,14 @@ function drawMonsters() {
 	//draw all monsters
 	var anim_speed = 5;
 	var i;
-	var x,y,z;
+	var xx,yy,z;
 	var move = 3;//3
 	var markerTest = false;
 	var hide = true;
 	var show = false;
 	var visibility = false;
+        var length = 16;// 16
+
 	//var index_num = 0;
 	
 	//if (sprite_num >= monster_num) index_num = sprite_num;
@@ -1085,26 +1087,28 @@ function drawMonsters() {
 	
 	//for each monster...
 	if(monster_num > 0) {
-		for (i =  0 ; i < monster_num   ; i++) {   
+		for (i =  monster_offset ; i < monster_num   ; i++) {   
 			markerTest = false; 
 
 			
 			if (sprite[i].active === true ) {
-				x = Math.floor(sprite[i].x / 8);
-				y = Math.floor(sprite[i].y / 8);
+				xx = Math.floor(sprite[i].x / 8);
+				yy = Math.floor(sprite[i].y / 8);
+                                //console.log(xx + " " + yy);
 				// Must move and stop monsters when they hit bricks or
 				// markers or the end of the screen/room/level.
-
+                                if (xx < 0 || yy < 0 || xx >= level_w || yy >= level_h) return;
+                                
 				if(sprite[i].facingRight === true) {
 
 					sprite[i].x = sprite[i].x + move;
 					// marker test
-					if( map_objects[x+2][y] === AG.B_BLOCK  ) markerTest = true;
-					if( map_objects[x+2][y] === AG.B_MARKER ) markerTest = true;
-					if( map_objects[ x+2][y+1] === 0) markerTest = true;
+					if( map_objects[xx+2][yy] === AG.B_BLOCK  ) markerTest = true;
+					if( map_objects[xx+2][yy] === AG.B_MARKER ) markerTest = true;
+					if( map_objects[ xx+2][yy+1] === 0) markerTest = true;
 					// turn monster
-					if (sprite[i].x > level_w * 8  - 16 || markerTest === true) {
-
+					if (sprite[i].x > level_w * 8  - length || markerTest === true) {
+                                                //sprite[i].x = sprite[i].x - move;
 						sprite[i].facingRight=false;
 					}
 				}
@@ -1112,12 +1116,12 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x - move;
 					// marker test
-					if(map_objects[x][y] === AG.B_BLOCK) markerTest = true;
-					if(map_objects[x][y] === AG.B_MARKER) markerTest = true;
-					if(map_objects[x-1][y+1] === 0) markerTest = true;
+					if(map_objects[xx][yy] === AG.B_BLOCK) markerTest = true;
+					if(map_objects[xx][yy] === AG.B_MARKER) markerTest = true;
+					if(map_objects[xx-1][yy+1] === 0) markerTest = true;
 					// turn monster
 					if (sprite[i].x < 0 || markerTest === true) {
-
+                                                //sprite[i].x = sprite[i].x + move;
 						sprite[i].facingRight=true;
 					}
 				}
@@ -1128,16 +1132,16 @@ function drawMonsters() {
 				//default is to show monster
 				visibility = show;
 				//hide monster if...
-				if(sprite[i].x > scrollx + 32 * 8 + 16 ) {
+				if(sprite[i].x > scrollx + 32 * 8 + length ) {
 					visibility = hide;
 				}
-				if (sprite[i].x < scrollx - 16) {
+				if (sprite[i].x < scrollx - length) {
 					visibility = hide;
 				}
-				if (sprite[i].y > scrolly + 24 * 8 + 16) {
+				if (sprite[i].y > scrolly + 24 * 8 + length) {
 					visibility = hide;
 				}
-				if ( sprite[i].y < scrolly  - 16) {
+				if ( sprite[i].y < scrolly  - length) {
 					visibility = hide;
 				}
 			}
@@ -1370,6 +1374,7 @@ function animate_vars() {
 		if(newBG > 7) newBG = -1;
 		
 	}
+        guy.animate = newGuy;
 	//LOGE("animate %d -- %d", newGuy, newBG);
 }
 
@@ -1540,8 +1545,8 @@ function initLevel( ) {
 		clearSpriteList();
 		//mGameV.setSpriteStart();
                 
-                monster_offset = 1;
-                monster_num = 0;
+                monster_offset = sprite_num ;
+                //monster_num = 0;
                 platform_num = -1;
                 platform_offset = 0;
 		
@@ -1594,6 +1599,7 @@ function initLevel( ) {
 			}
 		}
 		
+                
 		//mGameV.setPlatformOffset(num );
                 platform_offset = num;
 		
@@ -1739,25 +1745,11 @@ function setupDrawFunctionsB(){
                     map_list[level_in - 1 ].hidden = b;
                     map_list[level_in - 1 ].visible = a;
 
-                    //runLoop();
-                    //testDrawPrep();
                     
-                    //clearSpriteList();
-                    //clearMap();
-
-
-                    //setLevelData(a , b, dim_horizontal, dim_vertical);
-                    //initLevel();
-
-                    //preferences_monsters = false;
-                    //preferences_collision = false;
-                    
-                    //console.log(level_h + " " + level_w + " a:" + a[0] + " m:"+ map_level[3][2]);
-                    //drawLevel(0);
                 });
             }         
-            //runLoop();
-            testDrawPrep();
+            
+            
             testDrawLoop();
         },
         error: function() {

@@ -51,8 +51,10 @@ function testAdvanceLevel() {
 
 function testDraw() {
     
-    newBG ++;
-    animate = newBG;
+    //newBG ++;
+    //animate = newBG;
+    
+    setPanelScroll(scrollx, scrolly);
     
     checkRegularCollisions();
 
@@ -60,7 +62,7 @@ function testDraw() {
 
     scrollBg(); //always call this last!!
 
-    //animate_vars();
+    animate_vars();
 
     drawLevel(0);
 }
@@ -70,6 +72,7 @@ function testDrawLoop() {
     level = 0;
     score = 10;
     lives = 3;
+    //preferences_monsters = true;
     
     loop_handle = setInterval( function() {
         testPlayGameAgain();
@@ -85,13 +88,14 @@ function testDrawPrep() {
     //level += 1;                
     room = level - 1;
     
-    clearSpriteList();
+    //clearSpriteList();
     clearMap();
 
     level_h = map_list[room].ydim;
     level_w = map_list[room].xdim;
 
     setLevelData(map_list[room].visible , map_list[room].hidden, map_list[room].xdim, map_list[room].ydim);
+    
     initLevel();
     
     jumptime = 0;

@@ -825,8 +825,8 @@ function gameSpeedRegulator() {
 		//mGuySprite.setMapPosY(newMapY);
                 guy.x = newMapX;
                 guy.y = newMapY;
-                scrollX = screenX;
-                scrollY = screenY;
+                //scrollX = screenX;
+                //scrollY = screenY;
                 
                 scrollx = screenX;
                 scrolly = screenY;
