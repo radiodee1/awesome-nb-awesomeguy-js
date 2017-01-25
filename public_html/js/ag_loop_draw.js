@@ -49,9 +49,10 @@ for (i = 0; i < AG.MAP_HEIGHT; i ++) {
 var screencounter = 0;
  
 var tilesWidthMeasurement = 32;
-var tilesHeightMeasurement = 32;
+var tilesHeightMeasurement = 24;//32;
 
-var newBG;
+var newBG = 0;
+var newGuy = 0;
 var animate_var = 0;
 ////////////////////////////////////
 
@@ -1097,7 +1098,7 @@ function drawMonsters() {
                                 //console.log(xx + " " + yy);
 				// Must move and stop monsters when they hit bricks or
 				// markers or the end of the screen/room/level.
-                                if (xx < 0 || yy < 0 || xx >= level_w || yy >= level_h) return;
+                                //if (xx < 0 || yy < 0 || xx >= level_w || yy >= level_h) return;
                                 
 				if(sprite[i].facingRight === true) {
 
@@ -1287,7 +1288,7 @@ function collisionWithMonsters() {
 		  var guyBox = makeSpriteBox( guy , 0, 0 );
 
 		  
-		  for (i = 0  ; i < monster_num ; i++) {   
+		  for (i = monster_offset  ; i < monster_num ; i++) {   
 		    var monsterBox = makeSpriteBox(sprite[i] , 0, 0 );
 		    var test =  collisionSimple(guyBox, monsterBox);
 		    if (test && sprite[i].active   === true) {
@@ -1676,7 +1677,7 @@ function setStartingScrollPosition() {
 			else flag = true;
 		}
                 
-            console.log(scrollx + " " + scrolly + " w:" + level_w + " h:" + level_h);
+            //console.log(scrollx + " " + scrolly + " w:" + level_w + " h:" + level_h);
 	}
 
 function checkValues() {
