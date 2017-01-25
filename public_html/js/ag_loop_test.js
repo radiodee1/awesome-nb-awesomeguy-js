@@ -68,6 +68,8 @@ function testDraw() {
 function testDrawLoop() {
     is_end_level = true;
     level = 0;
+    score = 10;
+    lives = 3;
     
     loop_handle = setInterval( function() {
         testPlayGameAgain();
