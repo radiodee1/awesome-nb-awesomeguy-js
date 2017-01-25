@@ -60,7 +60,7 @@ function testDraw() {
 
     scrollBg(); //always call this last!!
 
-    animate_vars();
+    //animate_vars();
 
     drawLevel(0);
 }
@@ -92,6 +92,10 @@ function testDrawPrep() {
     setLevelData(map_list[room].visible , map_list[room].hidden, map_list[room].xdim, map_list[room].ydim);
     initLevel();
     
+    jumptime = 0;
+    move_ud = 0;
+    move_lr = 0;
+    move_jump = 0;
     //preferences_monsters = true;
     //preferences_collision = true;
 }
