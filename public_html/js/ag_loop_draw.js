@@ -810,7 +810,7 @@ function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) 
 
     var draw = true;
     var screen = getScreenPointer(0);
-    if (x - scroll_x < - from.width) {
+    if (x - scroll_x <  0) {
         x = scroll_x;
         draw = false;
     }
