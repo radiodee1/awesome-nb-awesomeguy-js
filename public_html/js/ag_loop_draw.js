@@ -808,14 +808,24 @@ function copyArraysExpand_tileset (from, width, height) {
  */
 function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) {
 
+    var draw = true;
     var screen = getScreenPointer(0);
+    if (x - scroll_x < - from.width) {
+        x = scroll_x;
+        draw = false;
+    }
+    if (y - scroll_y < 0) {
+        y = scroll_y;
+        draw= false;
+    }
+    
     var p = changeImageData(from,x,y,scroll_x,scroll_y);
 
     var i,j,k,l;
     k = x - scroll_x;
     l = y - scroll_y;
     //screen.putImageData(from, k, l);
-    screen.putImageData(p, 0,0);
+    if (draw || true) screen.putImageData(p, 0,0);
     
     
     return;
@@ -1104,6 +1114,7 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x + move;
 					// marker test
+                                        if (xx + 2 > level_w - 2) xx = level_w;
 					if( map_objects[xx+2][yy] === AG.B_BLOCK  ) markerTest = true;
 					if( map_objects[xx+2][yy] === AG.B_MARKER ) markerTest = true;
 					if( map_objects[ xx+2][yy+1] === 0) markerTest = true;
@@ -1117,11 +1128,15 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x - move;
 					// marker test
-					if(map_objects[xx][yy] === AG.B_BLOCK) markerTest = true;
+                                        if (xx  < 0) xx = 2;
+                                        if (xx >= 32) xx = 31;
+                                        //console.log("xx,yy "+xx + " " + yy);
+
+                                        if(map_objects[xx][yy] === AG.B_BLOCK) markerTest = true;
 					if(map_objects[xx][yy] === AG.B_MARKER) markerTest = true;
 					if(map_objects[xx-1][yy+1] === 0) markerTest = true;
 					// turn monster
-					if (sprite[i].x < 0 || markerTest === true) {
+					if (sprite[i].x < 8 || markerTest === true) {
                                                 //sprite[i].x = sprite[i].x + move;
 						sprite[i].facingRight=true;
 					}
@@ -1133,13 +1148,13 @@ function drawMonsters() {
 				//default is to show monster
 				visibility = show;
 				//hide monster if...
-				if(sprite[i].x > scrollx + 32 * 8 + length ) {
+				if(sprite[i].x > scrollx + 32 * 8 - length ) {
 					visibility = hide;
 				}
 				if (sprite[i].x < scrollx - length) {
 					visibility = hide;
 				}
-				if (sprite[i].y > scrolly + 24 * 8 + length) {
+				if (sprite[i].y > scrolly + 24 * 8 + 0){// length) {
 					visibility = hide;
 				}
 				if ( sprite[i].y < scrolly  - length) {
@@ -1574,7 +1589,7 @@ function initLevel( ) {
 				//add monster here
 				if(map_objects[j][i] === AG.B_MONSTER ) { //32,64
 					if (AG.MONSTER_TOTAL >= num) {
-
+                                                /*
 						//put monster object in ArrayList here...
 						//temp = new SpriteInfo(R.drawable.monster_l0, 3, 8, 0, 16);
                                                 var i = addSprite(j*8,i*8,0,16,3,8);
@@ -1592,7 +1607,10 @@ function initLevel( ) {
 						     
 						num ++;
                                                 monster_num = num;
+                                                */
+                                                num ++;
 						//mGameV.setMonsterNum(num);
+                                                addMonster(j*8, i * 8, 0);
 					}
 				}
 
@@ -1609,6 +1627,7 @@ function initLevel( ) {
 				if( map_objects[j][i] === AG.B_PLATFORM ) { //32,64
 					if(AG.PLATFORM_TOTAL > num - platform_offset) {
 						//put platform object in ArrayList here...
+                                                /*
                                                 var i = addSprite(j*8,i*8,0,40,0,8);
                                                 sprite[i].active = true;
                                                 sprite[i].visible = true;
@@ -1625,7 +1644,10 @@ function initLevel( ) {
 						     
 						num ++;
                                                 platform_num = num;
-                                                
+                                                */
+                                                num ++;
+                                               
+                                                addPlatform(j * 8, i * 8);
 						//mGameV.setPlatformNum(num);
 					}
 				}

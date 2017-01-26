@@ -240,92 +240,7 @@ function runLoop() {
             //while (true);// spinlock
 	}
         
-function gameSpeedRegulator() {
-		
-		var mIsNotLate = true;
-                var framesPerSec = AG.FRAMES_PER_SECOND;
-		var skipTicks = 1;
-                
-		//var newDate = new Date();
-		ticksElapsed = performance.now();//newDate.getTime();
-		nextGameTick += skipTicks;
-		sleepTime = nextGameTick - ticksElapsed;
 
-		
-		if ( (sleepTime >= 0 && is_game_running ) || framesPerSec < 0 ) {
-		
-			//Log.e("InnerGameLoop", "---Passing time");
-                        //if (framesPerSec > 0) Thread.sleep(sleepTime);
-		
-                        mIsNotLate = true;
-		}
-		else {
-			console.log("InnerGameLoop ---Running behind");
-			//newDate = new Date();
-			nextGameTick = performance.now();//newDate.getTime();
-			//ticksElapsed = newDate.getTime();
-			mIsNotLate = false;
-		}
-		return mIsNotLate;
-	}
-	/*
-	function setInitialBackgroundGraphics() {
-		mHighScores = mGameV.getGuyScore();
-
-		
-		scrollX = mMovementV.getScrollX();
-		scrollY = mMovementV.getScrollY();
-
-		mGameV.setSpriteStart();
-		mGuySprite = mGameV.getSpriteStart();
-		mGameV.adjustSpriteStartPos();
-
-		var monsters = JNI_FALSE;
-		var collision = JNI_FALSE;
-		if(true) monsters = JNI_TRUE;
-		if(true) collision = JNI_TRUE;
-		setMonsterPreferences(monsters, collision);
-
-
-	}
-        */
-
-        /*
-	function setReturnBackgroundGraphics() {
-		mHighScores = mGameV.getGuyScore();
-		
-		setScoreLives(mGameV.getScore(), mGameV.getLives());
-		mHighScores.setLives(mGameV.getLives());
-		mHighScores.setScore(mGameV.getScore());
-		
-		scrollX = mGameV.getScrollX();
-		scrollY = mGameV.getScrollY();
-		setJNIScroll(scrollX, scrollY);
-		
-		mGuySprite = mGameV.getSpriteStart();
-
-		var monsters = JNI_FALSE;
-		var collision = JNI_FALSE;
-		if(mHighScores.isEnableMonsters()) monsters = JNI_TRUE;
-		if(mHighScores.isEnableCollision()) collision = JNI_TRUE;
-		setMonsterPreferences(monsters, collision);
-
-
-	}
-        */
-
-    /*
-
-	function setGameValues(GameValues g) {
-		mGameV = g;
-
-	}
-	
-	
-	GameValues getGameValues() {
-		return mGameV;
-	}
-	*/
 	
 	function setPanelScroll( x,  y) {
 		scrollX = x;
@@ -645,19 +560,14 @@ function gameSpeedRegulator() {
 		//newX = mGuySprite.getX();
 		//newY = mGuySprite.getY();
 
-		guyWidth = (guy.rightBB - guy.leftBB) + 15; // 12 ?
+		guyWidth = (guy.rightBB - guy.leftBB) + 5;//15; // 12 ?
 		guyHeight = guy.bottomBB - guy.topBB;
 
-		var tilesMeasurement;
+		var tilesMeasurement = 32;
+                var mScreenW = AG.SCREEN_TILES_H * 8;
 
 		
-		if (true) {
-			    //mScreenW =     mDisplayViewWidth;
-			tilesMeasurement = 32;
-                        mScreenW = AG.SCREEN_TILES_H *8;
-                        
-			//tilesMeasurement =  AG.SCREEN_TILES_H;//    mDisplayViewWidth /8 ;// TODO: test me!!
-		}
+		
 		
 		/* 
 		 * determine position of guy on screen and determine position
@@ -667,7 +577,10 @@ function gameSpeedRegulator() {
 
 		if (x > 0) {   
 
-			if (oldX > mapH * 8 ) oldX =  -1;
+			if (oldX > mapH * 8 ) {
+                            //newX = mapH * 8;
+                            oldX = -1;
+                        }// mapH * 8;// -1;
 
 			if (oldX >= ((mapH - tilesMeasurement) * 8 - x)  ) canScroll = false;
 			else canScroll = true;
@@ -703,15 +616,18 @@ function gameSpeedRegulator() {
 			if(mapX + x + guyWidth > mapH * 8 + 1) {
 				newMapX = mapH * 8  - guyWidth;
 				newX = mScreenW - guyWidth;
+                                //mapX = mapH * 8 - guyWidth;
                                 mRejectUp = true;
                                 if(mCanFallAtEdge) y = MOVE_CONST;//mMovementV.getVMove();
 			}
-
+                        
+                        if (newX <= guyWidth + 1) console.log("newX s:" + screenX + " x:"+ x);
+                        //x = 0;
 		}  
 
 		//////////////////////////////////////
 		else if (x < 0) {   
-			if (oldX > 8 * mapH + 1) oldX = -1;
+			if (oldX > 8 * mapH + 1) oldX = -1;//mapH * 8;// -1;
 
 			if (oldX <= 0 - x) canScroll = false;
 			else canScroll = true;
@@ -743,7 +659,7 @@ function gameSpeedRegulator() {
 				newMapX += x;
 
 			}
-
+                        //x = 0;
 		}  
 
 		//////////////////////////////////////
@@ -778,7 +694,7 @@ function gameSpeedRegulator() {
 				newMapY += y;
 
 			}
-
+                        //y = 0;
 		}  
 		////////////////////////////////////// 
 		else if (y < 0 && !mRejectUp) {
@@ -813,7 +729,7 @@ function gameSpeedRegulator() {
 				newMapY += y;
 
 			}
-
+                        //y = 0;
 		}
 		////////////////////////
 		//special test for trouble spot:
@@ -833,7 +749,9 @@ function gameSpeedRegulator() {
                 
                 scrollx = screenX;
                 scrolly = screenY;
-		
+                
+		//guy.y = y + guy.y;
+                //guy.x = x + guy.x;
                 
 		//mMovementV.setScrollX(screenX);
 		//mMovementV.setScrollY(screenY);
@@ -859,19 +777,7 @@ function gameSpeedRegulator() {
 		boundaryRight = false;
 		canFall = true;
 
-            /*
-            if(mObjects.getSeedsLeft() <= 0 && mGameV.getBossLevel()) {
-			//win game
-			if (mObjects.endBossLevel()) {
-				//mGameV.setEndLevel(true);
-                                is_end_level = true;
-                                score += 1000;
-				//    incrementJniScore(1000);
-				//mGameV.incrementScore(1000);
-				//mSounds.playSound(SoundPoolManager.SOUND_GOAL);
-			}
-		}
-            */
+           
 		
 		var i,j;
 
@@ -1036,48 +942,6 @@ function gameSpeedRegulator() {
 
 
 
-	function isAnimationOnly() {
-		return mAnimationOnly;
-	}
-
-
-	function setAnimationOnly( mAnimationOnly) {
-		    mAnimationOnly = mAnimationOnly;
-	}
-
-
-	/**  used to refresh reference to Guy Sprite before start of level. **/
-	function setGuySprite( sprite) {
-		mGuySprite = sprite;
-	}
-	
-	
-
-	/*
-	Record getHighScores() {
-		return mHighScores;
-	}
-
-
-	function setHighScores(Record mHighScores) {
-		    mHighScores = mHighScores;
-	}
-	
-
-	var isEnableSounds() {
-		return mEnableSounds;
-	}
-
-
-	function setEnableSounds(var mEnableSounds) {
-		    mEnableSounds = mEnableSounds;
-		mSounds.setEnabled(mEnableSounds);
-	}
-	*/
-
-
-	  
-
 
 	 function readKeys() {		
 
@@ -1097,29 +961,7 @@ function gameSpeedRegulator() {
                 if (move_jump > 0) setKeyB(true);
                 else setKeyB(false);
                 
-                /*
-		if(mMovementV.getDirectionLR() == MovementValues.KEY_RIGHT) {
-
-			x =  (var) + (mMovementV.getHMove() * mXMultiplier);
-			//changeX = true;
-			//keyB = false;
-		}
-		if(mMovementV.getDirectionLR() == MovementValues.KEY_LEFT) {
-			x =   (var) - (mMovementV.getHMove() * mXMultiplier);
-			//changeX = true;
-			//keyB = false;
-		}
-		if(mMovementV.getDirectionUD() == MovementValues.KEY_UP) {
-			y =  (var) - (mMovementV.getVMove() * mYMultiplier);
-			//changeY = true;
-			//keyB = false;
-		}
-		if(mMovementV.getDirectionUD() == MovementValues.KEY_DOWN) {
-			y =  (var) + (mMovementV.getVMove() * mYMultiplier);
-			//changeY = true;
-			//keyB = false;
-		}
-                */
+                
 		
 
 	}
@@ -1196,13 +1038,7 @@ function gameSpeedRegulator() {
 		return mTemp;
 	}
 	
-	/* query the jni for sprite info used for Bundle */
-	function updateSpriteList() {
-		for (var x = 0; x < mGameV.getSpriteListSize() - 1; x ++) {
-			if(    getSpriteFacingRight(x) == 1) mGameV.getSprite(x + 1).setFacingRight(true);
-			else mGameV.getSprite(x + 1).setFacingRight(false);
-		}
-	}
+	
 	
 	/* strictly JNI oriented */
 	function playSounds() {
@@ -1220,22 +1056,7 @@ function gameSpeedRegulator() {
 	}
 	
 	
-	function addMonstersJNI() {
-		for (var i = mGameV.getMonsterOffset(); i <= mGameV.getMonsterNum()  ; i ++) {
-			var temp = mGameV.getSprite(i);
-			addMonster(temp.getMapPosX(), temp.getMapPosY(), temp.getAnimIndex());
-
-		}
-	}
 	
-	function addPlatformsJNI() {
-		if (mGameV.getPlatformNum() == -1) return;
-		for (var i = mGameV.getPlatformOffset() ; i <=  mGameV.getPlatformNum(); i++) {
-			var temp = mGameV.getSprite(i);
-			addPlatform(temp.getMapPosX(), temp.getMapPosY());
-
-		}
-	}
 	
         function pointToBlockNum(x, y) {
 		var mNewX, mNewY;

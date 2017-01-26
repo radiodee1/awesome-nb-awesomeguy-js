@@ -51,8 +51,6 @@ function testAdvanceLevel() {
 
 function testDraw() {
     
-    //newBG ++;
-    //animate = newBG;
     
     setPanelScroll(scrollx, scrolly);
     
@@ -72,14 +70,14 @@ function testDrawLoop() {
     level = 0;
     score = 10;
     lives = 3;
-    //preferences_monsters = true;
+    preferences_monsters = true;
     
     loop_handle = setInterval( function() {
         testPlayGameAgain();
         //testDraw();
         
         //console.log("30");
-    }, 30);
+    }, 40);//30
 }
 
 function testDrawPrep() {
