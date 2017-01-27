@@ -577,10 +577,7 @@ function runLoop() {
 
 		if (x > 0) {   
 
-			if (oldX > mapH * 8 ) {
-                            //newX = mapH * 8;
-                            oldX = -1;
-                        }// mapH * 8;// -1;
+			if (oldX > mapH * 8 ) {oldX = -1;}// mapH * 8;// -1;
 
 			if (oldX >= ((mapH - tilesMeasurement) * 8 - x)  ) canScroll = false;
 			else canScroll = true;
@@ -612,8 +609,11 @@ function runLoop() {
 				newMapX += x;
 
 			}
+                        //if (oldX > mapH * 8 ) {oldX = -1;}// mapH * 8;// -1;
+
+                        
 			// very special case
-			if(mapX + x + guyWidth > mapH * 8 + 1) {
+			if( mapX + x + guyWidth > mapH * 8 + 1) {
 				newMapX = mapH * 8  - guyWidth;
 				newX = mScreenW - guyWidth;
                                 //mapX = mapH * 8 - guyWidth;
@@ -621,7 +621,7 @@ function runLoop() {
                                 if(mCanFallAtEdge) y = MOVE_CONST;//mMovementV.getVMove();
 			}
                         
-                        if (newX <= guyWidth + 1) console.log("newX s:" + screenX + " x:"+ x);
+                        //if (newX <= guyWidth + 1) console.log("newX s:" + screenX + " x:"+ x);
                         //x = 0;
 		}  
 
@@ -740,6 +740,11 @@ function runLoop() {
 		else mCanSkip = true;
 		////////////////////////
 		
+                if (newX - screenX >= AG.SCREEN_TILES_H * 8 - guyWidth) {
+                    console.log("pass");
+                    newX = screenX + AG.SCREEN_TILES_H * 8 - guyWidth - MOVE_CONST;
+                }
+                //console.log("screen h:" + AG.SCREEN_TILES_H);
 		//mGuySprite.setMapPosX(newMapX);
 		//mGuySprite.setMapPosY(newMapY);
                 guy.x = newX;// newMapX;
