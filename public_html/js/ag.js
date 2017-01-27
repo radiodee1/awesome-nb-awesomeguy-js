@@ -68,9 +68,9 @@ var mGameV;
 var mCanvas;
 var mObjects;
 
-var mMovementV;
-var mHighScores;
-var mDisplayViewWidth;
+var mMovementV = 0;
+var mHighScores = 0;
+var mDisplayViewWidth = 0;
 //Matrix mMatrix;
 
 var scrollX, scrollY;
@@ -80,7 +80,8 @@ var mP;
 var mScaleH = 2;
 var mScaleV = 2;
 
-var mDimensionWidth,mDimensionHeight;
+var mDimensionWidth = 0;
+var mDimensionHeight = 0;
 
 
 /* -- start 'for scrolling' -- */
@@ -89,33 +90,33 @@ var LR_MARGIN = 80;
 var TB_MARGIN = 40;
 
 /* for scrolling, collision, etc. */
-var canScroll;
-var oldX;
-var oldY;
-var screenX;
-var screenY;
-var mapH;
-var mapV;
+var canScroll = true;
+var oldX = 0;
+var oldY = 0;
+var screenX = 0;
+var screenY = 0;
+var mapH = 0;
+var mapV = 0;
 
-var mCanSkip; // for problem spots
+var mCanSkip = true; // for problem spots
 
-var mScreenW;
+var mScreenW = 0;
 //var mScreenH;
 
-var mapX;
-var mapY;
+var mapX = 0;
+var mapY = 0;
 
-var newMapX;
-var newMapY;
+var newMapX = 0;
+var newMapY = 0;
 
-var newX;
-var newY;
+var newX = 0;
+var newY = 0;
 
-var guyWidth; 
-var guyHeight;
+var guyWidth = 0; 
+var guyHeight = 0;
 
-var x;
-var y;
+var x = 0;
+var y = 0;
 
 var keyB = false;
 var jumptime = 0;

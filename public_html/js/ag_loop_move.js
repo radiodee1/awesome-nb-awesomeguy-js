@@ -614,11 +614,12 @@ function runLoop() {
                         
 			// very special case
 			if( mapX + x + guyWidth > mapH * 8 + 1) {
-				newMapX = mapH * 8  - guyWidth;
-				newX = mScreenW - guyWidth;
+				newMapX = mapH * 8  - guyWidth - x;
+				newX = mScreenW - guyWidth - x;
                                 //mapX = mapH * 8 - guyWidth;
                                 mRejectUp = true;
                                 if(mCanFallAtEdge) y = MOVE_CONST;//mMovementV.getVMove();
+                                //console.log("very special case...");
 			}
                         
                         //if (newX <= guyWidth + 1) console.log("newX s:" + screenX + " x:"+ x);
@@ -740,9 +741,10 @@ function runLoop() {
 		else mCanSkip = true;
 		////////////////////////
 		
-                if (newX - screenX >= AG.SCREEN_TILES_H * 8 - guyWidth) {
-                    console.log("pass");
-                    newX = screenX + AG.SCREEN_TILES_H * 8 - guyWidth - MOVE_CONST;
+                if (mapX - screenX >= AG.SCREEN_TILES_H * 8 - guyWidth - x && x>0) {
+                    //console.log("pass");
+                    newX = screenX + AG.SCREEN_TILES_H * 8 - guyWidth - x;
+                    //x = 0;
                 }
                 //console.log("screen h:" + AG.SCREEN_TILES_H);
 		//mGuySprite.setMapPosX(newMapX);
@@ -771,7 +773,7 @@ function runLoop() {
 		 */
 
 		//BoundingBox guyBoxNext = makeSpriteBox(guy, x, y);
-		var guyBox = makeSpriteBox(guy, x, y );
+		var guyBox = makeSpriteBox(guy, 0,0);// x, y );
                 var mGuySprite = guy;
                 
 		// set ladderTest to false

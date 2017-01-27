@@ -70,7 +70,7 @@ function testDrawLoop() {
     level = 0;
     score = 10;
     lives = 3;
-    preferences_monsters = true;
+    //preferences_monsters = true;
     
     loop_handle = setInterval( function() {
         testPlayGameAgain();
@@ -86,7 +86,6 @@ function testDrawPrep() {
     //level += 1;                
     room = level - 1;
     
-    //clearSpriteList();
     clearMap();
 
     level_h = map_list[room].ydim;

@@ -1118,7 +1118,7 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x + move;
 					// marker test
-                                        if (xx + 2 > level_w - 2) xx = level_w;
+                                        if (xx + 2 >= level_w - 2) xx = level_w;
 					if( map_objects[xx+2][yy] === AG.B_BLOCK  ) markerTest = true;
 					if( map_objects[xx+2][yy] === AG.B_MARKER ) markerTest = true;
 					if( map_objects[ xx+2][yy+1] === 0) markerTest = true;
@@ -1133,7 +1133,7 @@ function drawMonsters() {
 					sprite[i].x = sprite[i].x - move;
 					// marker test
                                         if (xx  < 0) xx = 2;
-                                        if (xx >= 32) xx = 31;
+                                        if (xx >= level_w) xx = level_w -1;
                                         //console.log("xx,yy "+xx + " " + yy);
 
                                         if(map_objects[xx][yy] === AG.B_BLOCK) markerTest = true;
