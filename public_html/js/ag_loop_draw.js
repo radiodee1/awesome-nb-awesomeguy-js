@@ -749,10 +749,14 @@ function changeImageData(from, x , y,  scroll_x, scroll_y) {
                 //do nothing
             }
             else {
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +0) ] = r;
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +1) ] = g;
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +2) ] = b;
-                screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +3) ] = a;
+                var newy = l + i;
+                var newx = j + k;
+                if (newx >= 0 && newy >= 0 && newx < AG.SCREEN_WIDTH * 4 && newy < AG.SCREEN_HEIGHT) {
+                    screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +0) ] = r;
+                    screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +1) ] = g;
+                    screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +2) ] = b;
+                    screenz.data[((l + i) * AG.SCREEN_WIDTH * 4)  +(j +k +3) ] = a;
+                }
             }
             
             
@@ -811,11 +815,11 @@ function drawSprite_16( from,  x,  y,  scroll_x,  scroll_y,  paint_all,  extra) 
     var draw = true;
     var screen = getScreenPointer(0);
     if (x - scroll_x <  0) {
-        x = scroll_x;
+        //x = scroll_x; // do this in 'changeImageData()' instead
         draw = false;
     }
     if (y - scroll_y < 0) {
-        y = scroll_y;
+        //y = scroll_y;
         draw= false;
     }
     
@@ -1148,7 +1152,7 @@ function drawMonsters() {
 				//default is to show monster
 				visibility = show;
 				//hide monster if...
-				if(sprite[i].x > scrollx + 32 * 8 - length ) {
+				if(sprite[i].x > scrollx + 32 * 8 + length ) {
 					visibility = hide;
 				}
 				if (sprite[i].x < scrollx - length) {
