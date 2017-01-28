@@ -25,7 +25,8 @@ function testPlayGameAgain() {
         level = 0;
         is_end_level = true;
     }
-    else {
+    else if (true) {
+        testDrawBlack();
         var play = confirm("Play Again?");
         if ( ! play ) {
             clearInterval(loop_handle);
@@ -35,6 +36,8 @@ function testPlayGameAgain() {
             play_again = true;
             is_end_level = true;
             level = 0;
+            lives = 3;
+            score = 10;
             is_game_running = true;
         }
     }
@@ -70,7 +73,8 @@ function testDrawLoop() {
     level = 0;
     score = 10;
     lives = 3;
-    //preferences_monsters = true;
+    preferences_collision = true;
+    preferences_monsters = true;
     
     loop_handle = setInterval( function() {
         testPlayGameAgain();
@@ -101,4 +105,15 @@ function testDrawPrep() {
     move_jump = 0;
     //preferences_monsters = true;
     //preferences_collision = true;
+}
+
+function testDrawBlack() {
+    
+    /* clear screen */
+    var c = document.getElementById("my_canvas");
+    var ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.rect(0,0,AG.SCREEN_WIDTH, AG.SCREEN_HEIGHT);
+    ctx.fillStyle = "black";
+    ctx.fill();
 }

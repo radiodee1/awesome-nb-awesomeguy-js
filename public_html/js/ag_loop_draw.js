@@ -30,6 +30,7 @@ var screen;// = getScreenPointer(0);
 var map_level = [] ; //[96][96];
 var map_objects = [] ; //[96][96];
  
+/*
 for (i = 0; i < AG.MAP_HEIGHT; i ++) {
     var temp1 = [];
     var temp2 = [];
@@ -40,6 +41,7 @@ for (i = 0; i < AG.MAP_HEIGHT; i ++) {
     map_level.push(temp1);
     map_objects.push(temp2);
 }
+*/
 
 //var screen_0 [TEX_DIMENSION][TEX_DIMENSION];
 //var screen_1 [TEX_DIMENSION][TEX_DIMENSION];
@@ -1113,12 +1115,12 @@ function drawMonsters() {
 				// Must move and stop monsters when they hit bricks or
 				// markers or the end of the screen/room/level.
                                 //if (xx < 0 || yy < 0 || xx >= level_w || yy >= level_h) return;
-                                
+                                //console.log("monsters " + xx + " " + yy + " "+ map_objects.length);
 				if(sprite[i].facingRight === true) {
 
 					sprite[i].x = sprite[i].x + move;
 					// marker test
-                                        if (xx + 2 >= level_w - 2) xx = level_w;
+                                        if (xx + 2 >= level_w - 2) xx = level_w - 2;
 					if( map_objects[xx+2][yy] === AG.B_BLOCK  ) markerTest = true;
 					if( map_objects[xx+2][yy] === AG.B_MARKER ) markerTest = true;
 					if( map_objects[ xx+2][yy+1] === 0) markerTest = true;
@@ -1306,7 +1308,7 @@ function collisionWithMonsters() {
 	
 		  var guyBox = makeSpriteBox( guy , 0, 0 );
 
-		  
+		  //console.log("monster " + monster_offset + " " + monster_num + " " + sprite_num);
 		  for (i = monster_offset  ; i < monster_num ; i++) {   
 		    var monsterBox = makeSpriteBox(sprite[i] , 0, 0 );
 		    var test =  collisionSimple(guyBox, monsterBox);
@@ -1323,17 +1325,25 @@ function collisionWithMonsters() {
 		    		inactivateMonster(i);
 		    	}
 
-				setSoundBoom();
+				//setSoundBoom();
 		        
 		        
 		      }
 		      else {
 				endlevel = true;
+                                is_end_level = true;
+                                is_game_death = true;
+                                level --;
+                                if (lives === 1) { // soon will be lowered to zero!!
+                                    is_game_running = false;
+                                    play_again = false;
+                                }
+                                
 				if (preferences_collision === true) inactivateMonster(i);
 		    	//level.endLevel = true;
-		        lives --;
+                                lives --;
 				//mSounds.playSound(SoundPoolManager.SOUND_OW);
-				setSoundOw();
+				//setSoundOw();
 		      }
 		    }
 		  }
