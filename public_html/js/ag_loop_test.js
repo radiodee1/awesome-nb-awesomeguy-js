@@ -27,7 +27,7 @@ function testPlayGameAgain() {
     }
     else if (true) {
         //testDrawBlack();
-        testDrawSplash("splash1");
+        testDrawSplash();
         var play = confirm("Play Again?");
         if ( ! play ) {
             clearInterval(loop_handle);
@@ -119,7 +119,14 @@ function testDrawBlack() {
     ctx.fill();
 }
 
-function testDrawSplash(id) {
+function testDrawSplash() {
+    
+    splash_num ++;
+    if (splash_num > 3) splash_num = 1;
+    if (splash_num === 1) id = "splash1";
+    if (splash_num === 2) id = "splash2";
+    if (splash_num === 3) id = "splash3";
+    
     var img_id = document.getElementById(id);
 
     var c = document.getElementById("my_canvas");

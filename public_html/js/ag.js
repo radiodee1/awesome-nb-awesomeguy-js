@@ -188,3 +188,5 @@ var MapInfo = {
 }
 
 var map_list = [];
+
+var splash_num = 0;
