@@ -10,7 +10,7 @@ var move_ud = 0;
 var move_jump = 0;
 var MOVE_CONST = 3;
 
-$(document).ready( function() {
+$(window).on( "load", function() {
     
     setupDrawFunctionsA();
     

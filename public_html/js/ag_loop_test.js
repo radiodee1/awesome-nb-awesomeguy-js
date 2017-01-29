@@ -26,7 +26,8 @@ function testPlayGameAgain() {
         is_end_level = true;
     }
     else if (true) {
-        testDrawBlack();
+        //testDrawBlack();
+        testDrawSplash("splash1");
         var play = confirm("Play Again?");
         if ( ! play ) {
             clearInterval(loop_handle);
@@ -116,4 +117,12 @@ function testDrawBlack() {
     ctx.rect(0,0,AG.SCREEN_WIDTH, AG.SCREEN_HEIGHT);
     ctx.fillStyle = "black";
     ctx.fill();
+}
+
+function testDrawSplash(id) {
+    var img_id = document.getElementById(id);
+
+    var c = document.getElementById("my_canvas");
+    var ctx = c.getContext("2d");
+    ctx.drawImage(img_id, 0,0);
 }
