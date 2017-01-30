@@ -68,7 +68,8 @@ var Sprite = {
 	leftBB:0, 
         rightBB:0, 
         topBB:0, 
-        bottomBB:0
+        bottomBB:0,
+        type:"none"
 };
  
 //Sprite sprite[100];
@@ -254,6 +255,7 @@ function setGuyData() {
 	guy.bottomBB = 16;
 	guy.leftBB = 4;
 	guy.rightBB = 10;
+        guy.type = "guy";
 }
  
 /**
@@ -341,6 +343,7 @@ function setLevelData(a,  b, horizontal, vertical) {
 		sprite[i].rightBB = 0;
 		sprite[i].topBB = 0;
 		sprite[i].bottomBB = 0;
+                sprite[i].type = "none";
 	}
 	monster_num = 0;
 	sprite_num = 0;
@@ -363,8 +366,9 @@ function addSprite(x,y,left,right,top,bottom) {
     sprite[i].rightBB = right;
     sprite[i].topBB = top;
     sprite[i].bottomBB = bottom;
+    sprite[i].type = "sprite";
     sprite_num ++;
-    monster_num ++;
+    //monster_num ++;
     return i;
 }
  
@@ -447,9 +451,11 @@ function addMonster(monster_x, monster_y, monster_animate) {
     sprite[sprite_num].visible = true;
       
     sprite[sprite_num].topBB = 3; 
-	sprite[sprite_num].bottomBB = 8;
-	sprite[sprite_num].leftBB = 0;
-	sprite[sprite_num].rightBB = 16;
+    sprite[sprite_num].bottomBB = 8;
+    sprite[sprite_num].leftBB = 0;
+    sprite[sprite_num].rightBB = 16;
+    
+    sprite[sprite_num].type = "monster";
       
     sprite_num ++;
     monster_num = sprite_num;
@@ -489,9 +495,11 @@ function addPlatform(platform_x, platform_y) {
     sprite[sprite_num].visible = true;
       
     sprite[sprite_num].topBB = 0; 
-	sprite[sprite_num].bottomBB = 8;
-	sprite[sprite_num].leftBB = 0;
-	sprite[sprite_num].rightBB = 40;
+    sprite[sprite_num].bottomBB = 8;
+    sprite[sprite_num].leftBB = 0;
+    sprite[sprite_num].rightBB = 40;
+    
+    sprite[sprite_num].type = "platform";
       
     sprite_num ++;
     platform_num = sprite_num;
@@ -1099,14 +1107,12 @@ function drawMonsters() {
 
 	//var index_num = 0;
 	
-	//if (sprite_num >= monster_num) index_num = sprite_num;
-	//else index_num = monster_num;
 	
 	//for each monster...
 	if(monster_num > 0) {
 		for (i =  monster_offset ; i < monster_num   ; i++) {   
 			markerTest = false; 
-
+                        if (sprite[i].type !== "monster") continue;
 			
 			if (sprite[i].active === true ) {
 				xx = Math.floor(sprite[i].x / 8);
@@ -1228,11 +1234,13 @@ function drawMovingPlatform() {
   var visibility = false;
   var x_right, x_left, y_right, y_left;
     
-  if(platform_num === -1) return;
+  if(platform_num === -1 || platform_num > sprite_num) return;
     
-  for (i = monster_num + 1 ; i < platform_num ; i++) {
+  for (i = platform_offset ; i < platform_num ; i++) {
     markerTest = false; 
-
+        //console.log("i: "+ i);
+        
+        if (i >= sprite_num || i >= sprite.length || i < 0 || sprite[i].type !== "platform") continue;
       //x = sprite[i].x / 8;
       y = Math.floor(sprite[i].y / 8);
       /* Must move and stop platforms when they hit bricks or
@@ -1245,6 +1253,8 @@ function drawMovingPlatform() {
         // marker test
         y_right = y;
         x_right = x + width + cheat ;
+        if (x_right >= level_w) x_right = level_w - 1;
+        
         if(map_objects[x_right][y_right] === AG.B_BLOCK) markerTest = true;
         if(map_objects[x_right][y_right] === AG.B_MARKER) markerTest = true;
 
@@ -1260,6 +1270,8 @@ function drawMovingPlatform() {
         // marker test
         y_left = y;
         x_left = x + cheat ;
+        if (x_left < 0) x_left = 0;
+
         if(map_objects[x_left][y_left ] === AG.B_BLOCK) markerTest = true;
         if(map_objects[x_left][y_left ] === AG.B_MARKER) markerTest = true;
 
@@ -1634,7 +1646,7 @@ function initLevel( ) {
 		
                 
 		//mGameV.setPlatformOffset(num );
-                platform_offset = num;
+                platform_offset = num -1;
 		
 		for(i = 0; i< level_h ; i ++) { //y
 			for (j = 0; j <  level_w ; j ++) { //x

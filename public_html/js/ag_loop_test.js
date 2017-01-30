@@ -77,6 +77,8 @@ function testDrawLoop() {
     preferences_collision = true;
     preferences_monsters = true;
     
+    //level = 6; // FOR TESTING FLOATING PLATFORMS
+    
     loop_handle = setInterval( function() {
         testPlayGameAgain();
         //testDraw();
