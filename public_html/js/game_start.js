@@ -14,11 +14,9 @@ $(window).on( "load", function() {
     
     setupDrawFunctionsA();
     
-    
-    
     $(document).keydown(function(e) {
         input_key = e.keyCode;
-        $("#page_footer").html("<p>tap " + input_key  + "</p>");
+        //$("#page_footer").html("<p>tap " + input_key  + "</p>");
         //// call game fn here
         if (input_key === AG.LEFT) move_lr = - MOVE_CONST;//guy.x --;
         if (input_key === AG.UP) move_ud = - MOVE_CONST; //guy.y --;
@@ -31,16 +29,14 @@ $(window).on( "load", function() {
     
     $(document).keyup(function(e) {
         input_key = 0;
-        $("#page_footer").html("<p>tap " + input_key + "</p>");
+        //$("#page_footer").html("<p>tap " + input_key + "</p>");
         //// call game fn again here
         move_lr = 0;
         move_ud = 0;
         move_jump = 0;
     });
-    console.log("ready?");
+    //console.log("ready?");
     
-    
-    //runLoop();
     setupDrawFunctionsB();
     
 });

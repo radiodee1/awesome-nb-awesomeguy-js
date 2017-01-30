@@ -1383,12 +1383,13 @@ function collisionWithObjects( j,  i,  num) {
         if (test === true ) {
             exitblocked = false;
             setObjectsDisplay(j,i,0);
+            
         }
     }
     if (num === AG.B_GOAL || num === AG.B_INITIAL_GOAL) {
         var test = collisionSimple(guyBox,keyBox);
         if (test === true && !exitblocked) {
-            //endlevel = true;
+            //
             setObjectsDisplay(j,i,AG.B_GOAL);
         }
     }
@@ -1473,7 +1474,11 @@ function drawLevel( unused) {
                     collisionWithObjects(j,i,k);
 
                     xx = k;
-                    if (k === AG.B_INITIAL_GOAL) {
+                    if (k === AG.B_INITIAL_GOAL && !exitblocked) {
+                        //xx = AG.B_INITIAL_GOAL;
+                        xx = AG.B_GOAL;
+                    }
+                    if (k === AG.B_GOAL) {
                         xx = AG.B_GOAL;
                     }
 
