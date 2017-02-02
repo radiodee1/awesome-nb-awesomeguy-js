@@ -1779,7 +1779,7 @@ function setupDrawFunctionsB(){
         //context: document,
         //success:
         success: function(xml){
-            console.log("look for xml");
+            //console.log("look for xml");
             var level_in = 1;
             for(level_in = 1; level_in <=10; level_in ++) {
                 
@@ -1802,7 +1802,8 @@ function setupDrawFunctionsB(){
                     
                 });
             }         
-            
+            level = 0;
+            preferences_collision = true;
             
             testDrawLoop();
         },
