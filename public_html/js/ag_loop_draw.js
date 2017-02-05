@@ -120,6 +120,7 @@ var sound_boom = false;
 
 var preferences_monsters = false;
 var preferences_collision = false;
+var preferences_larger_screen = true;
 
 var animate_only = false;﻿
 

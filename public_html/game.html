@@ -29,11 +29,11 @@ and open the template in the editor.
                 }
             }
             function show_settings() {
-                $("#page_settings").show()
+                $("#page_settings").show();
                 //$("#page_readme").show()
             }
             function hide_settings() {
-                $("#page_settings").hide()
+                $("#page_settings").hide();
                 //$("#page_readme").hide()
             }
             function restart_game() {
@@ -44,6 +44,14 @@ and open the template in the editor.
                 if (level === -1) level = 0;
                 var obj2 = document.getElementById("collision_checkbox");
                 preferences_collision = obj2.checked;
+                var obj3 = document.getElementById("screen_checkbox");
+                preferences_larger_screen = obj3.checked;
+                if (!preferences_larger_screen) {
+                    $("#my_large_canvas").hide();
+                }
+                else {
+                    $("#my_large_canvas").show();
+                }
                 testDrawLoop();
                 
                 //console.log (level + " " + preferences_collision + " " + obj2.checked);
@@ -80,7 +88,9 @@ and open the template in the editor.
         
         <div id="page_header" class="w3-container w3-light-grey">Awesome Guy Game</div>
         <div id="page_content" class="w3-container">
-            <canvas id='my_canvas' width='256' height='192' style='border:1px solid #000000;' ></canvas>
+            <canvas id='my_canvas' width='256' height='192' style='border:1px solid #000000;' ></canvas><br>
+            <canvas id='my_large_canvas' width='512' height='384' style='border:1px solid #000000;' ></canvas>
+
         </div>
         <div id="page_buttons" class="w3-container w3-light-grey">
             <table style="border-collapse: collapse; border: 0px">
@@ -101,11 +111,15 @@ and open the template in the editor.
             </table>
         </div>
         <div id="page_footer" class="w3-container w3-light-grey">
-            <div id="page_settings" style="display: none">
+            <div id="page_settings" style="width:512px;display: none;border: 1px #000000 solid">
+                
+                <input id="screen_checkbox" class="w3-check" type="checkbox" checked="checked">
+                <label class="w3-validate">Larger Screen</label><br>
+                
                 <input id="collision_checkbox" class="w3-check" type="checkbox" checked="checked">
                 <label class="w3-validate">Monster Collision</label><br>
                 
-                <select id="level_select" class="w3-select" name="option" style="width: 20%">
+                <select id="level_select" class="w3-select" name="option" style="width: 512px">
                     <option value="" disabled selected>Starting Level</option>
                     <option value="1">Level 1</option>
                     <option value="2">Level 2</option>

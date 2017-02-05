@@ -28,6 +28,7 @@ function testPlayGameAgain() {
     else if (true) {
         //testDrawBlack();
         testDrawSplash();
+        testImageMag();
         var play = confirm("Play Again?");
         if ( ! play ) {
             clearInterval(loop_handle);
@@ -51,6 +52,7 @@ function testAdvanceLevel() {
         testDrawPrep();
     }
     testDraw();
+    testImageMag();
 }
 
 function testDraw() {
@@ -134,4 +136,18 @@ function testDrawSplash() {
     var c = document.getElementById("my_canvas");
     var ctx = c.getContext("2d");
     ctx.drawImage(img_id, 0,0);
+}
+
+function testImageMag() {
+    //console.log("mag");
+    if (! preferences_larger_screen ) return;
+    var c = document.getElementById("my_canvas");
+    var ctx = c.getContext("2d");
+    var img = ctx.getImageData(0,0,256,192);
+    var cc = document.getElementById("my_large_canvas");
+    var cctx = cc.getContext("2d");
+    var image = new Image();
+    image.src = c.toDataURL();
+    //cctx.putImageData(img, 0,0, 0,0, 512, 384);
+    cctx.drawImage(image, 0,0, 512, 384);
 }
