@@ -44,17 +44,53 @@ and open the template in the editor.
                 if (level === -1) level = 0;
                 var obj2 = document.getElementById("collision_checkbox");
                 preferences_collision = obj2.checked;
-                var obj3 = document.getElementById("screen_checkbox");
-                preferences_larger_screen = obj3.checked;
-                if (!preferences_larger_screen) {
-                    $("#my_large_canvas").hide();
-                }
-                else {
-                    $("#my_large_canvas").show();
-                }
+                click_large();
+                click_small();
+                
+                
                 testDrawLoop();
                 
                 //console.log (level + " " + preferences_collision + " " + obj2.checked);
+            }
+            function click_monsters() {
+                var obj2 = document.getElementById("collision_checkbox");
+                preferences_collision = obj2.checked;
+            }
+            function click_large() {
+                var obj = document.getElementById("screen_checkbox");
+                preferences_larger_screen = obj.checked;
+                if (!preferences_larger_screen) {
+                    hide_large_screen();
+                }
+                else {
+                    show_large_screen();
+                }
+            }
+            function click_small() {
+                var obj = document.getElementById("small_screen_checkbox");
+                //preferences_larger_screen = obj3.checked;
+                if (!obj.checked) {
+                    hide_small_screen();
+                }
+                else {
+                    show_small_screen();
+                }
+            }
+            function hide_large_screen() {
+                $("#my_large_canvas").hide();
+                
+            }
+            function show_large_screen() {
+                $("#my_large_canvas").show();
+
+            }
+            function hide_small_screen() {
+                $("#my_canvas").hide();
+                
+            }
+            function show_small_screen() {
+                $("#my_canvas").show();
+                
             }
         </script>
     </head>
@@ -112,11 +148,13 @@ and open the template in the editor.
         </div>
         <div id="page_footer" class="w3-container w3-light-grey">
             <div id="page_settings" style="width:512px ;display: none;border: 1px #000000 solid">
+                <input id="small_screen_checkbox" class="w3-check" type="checkbox" checked="checked" onclick="click_small();">
+                <label class="w3-validate">Small Screen</label><br>
                 
-                <input id="screen_checkbox" class="w3-check" type="checkbox" checked="checked">
+                <input id="screen_checkbox" class="w3-check" type="checkbox" checked="checked" onclick="click_large();">
                 <label class="w3-validate">Larger Screen</label><br>
                 
-                <input id="collision_checkbox" class="w3-check" type="checkbox" checked="checked">
+                <input id="collision_checkbox" class="w3-check" type="checkbox" checked="checked" onclick="click_monsters();">
                 <label class="w3-validate">Monster Collision</label><br>
                 
                 <select id="level_select" class="w3-select" name="option" style="width: 512px">
