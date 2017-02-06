@@ -46,11 +46,15 @@ and open the template in the editor.
                 preferences_collision = obj2.checked;
                 click_large();
                 click_small();
-                
+                click_sound();
                 
                 testDrawLoop();
                 
                 //console.log (level + " " + preferences_collision + " " + obj2.checked);
+            }
+            function click_sound() {
+                var obj = document.getElementById("sound_checkbox");
+                preferences_sound = obj.checked;
             }
             function click_monsters() {
                 var obj2 = document.getElementById("collision_checkbox");
@@ -116,6 +120,21 @@ and open the template in the editor.
         <img id="splash2" src="img/splash2.png" style="display: none">
         <img id="splash3" src="img/splash3.png" style="display: none">
         
+        <div style="display: none">
+            <audio controls id="snd_boom">
+                <source src="snd/boom.mp3" type="audio/mpeg">
+            </audio>
+            <audio controls id="snd_goal">
+                <source src="snd/goal.mp3" type="audio/mpeg">
+            </audio>
+            <audio controls id="snd_ow">
+                <source src="snd/ow.mp3" type="audio/mpeg">
+            </audio>
+            <audio controls id="snd_prize">
+                <source src="snd/prize.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        
         <ul class="w3-navbar w3-grey" style="width:100%;margin-left:0%">
             <li><a href="index.html">End Game</a></li> 
             <li><a href="javascript:flip_settings();">Toggle Settings</a></li>
@@ -156,6 +175,9 @@ and open the template in the editor.
                 
                 <input id="collision_checkbox" class="w3-check" type="checkbox" checked="checked" onclick="click_monsters();">
                 <label class="w3-validate">Monster Collision</label><br>
+                
+                <input id="sound_checkbox" class="w3-check" type="checkbox" checked="checked" onclick="click_sound();">
+                <label class="w3-validate">Sound</label><br>
                 
                 <select id="level_select" class="w3-select" name="option" style="width: 512px">
                     <option value="" disabled selected>Starting Level</option>

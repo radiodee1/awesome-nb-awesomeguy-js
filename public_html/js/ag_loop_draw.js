@@ -121,6 +121,7 @@ var sound_boom = false;
 var preferences_monsters = false;
 var preferences_collision = false;
 var preferences_larger_screen = true;
+var preferences_sound = true;
 
 var animate_only = false;﻿
 
@@ -177,19 +178,37 @@ function clearMap() {
 }
 
 function setSoundOw() {
-	sound_ow = true;
+    sound_ow = true;
+    startSound("snd_ow");
 }
 
 
 function setSoundPrize() {
-	sound_prize = true;
+    sound_prize = true;
+    startSound("snd_prize");
 }
 
 
 function setSoundBoom() {
-	sound_boom = true;
+    sound_boom = true;
+    startSound("snd_boom");
 }
 
+function setSoundGoal() {
+    startSound("snd_goal");
+}
+
+function startSound(id) {
+    if (! preferences_sound) return;
+    var snd = document.getElementById(id);
+    if (snd.paused) {
+        snd.currentTime = 0.0;
+    }
+    else {
+        snd.load();
+    }
+    snd.play();
+}
 
 function getSoundOw() {
 	var temp = sound_ow;
@@ -1338,7 +1357,7 @@ function collisionWithMonsters() {
 		    		inactivateMonster(i);
 		    	}
 
-				//setSoundBoom();
+				setSoundBoom();
 		        
 		        
 		      }
@@ -1356,7 +1375,7 @@ function collisionWithMonsters() {
 		    	//level.endLevel = true;
                                 lives --;
 				//mSounds.playSound(SoundPoolManager.SOUND_OW);
-				//setSoundOw();
+				setSoundOw();
 		      }
 		    }
 		  }
@@ -1384,7 +1403,7 @@ function collisionWithObjects( j,  i,  num) {
         if (test === true ) {
             exitblocked = false;
             setObjectsDisplay(j,i,0);
-            
+            setSoundPrize();
         }
     }
     if (num === AG.B_GOAL || num === AG.B_INITIAL_GOAL) {

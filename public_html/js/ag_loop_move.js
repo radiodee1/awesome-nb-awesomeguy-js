@@ -602,7 +602,7 @@
 							setObjectsDisplay(j, i, 0);//jni
                                                         score += 100;
 							    //incrementJniScore(100);
-							
+							setSoundGoal();
 
 							//mGameV.incrementScore(100);
 							//mmEffect(SFX_GOAL);
@@ -629,6 +629,7 @@
                                                         }
 							//mGameV.incrementScore(10);
 							//mmEffect(SFX_PRIZE);
+                                                        setSoundPrize();
 							//mSounds.playSound(SoundPoolManager.SOUND_PRIZE);
 						}
 
@@ -644,7 +645,7 @@
 							
 							//mGameV.incrementScore(50);
                                                         score += 50;
-
+                                                        setSoundPrize();
 							//mSounds.playSound(SoundPoolManager.SOUND_PRIZE);
 							//data[level.usernum].level = level.room;
 							//must save this data...
@@ -659,7 +660,7 @@
 							
 							setObjectsDisplay(j, i, 0);//jni
 							
-
+                                                        setSoundGoal();
 							//mSounds.playSound(SoundPoolManager.SOUND_GOAL);
                                                         lives ++;
 							//mGameV.incrementLives();
@@ -674,7 +675,7 @@
 							setObjectsDisplay(j, i, 0);//jni
 							    //incrementJniScore(200);
 							score += 200;
-
+                                                        setSoundPrize();
 							//mGameV.incrementScore(200);
 							//mmEffect(SFX_PRIZE);
 							//mSounds.playSound(SoundPoolManager.SOUND_PRIZE);
@@ -690,7 +691,7 @@
                                                         is_game_death = true;
                                                         is_end_level = true;
                                                         lives --;
-
+                                                        setSoundOw();
 							//mmEffect(SFX_OW);
 							//mSounds.playSound(SoundPoolManager.SOUND_OW);
 						}
