@@ -227,12 +227,12 @@
 			jumptime = -1;
 		}
 
-        if(mCloseBottomGap && !canFall && ! ladderTest && !mSkip && jumptime <= 0) {
-            y = 1;// mMovementV.getVMove();
-        }
+                if(mCloseBottomGap && !canFall && ! ladderTest && !mSkip && jumptime <= 0) {
+                    y = 1;// mMovementV.getVMove();
+                }
         //move_ud = y;
         //move_lr = x;
-
+                
 		return;
 	}
 	
@@ -248,6 +248,23 @@
           if (level === -1) return canJump;
 
           temp = false;
+          
+            /*
+            var numx = Math.floor((guy.x )/ 8);
+            
+            var numy = Math.floor((guy.y + guy.bottomBB)/ 8);
+            if(numy >= level_h) numy = level_h -1;
+            if(numx >= level_w) numx = level_w -1;
+
+            var num = map_objects[numx][numy];
+            var vis = map_level[numx][numy];
+
+            if (num === AG.B_SPACE && vis !== AG.B_SPACE && numy >= level_h -1) {
+                temp = true;
+                canJump = true;
+            }
+            */
+
 		  
 		  for (i = platform_offset + 1 ; i <=  platform_num ; i ++) {
 		    j = i ; // i - 1;

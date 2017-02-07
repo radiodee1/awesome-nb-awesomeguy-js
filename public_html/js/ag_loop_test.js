@@ -35,9 +35,10 @@ function testPlayGameAgain() {
             play_again = false;
         }
         else {
+            change_level();
             play_again = true;
             is_end_level = true;
-            level = 0;
+            //level = 0;
             lives = 3;
             score = 10;
             is_game_running = true;

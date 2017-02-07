@@ -1413,9 +1413,36 @@ function collisionWithObjects( j,  i,  num) {
             setObjectsDisplay(j,i,AG.B_GOAL);
         }
     }
+    
 
 }
 
+function checkBottom() {
+    var numx = Math.floor((guy.x )/ 8);
+    var numy = Math.floor((guy.y + guy.bottomBB)/ 8);
+    if(numy >= level_h) numy = level_h -1;
+    if(numx >= level_w) numx = level_w -1;
+    
+    var num = map_objects[numx][numy];
+    var vis = map_level[numx][numy];
+    
+    if (num === AG.B_SPACE && vis === AG.B_SPACE && numy >= level_h -1 ) {
+        // guy dies at bottom of map.
+        //console.log("hit bottom");
+        endlevel = true;
+        is_end_level = true;
+        is_game_death = true;
+        level --;
+        if (lives === 1) { // soon will be lowered to zero!!
+            is_game_running = false;
+            play_again = false;
+        }
+
+        lives --;
+        
+        setSoundOw();
+    }
+}
 
 
 /**
@@ -1542,7 +1569,8 @@ function drawLevel( unused) {
     if (preferences_monsters === true && preferences_collision === true && animate_only === false) {
         collisionWithMonsters();
     }
-
+    
+    checkBottom();
 
     /* draw guy with animation */
     if (guy.animate === 0) {

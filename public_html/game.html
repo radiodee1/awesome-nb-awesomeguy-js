@@ -36,12 +36,27 @@ and open the template in the editor.
                 $("#page_settings").hide();
                 //$("#page_readme").hide()
             }
-            function restart_game() {
-                clearInterval(loop_handle);
-
+            function change_level() {
                 var obj = document.getElementById("level_select");
                 level = obj.selectedIndex - 1;
                 if (level === -1) level = 0;
+            }
+            
+            function restart_game() {
+                clearInterval(loop_handle);
+
+                change_level();
+                //var obj = document.getElementById("level_select");
+                //level = obj.selectedIndex - 1;
+                //if (level === -1) level = 0;
+                
+                play_again = true;
+                is_end_level = true;
+                lives = 3;
+                score = 10;
+                is_game_running = true;
+                
+                
                 var obj2 = document.getElementById("collision_checkbox");
                 preferences_collision = obj2.checked;
                 click_large();
