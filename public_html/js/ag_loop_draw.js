@@ -121,7 +121,7 @@ var sound_boom = false;
 var preferences_monsters = false;
 var preferences_collision = false;
 var preferences_larger_screen = true;
-var preferences_sound = true;
+var preferences_sound = false;
 
 var animate_only = false;﻿
 
