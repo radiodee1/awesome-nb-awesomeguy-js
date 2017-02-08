@@ -107,6 +107,7 @@ function testDrawPrep() {
     
     initLevel();
     
+    graphFromMap();
     graphSet();
     
     jumptime = 0;
