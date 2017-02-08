@@ -1791,6 +1791,9 @@ function checkValues() {
 
 
 function setupDrawFunctionsA() {
+    graphCheckForWorkers();
+    graphInit();
+    
     screen = getScreenPointer(0);
     setGuyData();
 

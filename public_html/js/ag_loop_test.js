@@ -107,6 +107,8 @@ function testDrawPrep() {
     
     initLevel();
     
+    graphSet();
+    
     jumptime = 0;
     move_ud = 0;
     move_lr = 0;
