@@ -30,18 +30,7 @@ var screen;// = getScreenPointer(0);
 var map_level = [] ; //[96][96];
 var map_objects = [] ; //[96][96];
  
-/*
-for (i = 0; i < AG.MAP_HEIGHT; i ++) {
-    var temp1 = [];
-    var temp2 = [];
-    for (j = 0; j < AG.MAP_WIDTH; j ++) {
-        temp1.push(0);
-        temp2.push(0);
-    }
-    map_level.push(temp1);
-    map_objects.push(temp2);
-}
-*/
+
 
 //var screen_0 [TEX_DIMENSION][TEX_DIMENSION];
 //var screen_1 [TEX_DIMENSION][TEX_DIMENSION];
@@ -69,7 +58,8 @@ var Sprite = {
         rightBB:0, 
         topBB:0, 
         bottomBB:0,
-        type:"none"
+        type:"none",
+        move:0
 };
  
 //Sprite sprite[100];
@@ -77,8 +67,6 @@ var sprite = [];
 for(i = 0; i < 100; i ++){
     sprite.push(Object.assign({},Sprite));
 }
-//sprite[10].x = 75;
-//alert(sprite.length + " " + sprite[10].x);
 
 var guy = Object.assign({},Sprite); 
 var keySprite = Object.assign({},Sprite);
@@ -122,6 +110,7 @@ var preferences_monsters = false;
 var preferences_collision = false;
 var preferences_larger_screen = true;
 var preferences_sound = false;
+var preferences_graph = false;
 
 var animate_only = false;﻿
 
@@ -157,7 +146,7 @@ function clearSpriteList() {
     }
     addSprite(0,0,4,10,2,16);// the guy
     guy = sprite[0];
-    console.log("clearSpriteList");
+    //console.log("clearSpriteList");
 }
 
 function clearMap() {
@@ -210,6 +199,7 @@ function startSound(id) {
     snd.play();
 }
 
+/*
 function getSoundOw() {
 	var temp = sound_ow;
 	sound_ow = false;
@@ -229,6 +219,7 @@ function getSoundBoom() {
 	sound_boom = false;
 	return temp;
 }
+*/
 
 /* NEED INTERFACE WITH JAVA */
 
