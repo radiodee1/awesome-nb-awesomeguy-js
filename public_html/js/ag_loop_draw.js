@@ -1810,7 +1810,6 @@ function setupDrawFunctionsA() {
 
 function setupDrawFunctionsB(){
     // do xml setup here
-    console.log("before ajax start");
 
     $.ajax({
         type: "GET",
@@ -1827,7 +1826,7 @@ function setupDrawFunctionsB(){
                 
                 $(xml).find('game level[number="'+ level_in +'"]').each(function(){
                     //var a, b, dim_horizontal, dim_vertical;
-                    console.log("xml found");
+                    //console.log("xml found");
                     var dim_horizontal = parseInt( $(this).find('horizontal').text());
                     var dim_vertical = parseInt($(this).find('vertical').text());
                     level_h = dim_vertical;

@@ -75,41 +75,48 @@ function graphFromMap() {
                     (m[i][j] === AG.B_SPACE || m[i][j] === AG.B_PRIZE || m[i][j] === AG.B_BIBPRIZE || 
                     m[i][j] === AG.B_ONEUP || m[i][j] === AG.B_KEY || m[i][j] === AG.B_INITIAL_GOAL || m[i][j] === AG.B_GOAL)) {
                 floor.push( graphNode(i,j) );
-                string_floor.push( JSON.stringify(graphNode(i,j)) )
+                string_floor.push( JSON.stringify(graphNode(i,j)) );
             }
-            if (  j + 1 < level_w && i - 1 >= 0 && m[i][j] === AG.B_SPACE && m[i-1][j+1] === AG.B_BLOCK && m[i][j+1] === AG.B_SPACE) {
+            if (  j + 1 < level_w && i - 1 >= 0 && m[i][j] === AG.B_SPACE && m[i-1][j+1] === AG.B_BLOCK && m[i-1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
+                
                 floor.push( graphNode(i,j) ); // overhang on right
-                string_floor.push( JSON.stringify(graphNode(i,j)) )
-
-                drop.push(graphNode(i,j) );
-                string_drop.push( JSON.stringify(graphNode(i,j)) )
+                string_floor.push( JSON.stringify(graphNode(i,j)) );
+                
+                if(! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
+                    drop.push(graphNode(i,j) );
+                    string_drop.push( JSON.stringify(graphNode(i,j)) );
+                }
 
             }
-            if ( j + 1 < level_w && i + 1 < level_h  && m[i][j] === AG.B_SPACE &&  m[i+ 1][j+1] === AG.B_BLOCK && m[i][j+1] === AG.B_SPACE) {
+            if ( j + 1 < level_w && i + 1 < level_h  && m[i][j] === AG.B_SPACE &&  m[i+ 1][j+1] === AG.B_BLOCK && m[i+1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
+                
                 floor.push( graphNode(i,j) ); // overhang on left
-                string_floor.push( JSON.stringify(graphNode(i,j)) )
-
-                drop.push( graphNode(i,j) );
-                string_drop.push( JSON.stringify(graphNode(i,j)) )
-
+                string_floor.push( JSON.stringify(graphNode(i,j)) );
+                
+                if(! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
+                    drop.push( graphNode(i,j) );
+                    string_drop.push( JSON.stringify(graphNode(i,j)) );
+                }
             }
         }
     }
+    
     // ladder next //
-    for (j = 0; j < level_h; j ++) {
-        for(i = 0; i < level_w; i ++) {
+    for (i = 0; i < level_w; i ++) {
+        for(j = 0; j < level_h; j ++) { // level_h abd j
             if (m[i][j] === AG.B_LADDER) {
                 ladder.push( graphNode(i,j) );
-                string_ladder.push( JSON.stringify(graphNode(i,j)) )
+                string_ladder.push( JSON.stringify(graphNode(i,j)) );
 
             }
             if (j + 1 < level_h && m[i][j] === AG.B_SPACE && m[i][j+1] === AG.B_LADDER) {
                 ladder.push( graphNode(i,j) );
-                string_ladder.push( JSON.stringify(graphNode(i,j)) )
+                string_ladder.push( JSON.stringify(graphNode(i,j)) );
 
             }
         }
     }
+    graphLog(ladder);
     ////////// further processing ////////////
     // detect skip from drop //
     var len = drop.length;
@@ -121,34 +128,56 @@ function graphFromMap() {
             graph.push( graphEdge(j.x,j.y, j.x, j.y+1) );
             graph.push( graphEdge(j.x, j.y+1, j.x, j.y) );
         }
-        if (j.y + 1 < level_h) {
+        else if (j.y + 1 < level_h) {
             for (a = j.y +1 ; a < level_h; a ++ ) {
                 if (a+1 < level_h && m[j.x][a] === AG.B_SPACE && m[j.x][a+1] === AG.B_BLOCK) {
-                    graph.push( graphEdge( j.x,j.y, j.x, a) ); // one way... falling!
-                    continue;
+                    var temp = graphEdge(j.x, j.y, j.x, a);
+                    if (temp.cost !== 0 && temp.cost !== 1) {
+                        graph.push( graphEdge( j.x,j.y, j.x, a) ); // one way... falling!
+                        //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
+                        continue;
+                    }
                 }
             }
         }
     }
-    len = ladder.length -1;
+    
+    
+    len = ladder.length  ;
     var start = graphNode(0,0);
     var stop = graphNode(0,0);
-    for (z = 0; z < len; z ++) {
-        var j = ladder[z];
-        if(z === 0) start = j;
-        stop = j;
-        if (start.y !== j.y && j.y + 1 !== ladder[z+1].y  ){// && start.x !== j.x ) {
+    var z = 0;
+    
+    while ( z < len) {
+        
+        if(z === 0) {
+            
+            start = ladder[z];
+        }
+        //stop = ladder[z+1];//j;
+        console.log(ladder[z].y + " " + ladder[z+1].y + " raw"  );
+        if ( ( z+2 < ladder.length && start.y !== ladder[z].y && (ladder[z+1].y) + 1  !== (ladder[z+2].y)   
+                //&& start.x !== j.x
+                ) || z >= len -2  ) {
             // push two edges
             var temp = graphEdge(start.x,start.y, stop.x, stop.y);
-            console.log("ladder "+ JSON.stringify(temp));
             if (temp.cost !== 0) {
+                console.log("ladder "+ JSON.stringify(temp));
+                
                 graph.push( graphEdge(start.x, start.y, stop.x, stop.y) );
                 graph.push( graphEdge(stop.x, stop.y, start.x, start.y ) );
             }
-            start = ladder[z+1];
+            start = ladder[z+2];
+            //z ++;
         }
         
+        
+        stop = ladder[z+2];// 1
+        
+        z+=1;
     }
+    //graphLog(graph);
+    
     len = floor.length - 1;
     var start = graphNode(0,0);
     var stop = graphNode(0,0);
@@ -183,10 +212,10 @@ function graphFromMap() {
     graph.sort(function(a, b) {
         return (a.sort) - (b.sort);
     });
-    //graphLog();
+    //graphLog(graph);
 }
 
-function graphLog() {
+function graphLog(graph) {
     for(i = 0; i < graph.length; i ++) {
         console.log(JSON.stringify(graph[i]) + " graph " + i)
     }
@@ -199,7 +228,7 @@ function isInList(obj, list) {
 }
 
 function graphNode(x,y ) {
-    return {'x':x,'y':y};
+    return {'x': parseInt(x),'y': parseInt(y)};
 }
 
 function graphEdge(startx, starty, stopx, stopy) {
