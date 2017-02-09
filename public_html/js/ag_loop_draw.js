@@ -112,7 +112,7 @@ var preferences_larger_screen = true;
 var preferences_sound = false;
 var preferences_graph = false;
 
-var animate_only = false;﻿
+var animate_only = false;
 
 
 
