@@ -34,7 +34,8 @@ function graphInit() {
                 console.log(data.value);
                 break;
             case 'sprites':
-                console.log(data.value);
+                console.log(data.value.length);
+                graphSprites(data.value);
                 break;
         }
     };
@@ -43,6 +44,10 @@ function graphInit() {
     };
     graphTest();
     
+}
+
+function graphSprites(val) {
+    sprite = val;
 }
 
 function graphTest() {
@@ -254,6 +259,7 @@ function isInList(obj, list) {
     return temp;
 }
 
+/*
 function graphNode(x,y ) {
     return {'x': parseInt(x),'y': parseInt(y)};
 }
@@ -270,3 +276,4 @@ function graphEdge(startx, starty, stopx, stopy, name="none") {
         'name': name
     };
 }
+*/

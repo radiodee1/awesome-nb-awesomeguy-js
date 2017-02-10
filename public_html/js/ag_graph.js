@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 
-
-
-
 /*  worker thread */
 var graph = [];
+var sprite_edges = [];
+var sprite = [];
+
+importScripts("ag_graph_extra.js");
+
 
 self.onmessage = function(e) {
     switch (e.data.cmd ) {
@@ -35,8 +37,27 @@ function test(val) {
 
 function graphSet(val) {
     graph = val.graph;
+    sprite = val.sprite;
+    
+    graphExtraEdges();
+    graphSolve();
+    graphModifySprite();
     
     self.postMessage({'cmd':'log', 'value': "sprites " + val.sprite.length + " graph "+ val.graph.length });
+    self.postMessage({'cmd':'sprites', 'value': sprite });
+
+}
+
+function graphExtraEdges() {
+    test("new edges");
+}
+
+function graphSolve() {
+    test("solve");
+}
+
+function graphModifySprite() {
+    test("modify sprite for return");
 }
 
 function graphCancel(val) {
