@@ -40,6 +40,7 @@ function graphSet(val) {
     sprite = val.sprite;
     
     graphExtraEdges();
+    graphInit();
     graphSolve();
     graphModifySprite();
     
@@ -50,6 +51,13 @@ function graphSet(val) {
 
 function graphExtraEdges() {
     test("new edges");
+    for (i = 0; i < sprite.length; i ++ ) {
+        test( " sprite " + i);
+    }
+}
+
+function graphInit() {
+    test("zero out prev and dist");
 }
 
 function graphSolve() {
@@ -64,10 +72,20 @@ function graphCancel(val) {
     
 }
 
-function setPrev(index, val) {
-    
+function setPrev(label, val) {
+    for (i = 0; i < graph.length; i ++) {
+        if (label === graph[i].sort ) graph[i].prev = val;
+    }
+    for (i = 0; i < sprite_edges.length; i ++) {
+        if (label === sprite_edges[i].sort) sprite_edges[i].prev = val;
+    }
 }
 
-function setDist(index, val) {
-    
+function setDist(label, val) {
+    for (i = 0; i < graph.length; i ++) {
+        if (label === graph[i].sort ) graph[i].dist = val;
+    }
+    for (i = 0; i < sprite_edges.length; i ++) {
+        if (label === sprite_edges[i].sort) sprite_edges[i].dist = val;
+    }
 }
