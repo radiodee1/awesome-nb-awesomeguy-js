@@ -53,6 +53,28 @@ function graphExtraEdges() {
     test("new edges");
     for (i = 0; i < sprite.length; i ++ ) {
         test( " sprite " + i);
+        if (sprite[i].type === "super_monster") {
+            checkEdges(sprite[i]);
+        }
+    }
+    checkEdges(sprite[0]);
+}
+
+function checkEdges(s) {
+    var xloc = Math.floor(s.x / 8);
+    var yloc = Math.floor(s.y / 8);
+    
+    for (i = 0; i < graph.length; i ++) {
+        var x1 = graph[i].x1;
+        var y1 = graph[i].y1;
+        var x2 = graph[i].x2;
+        var y2 = graph[i].y2;
+        if ( x1 <= xloc && xloc <= x2 && y1 === y2 && yloc === y1) {
+            // make a new horizontal edge
+        }
+        if ( y1 <= yloc && yloc <= y2 && x1 === x2 && xloc === x1) {
+            // make a new vertical edge
+        }
     }
 }
 
