@@ -8,7 +8,7 @@
 
 
 /*  worker thread */
-
+var graph = [];
 
 self.onmessage = function(e) {
     switch (e.data.cmd ) {
@@ -34,9 +34,19 @@ function test(val) {
 }
 
 function graphSet(val) {
-    self.postMessage({'cmd':'log', 'value': "sprites " + val.sprite.length + " map "+ val.graph.length });
+    graph = val.graph;
+    
+    self.postMessage({'cmd':'log', 'value': "sprites " + val.sprite.length + " graph "+ val.graph.length });
 }
 
 function graphCancel(val) {
+    
+}
+
+function setPrev(index, val) {
+    
+}
+
+function setDist(index, val) {
     
 }

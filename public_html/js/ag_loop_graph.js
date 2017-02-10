@@ -265,6 +265,8 @@ function graphEdge(startx, starty, stopx, stopy, name="none") {
         'sort': starty * level_w + startx,
         'from': starty * level_w + startx,
         'to': stopy * level_w + stopx,
+        'prev': 0,
+        'dist': 0,
         'name': name
     };
 }
