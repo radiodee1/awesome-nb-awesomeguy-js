@@ -50,10 +50,11 @@ function graphTest() {
 }
 
 function graphSet() {
-    if (graph_running) return;
+    
+    if (graph_running || ! preferences_graph ) return;
     sprite[0].x = guy.x;
     sprite[0].y = guy.y;
-    worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': map_objects } });
+    worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': graph } });
     graph_running = true;
 }
 
@@ -131,15 +132,15 @@ function graphFromMap() {
         var j = drop[z];
         //console.log(obj + " " + j.x + " " + j.y);
         if (j.y + 2 < level_h && m[j.x][j.y + 1] === AG.B_SPACE && m[j.x][j.y+2] === AG.B_BLOCK) {
-            graph.push( graphEdge(j.x,j.y, j.x, j.y+1) );
-            graph.push( graphEdge(j.x, j.y+1, j.x, j.y) );
+            graph.push( graphEdge(j.x,j.y, j.x, j.y+1,"drop") );
+            graph.push( graphEdge(j.x, j.y+1, j.x, j.y, "drop") );
         }
         else if (j.y + 1 < level_h) {
             for (a = j.y +1 ; a < level_h; a ++ ) {
                 if (a+1 < level_h && m[j.x][a] === AG.B_SPACE && m[j.x][a+1] === AG.B_BLOCK) {
-                    var temp = graphEdge(j.x, j.y, j.x, a);
+                    var temp = graphEdge(j.x, j.y, j.x, a, "drop");
                     if (temp.cost !== 0 && temp.cost !== 1) {
-                        graph.push( graphEdge( j.x,j.y, j.x, a) ); // one way... falling!
+                        graph.push( graphEdge( j.x,j.y, j.x, a, "drop") ); // one way... falling!
                         //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
                         continue;
                     }
@@ -165,12 +166,12 @@ function graphFromMap() {
         if ( ( z+2 < ladder.length && start.y !== ladder[z].y && (ladder[z+1].y) + 1  !== (ladder[z+2].y)  ) ||  (z >= len -1 ) ) {
             // push two edges
             
-            var temp = graphEdge(start.x ,start.y, stop.x, stop.y);
+            var temp = graphEdge(start.x ,start.y, stop.x, stop.y,"ladder");
             if (temp.cost !== 0) {
-                console.log(z + " ladder "+ JSON.stringify(temp));
+                //console.log(z + " ladder "+ JSON.stringify(temp));
                 
-                graph.push( graphEdge(start.x, start.y, stop.x, stop.y) );
-                graph.push( graphEdge(stop.x, stop.y, start.x, start.y ) );
+                graph.push( graphEdge(start.x, start.y, stop.x, stop.y, "ladder") );
+                graph.push( graphEdge(stop.x, stop.y, start.x, start.y, "ladder" ) );
             }
             if (z+2 < ladder.length ) start = ladder[z+2];
             //z ++;
@@ -193,7 +194,7 @@ function graphFromMap() {
             
         }
         
-        console.log(JSON.stringify(j) + " " + start.x +" " + stop.x);
+        //console.log(JSON.stringify(j) + " " + start.x +" " + stop.x);
         
         if  ( ( z + 1 < floor.length //&& start.x !== floor[z+1].x 
                 && floor[z].x +1 !== floor[z+1].x) || 
@@ -203,16 +204,16 @@ function graphFromMap() {
             if (z-1 >= 0) stop = floor[z]; // temporarily!
             
             
-            var temp = graphEdge(start.x,start.y, stop.x, stop.y);
-            console.log("line "+ JSON.stringify(temp) +" line");
+            var temp = graphEdge(start.x,start.y, stop.x, stop.y, "floor");
+            //console.log("line "+ JSON.stringify(temp) +" line");
 
             if (temp.cost !== 0) {
-                graph.push( graphEdge(start.x, start.y, stop.x, stop.y ) );
-                graph.push( graphEdge(stop.x, stop.y, start.x, start.y ) );
+                graph.push( graphEdge(start.x, start.y, stop.x, stop.y , "floor") );
+                graph.push( graphEdge(stop.x, stop.y, start.x, start.y , "floor") );
             }
             if (isInList(JSON.stringify(floor[z]), string_ladder ) ) {
                 start = floor[z];
-                console.log("-------split-------")
+                //console.log("-------split-------")
             }
             else {
                 start = floor[z +1];
@@ -238,7 +239,7 @@ function graphFromMap() {
     graph.sort(function(a, b) {
         return (a.sort) - (b.sort);
     });
-    //graphLog(graph);
+    graphLog(graph);
 }
 
 function graphLog(graph) {
@@ -257,9 +258,13 @@ function graphNode(x,y ) {
     return {'x': parseInt(x),'y': parseInt(y)};
 }
 
-function graphEdge(startx, starty, stopx, stopy) {
+function graphEdge(startx, starty, stopx, stopy, name="none") {
     return {'x1': startx, 'y1': starty, 
         'x2': stopx, 'y2':stopy, 
         'cost': Math.pow(startx - stopx,2) + Math.pow(starty - stopy, 2),
-        'sort': starty * level_w + startx };
+        'sort': starty * level_w + startx,
+        'from': starty * level_w + startx,
+        'to': stopy * level_w + stopx,
+        'name': name
+    };
 }
