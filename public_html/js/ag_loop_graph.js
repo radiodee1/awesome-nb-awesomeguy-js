@@ -145,7 +145,8 @@ function graphFromMap() {
                 if (a+1 < level_h && m[j.x][a] === AG.B_SPACE && m[j.x][a+1] === AG.B_BLOCK) {
                     var temp = graphEdge(j.x, j.y, j.x, a, "drop");
                     if (temp.cost !== 0 && temp.cost !== 1) {
-                        graph.push( graphEdge( j.x,j.y, j.x, a, "drop") ); // one way... falling!
+                        graph.push( graphEdge( j.x, a, j.x, j.y, "drop") ); // one way... falling!
+                        //graph.push( graphEdge( j.x,j.y, j.x, a, "drop") ); // one way... falling!
                         //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
                         continue;
                     }

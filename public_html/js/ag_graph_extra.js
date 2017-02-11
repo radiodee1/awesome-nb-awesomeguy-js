@@ -6,7 +6,7 @@
 var level_w_local = 96;
 
 function graphNode(x,y ) {
-    return {'x': parseInt(x),'y': parseInt(y)};
+    return {'x': parseInt(x),'y': parseInt(y), 'sort': y * level_w_local + x};
 }
 
 function graphEdge(startx, starty, stopx, stopy, name="none") {

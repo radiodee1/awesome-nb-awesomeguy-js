@@ -8,6 +8,11 @@
 var graph = [];
 var sprite_edges = [];
 var sprite = [];
+var destination_nodes = [];
+
+var startx = 0;
+var starty = 0;
+var start_sort = 0;
 
 importScripts("ag_graph_extra.js");
 
@@ -25,8 +30,6 @@ self.onmessage = function(e) {
         case 'cancel':
             graphCancel(e.data.value);
             break;
-            
-            
     }
   
 }
@@ -38,6 +41,7 @@ function test(val) {
 function graphSet(val) {
     graph = val.graph;
     sprite = val.sprite;
+    sprite_edges = [];
     
     graphExtraEdges();
     graphInit();
@@ -57,23 +61,52 @@ function graphExtraEdges() {
             checkEdges(sprite[i]);
         }
     }
-    checkEdges(sprite[0]);
+    checkEdges(sprite[0], "guy");
 }
 
-function checkEdges(s) {
+function checkEdges(s, type="super_monster") {
     var xloc = Math.floor(s.x / 8);
     var yloc = Math.floor(s.y / 8);
-    
+    if (type === "guy") {
+        startx = xloc;
+        starty = yloc;
+        start_sort = yloc * level_w_local + xloc;
+    }
+    else {
+        destination_nodes.push( graphNode(xloc, yloc) );
+    }
     for (i = 0; i < graph.length; i ++) {
         var x1 = graph[i].x1;
         var y1 = graph[i].y1;
         var x2 = graph[i].x2;
         var y2 = graph[i].y2;
-        if ( x1 <= xloc && xloc <= x2 && y1 === y2 && yloc === y1) {
+        if ( x1 < xloc && xloc < x2 && y1 === y2 && yloc === y1) {
             // make a new horizontal edge
+            if (type !== "guy") {
+                sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
+                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+            }
+            else {
+                sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
+                sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
+            }
         }
-        if ( y1 <= yloc && yloc <= y2 && x1 === x2 && xloc === x1) {
+        else if ( y1 < yloc && yloc < y2 && x1 === x2 && xloc === x1) {
             // make a new vertical edge
+            if (type !== "guy") {
+                sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
+                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+            }
+            else {
+                sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
+                sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
+            }
+        }
+        else if (x1 === xloc && y1 === yloc) {
+            // duplicate existing node?
+        }
+        else {
+            
         }
     }
 }
