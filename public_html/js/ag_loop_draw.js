@@ -59,7 +59,10 @@ var Sprite = {
         topBB:0, 
         bottomBB:0,
         type:"none",
-        move:0
+        move:0,
+        barrierx:0,
+        barriery:0,
+        node:0
 };
  
 //Sprite sprite[100];
