@@ -50,7 +50,6 @@ function testAdvanceLevel() {
 
 function testDraw() {
     
-    
     setPanelScroll(scrollx, scrolly);
     
     checkRegularCollisions();
@@ -62,6 +61,8 @@ function testDraw() {
     animate_vars();
 
     drawLevel(0);
+    
+    graphSet();
 }
 
 function testDrawLoop() {
@@ -100,7 +101,7 @@ function testDrawPrep() {
     initLevel();
     
     graphFromMap();
-    graphSet();
+    //graphSet();
     
     jumptime = 0;
     move_ud = 0;

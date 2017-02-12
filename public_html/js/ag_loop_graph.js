@@ -48,6 +48,7 @@ function graphInit() {
 
 function graphSprites(val) {
     sprite = val;
+    graph_running = false;
 }
 
 function graphTest() {
@@ -60,6 +61,8 @@ function graphTest() {
 function graphSet() {
     
     if (graph_running || ! preferences_graph ) return;
+    console.log("coords " + sprite[0].x + " " + sprite[0].y);
+
     sprite[0].x = guy.x;
     sprite[0].y = guy.y;
     worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': graph } });
