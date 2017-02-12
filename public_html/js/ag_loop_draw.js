@@ -149,6 +149,8 @@ function clearSpriteList() {
     }
     addSprite(0,0,4,10,2,16);// the guy
     guy = sprite[0];
+    guy.type = "guy";
+    sprite[0].type = "guy";
     //console.log("clearSpriteList");
 }
 

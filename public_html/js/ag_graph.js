@@ -60,7 +60,7 @@ function graphSet(val) {
     graphExtraEdges();
     graphInit();
     
-    //graphSolve();
+    graphSolve();
     //graphModifySprite();
     
     self.postMessage({'cmd':'log', 'value': "sprites " + val.sprite.length + " graph "+ val.graph.length });
@@ -70,32 +70,39 @@ function graphSet(val) {
 
 function graphExtraEdges() {
     test("new edges");
+    var count = 0;
+    var position = 0;
+    checkEdges(sprite[0], "guy");
+    var i = 1;
     for (i = 1; i < sprite.length; i ++ ) {
-        //test( " sprite " + i);
+        //test( " sprite --- " + i + " " + sprite[i].type);
         if (sprite[i].type === active_monster_string) {
+            count ++;
+            position = i;
             checkEdges(sprite[i]);
-            test("monster_count " + i + " " + active_monster_string + " " + sprite.length);
+            //test("monster_count " + i + " " + active_monster_string + " " + sprite.length);
         }
     }
-    checkEdges(sprite[0], "guy");
-    test("sprite_edges " + sprite_edges.length);
+    test("sprite_edges " + sprite_edges.length + " " + count + " " + position + " " + sprite.length);
 }
 
 function checkEdges(s, type="super_monster") {
     var xloc = Math.floor(s.x  / 8);
-    var yloc = Math.floor((s.y )/ 8) + Math.floor(s.bottomBB/8 );
+    var yloc = Math.floor((s.y )/ 8)  + 1;// Math.floor(s.bottomBB/16 );
     test(typeof s + " " + JSON.stringify(s));
     if (type === "guy") {
         startx = xloc;
         starty = yloc ;
         start_sort = yloc * level_w_local + xloc;
-        test("guy "+ xloc +" "+ yloc);
+        //test("guy "+ xloc +" "+ yloc);
     }
     else {
+        yloc = Math.floor(s.y / 8 ) -0;
         destination_nodes.push( graphNode(xloc, yloc) );
         s.node = yloc * level_w_local + xloc;
-        test("monster " + xloc + " " + yloc);
+        //test("monster " + xloc + " " + yloc);
     }
+    var i = 0;
     for (i = 0; i < graph.length; i ++) {
         var x1 = graph[i].x1;
         var y1 = graph[i].y1;
@@ -104,7 +111,7 @@ function checkEdges(s, type="super_monster") {
         //test("graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
         if ( ((x1 > xloc && xloc > x2) || (x1 < xloc && xloc < x2) ) && y1 === y2 && yloc === y1) {
             // make a new horizontal edge
-            test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
                 sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
@@ -116,7 +123,7 @@ function checkEdges(s, type="super_monster") {
         }
         else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 && xloc === x1) {
             // make a new vertical edge
-            test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
                 sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
@@ -128,7 +135,7 @@ function checkEdges(s, type="super_monster") {
         }
         else if (x1 === xloc && y1 === yloc) {
             // duplicate existing node?
-            test("dup "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            //test("dup "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
         }
         else {
             //test("problem graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
@@ -139,10 +146,12 @@ function checkEdges(s, type="super_monster") {
 
 function graphInit() {
     test("zero out prev and dist");
+    var i = 0;
     for (i = 0; i < graph.length; i ++) {
         graph[i].prev = -1;
         graph[i].dist = 0;
     }
+    var i = 0;
     for (i = 0; i < sprite_edges.length; i ++) {
         sprite_edges[i].prev = -1;
         sprite_edges[i].dist = 0;
@@ -164,9 +173,11 @@ function graphSolve() {
             test("here");
             
             var list = [];
+            var i = 0;
             for (i = 0; i < graph.length; i ++) {
                 if (graph[i].sort === sort) list.push(graph[i]);
             }
+            var i = 0;
             for (i = 0; i < sprite_edges.length; i ++) {            
                 if (sprite_edges[i].sort === sort) list.push(sprite_edges[i]);
             }
@@ -182,7 +193,7 @@ function followGraph(list) {
     test(list.length + " length " + JSON.stringify(list[0]));
     var new_sort = list[0].sort;
     var min = level_w_local;
-    
+    var i = 0;
     for (i = 0; i < list.length; i ++) {
         if(list[i].cost < min) {
             min = list[i].cost;
@@ -204,8 +215,10 @@ function followGraph(list) {
 
 function graphModifySprite() {
     test("modify sprite for return");
+    var i = 0;
     for (i = 0; i < sprite.length; i ++ ) {
         if (sprite[i].type === active_monster_string) {
+            var j = 0;
             for (j = 0; j < destination_nodes.length; j ++) {
                 if (destination_nodes[j].sort ===  sprite[i].node   ) {
                     // check four directions... look in prev
@@ -254,38 +267,46 @@ function graphCancel(val) {
 }
 
 function getEdgeByPrev(node, prev){
+    var i = 0;
     for (i = 0; i < sprite_edges.length; i ++ ) {
         if (sprite_edges[i].sort === node && sprite_edges[i].to === prev) return sprite_edges[i];
     }
+    var i = 0;
     for (i = 0; i < graph.length; i ++ ) {
         if (graph[i].sort === node && graph[i].to === prev) return graph[i];
     }
 }
 
 function setPrev(label, val) {
+    var i = 0;
     for (i = 0; i < graph.length; i ++) {
         if (label === graph[i].sort ) graph[i].prev = val;
     }
+    var i = 0;
     for (i = 0; i < sprite_edges.length; i ++) {
         if (label === sprite_edges[i].sort) sprite_edges[i].prev = val;
     }
 }
 
 function setDist(label, val) {
+    var i = 0;
     for (i = 0; i < graph.length; i ++) {
         if (label === graph[i].sort ) graph[i].dist = val;
     }
+    var i = 0;
     for (i = 0; i < sprite_edges.length; i ++) {
         if (label === sprite_edges[i].sort) sprite_edges[i].dist = val;
     }
 }
 
 function getDist(label) {
+    var i = 0;
     for (i = 0; i < graph.length; i ++) {
         if (label === graph[i].sort ) {
             return graph[i].dist;
         }
     }
+    var i = 0;
     for (i = 0; i < sprite_edges.length; i ++) {
         if (label === sprite_edges[i].sort) {
             return sprite_edges[i].dist;
@@ -295,11 +316,13 @@ function getDist(label) {
 }
 
 function getPrev(label) {
+    var i = 0;
     for (i = 0; i < graph.length; i ++) {
         if (label === graph[i].sort ) {
             return graph[i].prev;
         }
     }
+    var i = 0;
     for (i = 0; i < sprite_edges.length; i ++) {
         if (label === sprite_edges[i].sort) {
             return sprite_edges[i].prev;
