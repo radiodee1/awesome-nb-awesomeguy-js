@@ -14,6 +14,8 @@ AG.LEFT = 37;
 AG.RIGHT = 39;
 AG.JUMP = 90;
 
+var HIGH = 99999;
+
 var graph = [];
 var sprite_edges = [];
 var sprite = [];
@@ -63,7 +65,7 @@ function graphSet(val) {
     graphSolve();
     //graphModifySprite();
     
-    self.postMessage({'cmd':'log', 'value': "sprites " + val.sprite.length + " graph "+ val.graph.length });
+    self.postMessage({'cmd':'log', 'value': "sprites " + val.sprite.length + " graph "+ val.graph.length +" END" });
     self.postMessage({'cmd':'sprites', 'value': sprite });
 
 }
@@ -114,11 +116,11 @@ function checkEdges(s, type="super_monster") {
             //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
+                //sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
             }
         }
         else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 && xloc === x1) {
@@ -126,11 +128,11 @@ function checkEdges(s, type="super_monster") {
             //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
+                //sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
             }
         }
         else if (x1 === xloc && y1 === yloc) {
@@ -149,7 +151,7 @@ function graphInit() {
     var i = 0;
     for (i = 0; i < graph.length; i ++) {
         graph[i].prev = -1;
-        graph[i].dist = 0;
+        graph[i].dist = HIGH;
     }
     var i = 0;
     for (i = 0; i < sprite_edges.length; i ++) {
@@ -168,9 +170,9 @@ function graphSolve() {
     var sort = start_sort;
     while(loop) {
         // start going over graph.
-        test("prev " + getPrev(sort));
-        if (getPrev(sort) === -1) {
-            test("here");
+        //test("prev " + getPrev(sort));
+        if (getPrev(sort) === -1 || true) {
+            //test("here");
             
             var list = [];
             var i = 0;
@@ -190,24 +192,41 @@ function graphSolve() {
 }
 
 function followGraph(list) {
-    test(list.length + " length " + JSON.stringify(list[0]));
+    //test(list.length + " length " + JSON.stringify(list[0]));
     var new_sort = list[0].sort;
-    var min = level_w_local;
+    var min = HIGH;//level_w_local;
     var i = 0;
+    var dist_here = getDist(list[0].sort);
+
     for (i = 0; i < list.length; i ++) {
+    test(list.length + " length " + JSON.stringify(list[i]));
+        
         if(list[i].cost < min) {
             min = list[i].cost;
-            new_sort = list[i].sort;
+            new_sort = list[i].to;
+            //var some_prev = getPrev(list[i].to);
+            //if (some_prev === -1) {
+            //    setDist(list[i].to , dist_here + list[i].cost);
+            //}
         }
     }
-    var dist_here = getDist(list[0].sort);
-    var dist_old = getDist(new_sort);
+    //var dist_old = getDist(new_sort);
     
-    var dist_next = dist_here + min;
-    if (dist_next < dist_old) {
-        setPrev(new_sort, list[0].sort);
-        setDist(new_sort, dist_next);
+    //var dist_next = dist_here + min;
+    
+    var i = 0;
+    for (i = 0; i < list.length; i ++ ) {
+        if (getDist(list[i].to) > list[i].cost + getDist(list[0].from) && list[i].prev === -1) {
+            setPrev(new_sort, list[0].sort);
+            setDist(new_sort, getDist(list[i].to) + list[i].cost);
+            test(" ------ prev and dist ------ " + JSON.stringify(list[i]));
+
+        }    
     }
+    //var dist_here = getDist(list[0].sort);
+    
+    
+    
     
     return new_sort;
     
