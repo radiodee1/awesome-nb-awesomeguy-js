@@ -5,6 +5,15 @@
  */
 
 /*  worker thread */
+
+class AG {};
+    
+AG.UP = 38;
+AG.DOWN = 40;
+AG.LEFT = 37;
+AG.RIGHT = 39;
+AG.JUMP = 90;
+
 var graph = [];
 var sprite_edges = [];
 var sprite = [];
@@ -13,6 +22,8 @@ var destination_nodes = [];
 var startx = 0;
 var starty = 0;
 var start_sort = 0;
+
+var active_monster_string = "super_monster";
 
 importScripts("ag_graph_extra.js");
 
@@ -30,6 +41,9 @@ self.onmessage = function(e) {
         case 'cancel':
             graphCancel(e.data.value);
             break;
+        case "monsterName":
+        case 'monster':
+            active_monster_string = e.data.value;
     }
   
 }
@@ -56,8 +70,8 @@ function graphSet(val) {
 function graphExtraEdges() {
     test("new edges");
     for (i = 0; i < sprite.length; i ++ ) {
-        test( " sprite " + i);
-        if (sprite[i].type === "super_monster") {
+        //test( " sprite " + i);
+        if (sprite[i].type === active_monster_string) {
             checkEdges(sprite[i]);
         }
     }
@@ -71,6 +85,7 @@ function checkEdges(s, type="super_monster") {
         startx = xloc;
         starty = yloc;
         start_sort = yloc * level_w_local + xloc;
+        test("guy");
     }
     else {
         destination_nodes.push( graphNode(xloc, yloc) );
@@ -135,6 +150,7 @@ function graphSolve() {
     while(loop) {
         // start going over graph.
         if (getPrev(sort) === -1) {
+            test("here");
             
             var list = [];
             for (i = 0; i < graph.length; i ++) {
@@ -177,10 +193,62 @@ function followGraph(list) {
 
 function graphModifySprite() {
     test("modify sprite for return");
+    for (i = 0; i < sprite.length; i ++ ) {
+        if (sprite[i].type === active_monster_string) {
+            for (j = 0; j < destination_nodes.length; j ++) {
+                if (destination_nodes[j].sort ===  sprite[i].node   ) {
+                    // check four directions... look in prev
+                    var prev = getPrev(sprite[i].node);
+                    var xloc = Math.floor(sprite[i].x / 8);
+                    var yloc = Math.floor(sprite[i].y / 8);
+                    var edge = getEdgeByPrev(sprite[i].node, prev);
+                    
+                    test(JSON.stringify(edge));
+                    if (typeof edge !== 'undefined') {
+                        sprite[i].move = 0;
+                        if (edge.x1 === edge.x2) {
+                            if (yloc > edge.y1) {
+                                sprite[i].move = AG.UP;
+                                sprite[i].barrierx = edge.x1;
+                                sprite[i].barriery = edge.y1;
+                            }
+                            else if (yloc < edge.y1) {
+                                sprite[i].move = AG.DOWN;
+                                sprite[i].barrierx = edge.x2;
+                                sprite[i].barriery = edge.y2;
+                            }
+                        }
+                        if (edge.y1 === edge.y2) {
+                            if (xloc > edge.x1) {
+                                sprite[i].move = AG.LEFT;
+                                sprite[i].barrierx = edge.x1;
+                                sprite[i].barriery = edge.y1;
+                            }
+                            else if (xloc < edge.x1) {
+                                sprite[i].move = AG.RIGHT;
+                                sprite[i].barrierx = edge.x2;
+                                sprite[i].barriery = edge.y2;
+                            }
+                        }
+                    }
+                    //////
+                }
+            }
+        }
+    }
 }
 
 function graphCancel(val) {
     
+}
+
+function getEdgeByPrev(node, prev){
+    for (i = 0; i < sprite_edges.length; i ++ ) {
+        if (sprite_edges[i].sort === node && sprite_edges[i].to === prev) return sprite_edges[i];
+    }
+    for (i = 0; i < graph.length; i ++ ) {
+        if (graph[i].sort === node && graph[i].to === prev) return graph[i];
+    }
 }
 
 function setPrev(label, val) {

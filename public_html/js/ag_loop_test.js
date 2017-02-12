@@ -6,14 +6,6 @@
 
 
 
-$(document).ready( function() {
-    
-    
-    
-    
-    
-    //drawLevel(0);
-});
 
 function testPlayGameAgain() {
     //level = 0;

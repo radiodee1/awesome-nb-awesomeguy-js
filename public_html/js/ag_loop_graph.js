@@ -52,6 +52,9 @@ function graphSprites(val) {
 
 function graphTest() {
     worker.postMessage({'cmd': 'test', 'value': 'hello'});
+    // include test methods here
+    // delete later...
+    worker.postMessage({'cmd':'monsterName', 'value':'monster'});
 }
 
 function graphSet() {
@@ -245,7 +248,7 @@ function graphFromMap() {
     graph.sort(function(a, b) {
         return (a.sort) - (b.sort);
     });
-    graphLog(graph);
+    //graphLog(graph);
 }
 
 function graphLog(graph) {
@@ -260,21 +263,3 @@ function isInList(obj, list) {
     return temp;
 }
 
-/*
-function graphNode(x,y ) {
-    return {'x': parseInt(x),'y': parseInt(y)};
-}
-
-function graphEdge(startx, starty, stopx, stopy, name="none") {
-    return {'x1': startx, 'y1': starty, 
-        'x2': stopx, 'y2':stopy, 
-        'cost': Math.pow(startx - stopx,2) + Math.pow(starty - stopy, 2),
-        'sort': starty * level_w + startx,
-        'from': starty * level_w + startx,
-        'to': stopy * level_w + stopx,
-        'prev': 0,
-        'dist': 0,
-        'name': name
-    };
-}
-*/
