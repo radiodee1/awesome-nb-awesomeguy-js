@@ -15,6 +15,9 @@ AG.RIGHT = 39;
 AG.JUMP = 90;
 
 var HIGH = 99999;
+var VISITED = 1;
+var DONE = 2;
+var UNVISITED = -1;
 
 var graph = [];
 var sprite_edges = [];
@@ -65,7 +68,7 @@ function graphSet(val) {
     graphSolve();
     //graphModifySprite();
     
-    self.postMessage({'cmd':'log', 'value': "sprites " + val.sprite.length + " graph "+ val.graph.length +" END" });
+    self.postMessage({'cmd':'log', 'value': "END sprites " + val.sprite.length + " graph "+ val.graph.length +" END" });
     self.postMessage({'cmd':'sprites', 'value': sprite });
 
 }
@@ -150,13 +153,15 @@ function graphInit() {
     test("zero out prev and dist");
     var i = 0;
     for (i = 0; i < graph.length; i ++) {
-        graph[i].prev = -1;
+        graph[i].prev = UNVISITED;
         graph[i].dist = HIGH;
+        graph[i].visited = UNVISITED;
     }
     var i = 0;
     for (i = 0; i < sprite_edges.length; i ++) {
-        sprite_edges[i].prev = -1;
-        sprite_edges[i].dist = 0;
+        sprite_edges[i].prev = UNVISITED;
+        sprite_edges[i].dist = HIGH;
+        sprite_edges[i].visited = UNVISITED;
     }
     sprite_edges.sort(function(a, b) {
         return (a.sort) - (b.sort);
@@ -168,12 +173,18 @@ function graphSolve() {
     var loop = true;
     var count = 0;
     var sort = start_sort;
+    setVisited(sort, VISITED);
+    setDist(sort, 0);
+    setPrev(sort,0);
     while(loop) {
         // start going over graph.
-        //test("prev " + getPrev(sort));
-        if (getPrev(sort) === -1 || true) {
-            //test("here");
+        
+        var visited = listVisited();
+        var j = 0;
+        //var list = [];
+        for ( j = 0; j < visited.length; j ++) {
             
+            sort = visited[j];
             var list = [];
             var i = 0;
             for (i = 0; i < graph.length; i ++) {
@@ -183,11 +194,13 @@ function graphSolve() {
             for (i = 0; i < sprite_edges.length; i ++) {            
                 if (sprite_edges[i].sort === sort) list.push(sprite_edges[i]);
             }
-            if (list.length > 0) sort = followGraph(list);
-            else sort++;
+            
+            followGraph(list);
         }
+        //if (list.length > 0) followGraph(list);
         count ++;
-        if (count > graph.length / 2 + 4) loop = false;
+        //if (count > graph.length / 2 + 4) loop = false;
+        if (visited.length === 0) loop = false;
     }
 }
 
@@ -196,40 +209,74 @@ function followGraph(list) {
     var new_sort = list[0].sort;
     var min = HIGH;//level_w_local;
     var i = 0;
-    var dist_here = getDist(list[0].sort);
-
+    //var dist_here = getDist(list[0].dist);
+    var index = 0;
     for (i = 0; i < list.length; i ++) {
-    test(list.length + " length " + JSON.stringify(list[i]));
+        //test(list.length + " length " + JSON.stringify(list[i]));
+        //var e = getEdge(list[i].sort);
+        //var k = 0;
         
-        if(list[i].cost < min) {
+        if (getVisited(list[i].to) !== DONE) {
+        
+            
+            if(list[i].cost < min ){// && getVisited(list[i].to) === VISITED) { // !== DONE) {
+                min = list[i].cost;
+                new_sort = list[i].to;
+                index = i;
+
+            }
+            setVisited( list[i].to, VISITED);
+        }
+        
+        /*
+        if(false && list[i].cost < min && getVisited(list[i].to) === VISITED) { // !== DONE) {
             min = list[i].cost;
             new_sort = list[i].to;
-            //var some_prev = getPrev(list[i].to);
-            //if (some_prev === -1) {
-            //    setDist(list[i].to , dist_here + list[i].cost);
-            //}
+            index = i;
+            
         }
+        */
     }
-    //var dist_old = getDist(new_sort);
+    setVisited(list[0].sort, DONE);
     
-    //var dist_next = dist_here + min;
-    
-    var i = 0;
-    for (i = 0; i < list.length; i ++ ) {
-        if (getDist(list[i].to) > list[i].cost + getDist(list[0].from) && list[i].prev === -1) {
-            setPrev(new_sort, list[0].sort);
-            setDist(new_sort, getDist(list[i].to) + list[i].cost);
-            test(" ------ prev and dist ------ " + JSON.stringify(list[i]));
 
-        }    
+    if (getDist(new_sort) >= list[index].cost + list[0].dist && getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
+        // 
+        if (list[0].dist === HIGH) {
+            setDist(list[0].sort, 0);
+            test("should be start node " + list[0].sort + " " + start_sort);
+        }
+        setPrev(new_sort, list[0].sort);
+        setDist(new_sort, list[0].dist + list[index].cost);
+        //setVisited(list[0].sort, DONE);
+        test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
+
+    }    
+    else {
+        //test (" ------ on list ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
     }
-    //var dist_here = getDist(list[0].sort);
     
+    //return new_sort;
     
-    
-    
-    return new_sort;
-    
+}
+
+function listVisited() {
+    var i =0;
+    var list = [];
+    for(i = 0; i < graph.length; i ++) {
+        if (graph[i].visited === VISITED && list.indexOf(graph[i].sort) === -1) list.push(graph[i].sort);
+    }
+    for (i = 0; i < sprite_edges.length; i ++ ) {
+        if (sprite_edges[i].visited === VISITED && list.indexOf(sprite_edges[i].sort) === -1) list.push(sprite_edges[i].sort);
+    }
+    if ( true ) { // turn off listing fn
+        var string = "";
+        for (i = 0; i < list.length; i ++) {
+            string = string + list[i] + " ";
+        } 
+        test("list "+ list.length + " : " + string);
+    }
+    return list;
 }
 
 function graphModifySprite() {
@@ -347,5 +394,66 @@ function getPrev(label) {
             return sprite_edges[i].prev;
         }
     }
+    
+}
+
+function setVisited(label, val) {
+    var i = 0;
+    for (i = 0; i < graph.length; i ++) {
+        if (label === graph[i].sort ) graph[i].visited = val;
+    }
+    var i = 0;
+    for (i = 0; i < sprite_edges.length; i ++) {
+        if (label === sprite_edges[i].sort) sprite_edges[i].visited = val;
+    }
+}
+
+function getVisited(label) {
+    var i = 0;
+    for (i = 0; i < graph.length; i ++) {
+        if (label === graph[i].sort ) {
+            return graph[i].visited;
+        }
+    }
+    var i = 0;
+    for (i = 0; i < sprite_edges.length; i ++) {
+        if (label === sprite_edges[i].sort) {
+            return sprite_edges[i].visited;
+        }
+    }
+    
+}
+
+function getEdge(label) {
+    var i = 0;
+    for (i = 0; i < graph.length; i ++) {
+        if (label === graph[i].sort ) {
+            return graph[i];
+        }
+    }
+    var i = 0;
+    for (i = 0; i < sprite_edges.length; i ++) {
+        if (label === sprite_edges[i].sort) {
+            return sprite_edges[i];
+        }
+    }
+    
+}
+
+function getAllEdges(label) {
+    var i = 0;
+    var list = [];
+    for (i = 0; i < graph.length; i ++) {
+        if (label === graph[i].sort ) {
+            list.push( graph[i]);
+        }
+    }
+    var i = 0;
+    for (i = 0; i < sprite_edges.length; i ++) {
+        if (label === sprite_edges[i].sort) {
+            list.push( sprite_edges[i]);
+        }
+    }
+    return list;
     
 }

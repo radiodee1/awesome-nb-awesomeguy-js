@@ -141,7 +141,9 @@ function graphFromMap() {
     for (z = 0; z < len; z++ ) {
         //var obj = string_drop[z];
         var j = drop[z];
-        //console.log(obj + " " + j.x + " " + j.y);
+        //console.log(  "j " + j.x + " " + j.y);
+        //graphLog(drop);
+        
         if (j.y + 2 < level_h && m[j.x][j.y + 1] === AG.B_SPACE && m[j.x][j.y+2] === AG.B_BLOCK) {
             graph.push( graphEdge(j.x,j.y, j.x, j.y+1,"drop") );
             graph.push( graphEdge(j.x, j.y+1, j.x, j.y, "drop") );
@@ -149,13 +151,15 @@ function graphFromMap() {
         else if (j.y + 1 < level_h) {
             for (a = j.y +1 ; a < level_h; a ++ ) {
                 if (a+1 < level_h && m[j.x][a] === AG.B_SPACE && m[j.x][a+1] === AG.B_BLOCK) {
-                    var temp = graphEdge(j.x, j.y, j.x, a, "drop");
+                    var b = a - 0;
+                    var temp = graphEdge(j.x, j.y, j.x, b, "drop");
                     if (temp.cost !== 0 && temp.cost !== 1) {
-                        graph.push( graphEdge( j.x, a, j.x, j.y, "drop") ); // one way... falling!
-                        //graph.push( graphEdge( j.x,j.y, j.x, a, "drop") ); // one way... falling!
+                        graph.push( graphEdge( j.x, b, j.x, j.y, "drop") ); // one way... falling!
+                        graph.push( graphEdge( j.x, j.y, j.x, b, "drop") ); // one way... falling!
                         //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
-                        continue;
+                        //continue;
                     }
+                    continue;
                 }
             }
         }
@@ -210,7 +214,8 @@ function graphFromMap() {
         
         if  ( ( z + 1 < floor.length //&& start.x !== floor[z+1].x 
                 && floor[z].x +1 !== floor[z+1].x) || 
-                isInList(JSON.stringify(floor[z]), string_ladder )  || 
+                isInList(JSON.stringify(floor[z]), string_ladder )  ||
+                isInList(JSON.stringify(floor[z]), string_drop )  ||
                 z >= floor.length -1 ){  
             // push two edges
             if (z-1 >= 0) stop = floor[z]; // temporarily!
@@ -219,11 +224,12 @@ function graphFromMap() {
             var temp = graphEdge(start.x,start.y, stop.x, stop.y, "floor");
             //console.log("line "+ JSON.stringify(temp) +" line");
 
-            if (temp.cost !== 0) {
+            if (temp.cost !== 0 && temp.y1 === temp.y2) {
                 graph.push( graphEdge(start.x, start.y, stop.x, stop.y , "floor") );
                 graph.push( graphEdge(stop.x, stop.y, start.x, start.y , "floor") );
             }
-            if (isInList(JSON.stringify(floor[z]), string_ladder ) ) {
+            if (    isInList(JSON.stringify(floor[z]), string_ladder ) ||
+                    isInList(JSON.stringify(floor[z]), string_drop ) ) {
                 start = floor[z];
                 //console.log("-------split-------")
             }

@@ -18,6 +18,7 @@ function graphEdge(startx, starty, stopx, stopy, name="none") {
         'to': stopy * level_w_local + stopx,
         'prev': 0,
         'dist': 0,
+        'visited': 0,
         'name': name
     };
 }
