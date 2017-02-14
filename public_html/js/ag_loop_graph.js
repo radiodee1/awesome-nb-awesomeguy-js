@@ -171,6 +171,7 @@ function graphFromMap() {
                         graph.push( graphEdge( j.x, j.y, j.x, b, "drop") ); // one way... falling!
                         //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
                         //break;
+                        string_drop.push( JSON.stringify( graphNode(j.x, b)));
                     }
                     break;
                 }
@@ -238,7 +239,8 @@ function graphFromMap() {
                 //console.log(" floor " + floor[z].x + " " + floor[z+1].x + " y:" + floor[z].y + " "+ floor[z+1].y );
                 //stop = floor[z-1];
                 z++;
-                
+                //stop = floor[z];
+                //start = floor[z];
             }
             
             var temp = graphEdge(start.x,start.y, stop.x, stop.y, "floor");
@@ -289,8 +291,11 @@ function graphLog(graph) {
 function isInList(obj, list) {
     var temp = false;
     if (list.indexOf(obj) !== -1) temp = true;
+    
     return temp;
 }
+
+
 
 function graphDraw() {
     var c = document.getElementById("my_canvas");
@@ -306,6 +311,7 @@ function graphDraw() {
         var ctx = c.getContext("2d");
         ctx.lineWidth = 3;
 
+        if (y1 !== y2) continue;
         // lines
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y2);

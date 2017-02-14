@@ -62,9 +62,9 @@ function testDraw() {
 
     drawLevel(0);
     
-    //graphSet();
+    graphSet();
     
-    graphDraw();
+    //graphDraw();
     //drawNodes(drop);
 }
 
