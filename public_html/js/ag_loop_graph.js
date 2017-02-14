@@ -236,6 +236,7 @@ function graphFromMap() {
             
             if (floor[z].x +1 !== floor[z+1].x) {
                 console.log(" floor " + floor[z].x + " " + floor[z+1].x + " y:" + floor[z].y + " "+ floor[z+1].y );
+                //stop = floor[z-1];
                 z++;
                 if (floor[z].y !== floor[z+1].y) {
                     //start = floor[z];
@@ -317,9 +318,9 @@ function graphDraw() {
         ctx.stroke();
         
         // nodes
-        //ctx.moveTo(x1-2,y1-2);
-        //ctx.lineTo(x1+2,y1+2);
-        //ctx.stroke();
+        ctx.moveTo(x1-2,y1-2);
+        ctx.lineTo(x1+2,y1+2);
+        ctx.stroke();
     }
 }
 
