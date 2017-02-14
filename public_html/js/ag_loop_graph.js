@@ -235,13 +235,10 @@ function graphFromMap() {
             
             
             if (floor[z].x +1 !== floor[z+1].x) {
-                console.log(" floor " + floor[z].x + " " + floor[z+1].x + " y:" + floor[z].y + " "+ floor[z+1].y );
+                //console.log(" floor " + floor[z].x + " " + floor[z+1].x + " y:" + floor[z].y + " "+ floor[z+1].y );
                 //stop = floor[z-1];
                 z++;
-                if (floor[z].y !== floor[z+1].y) {
-                    //start = floor[z];
-                    //z++;
-                }
+                
             }
             
             var temp = graphEdge(start.x,start.y, stop.x, stop.y, "floor");
@@ -257,7 +254,7 @@ function graphFromMap() {
                 //console.log("-------split-------")
             }
             else {
-                start = floor[z +1];
+                start = floor[z +0];//+1
             }
             
             if (z+2 < floor.length) stop = floor[z+2];
