@@ -29,6 +29,7 @@ var starty = 0;
 var start_sort = 0;
 
 var active_monster_string = "super_monster";
+var count_set_dist = 0;
 
 importScripts("ag_graph_extra.js");
 
@@ -172,6 +173,7 @@ function graphInit() {
 
 function graphSolve() {
     test("solve " + start_sort + " new-edges:" + sprite_edges.length);
+    count_set_dist = 0;
     var loop = true;
     var count = 0;
     var sort = start_sort;
@@ -204,6 +206,7 @@ function graphSolve() {
         //if (count > graph.length / 2 + 4) loop = false;
         if (visited.length === 0) loop = false;
     }
+    test("count_set_dist:" + count_set_dist);
 }
 
 function followGraph(list) {
@@ -262,6 +265,8 @@ function followGraph(list) {
                 setDist(new_sort, list[index].dist + list[index].cost);
                 //setVisited(new_sort, DONE);
                 test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
+                
+                count_set_dist ++;
                 //break;
 
             }    
