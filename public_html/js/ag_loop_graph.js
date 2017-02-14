@@ -85,13 +85,15 @@ function graphFromMap() {
             /////////////////////// conditions //////////////////
             if ( j + 1 < level_w && (m[i][j + 1] === AG.B_BLOCK || m[i][j+1] === AG.B_LADDER )&& 
                     (m[i][j] === AG.B_SPACE || m[i][j] === AG.B_PRIZE || m[i][j] === AG.B_BIBPRIZE || // m[i][j] === AG.B_LADDER ||
-                    m[i][j] === AG.B_ONEUP || m[i][j] === AG.B_KEY || m[i][j] === AG.B_INITIAL_GOAL || m[i][j] === AG.B_GOAL)) {
+                    m[i][j] === AG.B_ONEUP || m[i][j] === AG.B_KEY || m[i][j] === AG.B_INITIAL_GOAL || m[i][j] === AG.B_GOAL ||
+                    m[i][j] === AG.B_MARKER || m[i][j] === AG.B_MONSTER)) {
                 floor.push( graphNode(i,j) );
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
             }
             else if ( j + 1 < level_w && (m[i][j + 1] === AG.B_BLOCK )&& //|| m[i][j+1] === AG.B_LADDER )&& 
                     (m[i][j] === AG.B_SPACE || m[i][j] === AG.B_PRIZE || m[i][j] === AG.B_BIBPRIZE || m[i][j] === AG.B_LADDER ||
-                    m[i][j] === AG.B_ONEUP || m[i][j] === AG.B_KEY || m[i][j] === AG.B_INITIAL_GOAL || m[i][j] === AG.B_GOAL)) {
+                    m[i][j] === AG.B_ONEUP || m[i][j] === AG.B_KEY || m[i][j] === AG.B_INITIAL_GOAL || m[i][j] === AG.B_GOAL ||
+                    m[i][j] === AG.B_MARKER || m[i][j] === AG.B_MONSTER)) {
                 floor.push( graphNode(i,j) );
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
             }
@@ -272,3 +274,35 @@ function isInList(obj, list) {
     return temp;
 }
 
+function graphDraw() {
+    var c = document.getElementById("my_canvas");
+    var ctx = c.getContext("2d");
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#ff0000';
+    var i = 0;
+    for (i = 0; i < graph.length; i ++ ) {
+        g = graph[i];
+        var x1 = g.x1 * 8 - scrollx + 4;
+        var x2 = g.x2 * 8 - scrollx + 4;
+        var y1 = g.y1 * 8 - scrolly + 4;
+        var y2 = g.y2 * 8 - scrolly + 4;
+        
+        /*
+        if (x1 === x2) {
+            if ( y1 < scrolly ) y1 = scrolly;
+            if ( y1 > scrolly + level_w * 8) y1 = scrolly + level_w * 8;
+            if ( y2 < scrolly ) y2 = scrolly;
+            if ( y2 > scrolly + level_w * 8) y2 = scrolly + level_w * 8;
+        }
+        if (y1 === y2) {
+            if ( x1 < scrollx ) x1 = scrollx;
+            if ( x1 > scrollx + level_h * 8) x1 = scrollx + level_h * 8;
+            if ( x2 < scrollx ) x2 = scrollx;
+            if ( x2 > scrollx + level_h * 8) x2 = scrollx + level_h * 8;
+        }
+        */
+        ctx.moveTo(x1,y1);
+        ctx.lineTo(x2,y2);
+        ctx.stroke();
+    }
+}

@@ -57,6 +57,8 @@ function test(val) {
     self.postMessage({'cmd':'test','value':val});
 }
 
+
+/* THE CALL TO GRAPH SET IS FOUND IN AG_LOOP_TEST.JS NEXT TO THE DRAW FUNCTIONS */
 function graphSet(val) {
     graph = val.graph;
     sprite = val.sprite;
@@ -206,56 +208,80 @@ function graphSolve() {
 
 function followGraph(list) {
     //test(list.length + " length " + JSON.stringify(list[0]));
-    var new_sort = list[0].sort;
-    var min = HIGH;//level_w_local;
-    var i = 0;
-    //var dist_here = getDist(list[0].dist);
-    var index = 0;
-    for (i = 0; i < list.length; i ++) {
-        //test(list.length + " length " + JSON.stringify(list[i]));
-        //var e = getEdge(list[i].sort);
-        //var k = 0;
+    //var new_sort = list[0].sort;
+    //var min = HIGH;//level_w_local;
+    //var i = 0;
+    //var index = 0;
+    //var count = 0;
+    
+    if (true || count < list.length) { // while
+        var new_sort = list[0].sort;
+        var min = HIGH;//level_w_local;
+        var i = 0;
+        var index = 0;
         
-        if (getVisited(list[i].to) !== DONE) {
+        var len = list.length;
         
-            
-            if(list[i].cost < min ){// && getVisited(list[i].to) === VISITED) { // !== DONE) {
+        for (i = 0; i < len; i ++) {
+            //test(list.length + " length " + JSON.stringify(list[i]));
+            //var e = getEdge(list[i].sort);
+            //var k = 0;
+
+            if (getVisited(list[i].to) !== DONE) {
+
+
+                if(list[i].cost < min ){// && getVisited(list[i].to) === VISITED) { // !== DONE) {
+                    min = list[i].cost;
+                    new_sort = list[i].to;
+                    index = i;
+
+                }
+                setVisited( list[i].to, VISITED);
+            }
+
+            /*
+            if(false && list[i].cost < min && getVisited(list[i].to) === VISITED) { // !== DONE) {
                 min = list[i].cost;
                 new_sort = list[i].to;
                 index = i;
 
             }
-            setVisited( list[i].to, VISITED);
+            */
         }
-        
-        /*
-        if(false && list[i].cost < min && getVisited(list[i].to) === VISITED) { // !== DONE) {
-            min = list[i].cost;
-            new_sort = list[i].to;
-            index = i;
+        setVisited(list[0].sort, DONE);
+        //setVisited(new_sort, DONE);
+
+        if (getDist(new_sort) >= list[index].cost + list[0].dist && getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
+            // 
+            if (list[0].dist === HIGH) {
+                setDist(list[0].sort, 0);
+                test("should be start node " + list[0].sort + " " + start_sort);
+            }
+            setPrev(new_sort, list[0].sort);
+            setDist(new_sort, list[0].dist + list[index].cost);
+            //setVisited(new_sort, DONE);
+            test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
+            //break;
+
+        }    
+        else {
+            /*
+            var temp = "";
+            if (getDist(new_sort) < HIGH) {
+                var l = getAllEdges(new_sort);
+                var z = 0;
+                for (z = 0; z< l.length; z++) test(z + " " + JSON.stringify( l[z] ));
+                temp = JSON.stringify(getEdge(new_sort));
+            }
+            test("more list " + new_sort + " dist: " + getDist(new_sort) + " vis: " + getVisited(new_sort) + " " + temp);
+            //list.splice(index, 1);
             
+            //test (" ------ on list ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
+            */
         }
-        */
+        //list.splice(index, 1);
+        //count ++;
     }
-    setVisited(list[0].sort, DONE);
-    
-
-    if (getDist(new_sort) >= list[index].cost + list[0].dist && getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
-        // 
-        if (list[0].dist === HIGH) {
-            setDist(list[0].sort, 0);
-            test("should be start node " + list[0].sort + " " + start_sort);
-        }
-        setPrev(new_sort, list[0].sort);
-        setDist(new_sort, list[0].dist + list[index].cost);
-        //setVisited(list[0].sort, DONE);
-        test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
-
-    }    
-    else {
-        //test (" ------ on list ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
-    }
-    
     //return new_sort;
     
 }
