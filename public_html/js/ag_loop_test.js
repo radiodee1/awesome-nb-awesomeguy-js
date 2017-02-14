@@ -65,6 +65,7 @@ function testDraw() {
     //graphSet();
     
     graphDraw();
+    //drawNodes(drop);
 }
 
 function testDrawLoop() {

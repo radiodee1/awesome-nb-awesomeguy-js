@@ -11,6 +11,8 @@ var worker ;
 var graph_running = false;
 var graph = [];
 
+//var drop = [];
+
 
 function graphCheckForWorkers() {
     if (typeof(Worker) !== "undefined") {
@@ -97,7 +99,7 @@ function graphFromMap() {
                 floor.push( graphNode(i,j) );
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
             }
-            if (  j + 1 < level_w && i - 1 >= 0 && m[i][j] === AG.B_SPACE && m[i-1][j+1] === AG.B_BLOCK && m[i-1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
+            if (  j + 1 < level_h && i - 1 >= 0 && m[i][j] === AG.B_SPACE && m[i-1][j+1] === AG.B_BLOCK && m[i-1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
                 
                 floor.push( graphNode(i,j) ); // overhang on right
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
@@ -106,16 +108,22 @@ function graphFromMap() {
                     drop.push(graphNode(i,j) );
                     string_drop.push( JSON.stringify(graphNode(i,j)) );
                 }
+                else {
+                    console.log("right " + i + " " + j);
+                }
 
             }
-            if ( j + 1 < level_w && i + 1 < level_h  && m[i][j] === AG.B_SPACE &&  m[i+ 1][j+1] === AG.B_BLOCK && m[i+1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
+            if ( j + 1 < level_h && i + 1 < level_w  && m[i][j] === AG.B_SPACE &&  m[i+ 1][j+1] === AG.B_BLOCK && m[i+1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
                 
                 floor.push( graphNode(i,j) ); // overhang on left
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
                 
-                if(! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
+                if( ! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
                     drop.push( graphNode(i,j) );
                     string_drop.push( JSON.stringify(graphNode(i,j)) );
+                }
+                else {
+                    console.log("left " + i + " " + j);
                 }
             }
         }
@@ -140,6 +148,7 @@ function graphFromMap() {
     ////////// further processing ////////////
     // detect skip from drop //
     var len = drop.length;
+    //console.log("drop " + len);
     for (z = 0; z < len; z++ ) {
         //var obj = string_drop[z];
         var j = drop[z];
@@ -149,19 +158,21 @@ function graphFromMap() {
         if (j.y + 2 < level_h && m[j.x][j.y + 1] === AG.B_SPACE && m[j.x][j.y+2] === AG.B_BLOCK) {
             graph.push( graphEdge(j.x,j.y, j.x, j.y+1,"drop") );
             graph.push( graphEdge(j.x, j.y+1, j.x, j.y, "drop") );
+            
         }
         else if (j.y + 1 < level_h) {
+            var a = 0;
             for (a = j.y +1 ; a < level_h; a ++ ) {
-                if (a+1 < level_h && m[j.x][a] === AG.B_SPACE && m[j.x][a+1] === AG.B_BLOCK) {
+                if (a+1 < level_h  && (m[j.x][a+1] === AG.B_BLOCK)){
                     var b = a - 0;
                     var temp = graphEdge(j.x, j.y, j.x, b, "drop");
                     if (temp.cost !== 0 && temp.cost !== 1) {
                         graph.push( graphEdge( j.x, b, j.x, j.y, "drop") ); // one way... falling!
                         graph.push( graphEdge( j.x, j.y, j.x, b, "drop") ); // one way... falling!
                         //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
-                        //continue;
+                        //break;
                     }
-                    continue;
+                    break;
                 }
             }
         }
@@ -276,9 +287,7 @@ function isInList(obj, list) {
 
 function graphDraw() {
     var c = document.getElementById("my_canvas");
-    var ctx = c.getContext("2d");
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#ff0000';
+    
     var i = 0;
     for (i = 0; i < graph.length; i ++ ) {
         g = graph[i];
@@ -287,22 +296,48 @@ function graphDraw() {
         var y1 = g.y1 * 8 - scrolly + 4;
         var y2 = g.y2 * 8 - scrolly + 4;
         
-        /*
-        if (x1 === x2) {
-            if ( y1 < scrolly ) y1 = scrolly;
-            if ( y1 > scrolly + level_w * 8) y1 = scrolly + level_w * 8;
-            if ( y2 < scrolly ) y2 = scrolly;
-            if ( y2 > scrolly + level_w * 8) y2 = scrolly + level_w * 8;
-        }
-        if (y1 === y2) {
-            if ( x1 < scrollx ) x1 = scrollx;
-            if ( x1 > scrollx + level_h * 8) x1 = scrollx + level_h * 8;
-            if ( x2 < scrollx ) x2 = scrollx;
-            if ( x2 > scrollx + level_h * 8) x2 = scrollx + level_h * 8;
-        }
-        */
+        var ctx = c.getContext("2d");
+        ctx.lineWidth = 3;
+
+        // lines
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y2);
+        
+        ctx.strokeStyle = '#ff0000';
+        
+        ctx.stroke();
+        
+        // nodes
+        //ctx.moveTo(x1-2,y1-2);
+        //ctx.lineTo(x1+2,y1+2);
+        //ctx.stroke();
+    }
+}
+
+function drawNodes(list) {
+    var c = document.getElementById("my_canvas");
+    
+    var i = 0;
+    for (i = 0; i < list.length; i ++ ) {
+        g = list[i];
+        var x1 = g.x * 8 - scrollx + 4;
+        //var x2 = g.x2 * 8 - scrollx + 4;
+        var y1 = g.y * 8 - scrolly + 4;
+        //var y2 = g.y2 * 8 - scrolly + 4;
+        var ctx = c.getContext("2d");
+        ctx.lineWidth = 3;
+        
+
+        // lines
+        //ctx.moveTo(x1,y1);
+        //ctx.lineTo(x2,y2);
+        //ctx.stroke();
+        
+        // nodes
+        ctx.moveTo(x1-2,y1-2);
+        ctx.lineTo(x1+2,y1+2);
+        ctx.strokeStyle = '#00ff00';
+
         ctx.stroke();
     }
 }
