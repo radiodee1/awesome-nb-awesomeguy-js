@@ -234,10 +234,19 @@ function graphFromMap() {
             if (z-1 >= 0) stop = floor[z]; // temporarily!
             
             
+            if (floor[z].x +1 !== floor[z+1].x) {
+                console.log(" floor " + floor[z].x + " " + floor[z+1].x + " y:" + floor[z].y + " "+ floor[z+1].y );
+                z++;
+                if (floor[z].y !== floor[z+1].y) {
+                    //start = floor[z];
+                    //z++;
+                }
+            }
+            
             var temp = graphEdge(start.x,start.y, stop.x, stop.y, "floor");
             //console.log("line "+ JSON.stringify(temp) +" line");
 
-            if (temp.cost !== 0 && temp.y1 === temp.y2) {
+            if (temp.cost !== 0 && (temp.y1 === temp.y2 )) {
                 graph.push( graphEdge(start.x, start.y, stop.x, stop.y , "floor") );
                 graph.push( graphEdge(stop.x, stop.y, start.x, start.y , "floor") );
             }
