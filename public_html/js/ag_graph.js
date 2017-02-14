@@ -237,6 +237,7 @@ function followGraph(list) {
 
                 }
                 setVisited( list[i].to, VISITED);
+
             }
 
             /*
@@ -247,37 +248,23 @@ function followGraph(list) {
 
             }
             */
-        }
-        setVisited(list[0].sort, DONE);
-        //setVisited(new_sort, DONE);
+        //}
 
-        if (getDist(new_sort) >= list[index].cost + list[0].dist && getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
-            // 
-            if (list[0].dist === HIGH) {
-                setDist(list[0].sort, 0);
-                test("should be start node " + list[0].sort + " " + start_sort);
-            }
-            setPrev(new_sort, list[0].sort);
-            setDist(new_sort, list[0].dist + list[index].cost);
-            //setVisited(new_sort, DONE);
-            test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
-            //break;
+            setVisited(list[index].sort, DONE);
 
-        }    
-        else {
-            /*
-            var temp = "";
-            if (getDist(new_sort) < HIGH) {
-                var l = getAllEdges(new_sort);
-                var z = 0;
-                for (z = 0; z< l.length; z++) test(z + " " + JSON.stringify( l[z] ));
-                temp = JSON.stringify(getEdge(new_sort));
-            }
-            test("more list " + new_sort + " dist: " + getDist(new_sort) + " vis: " + getVisited(new_sort) + " " + temp);
-            //list.splice(index, 1);
-            
-            //test (" ------ on list ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
-            */
+            if (getDist(new_sort) > list[index].cost + list[index].dist ){//&& getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
+                // 
+                if (list[index].dist === HIGH) {
+                    setDist(list[index].sort, 0);
+                    test("should be start node " + list[0].sort + " " + start_sort);
+                }
+                setPrev(new_sort, list[index].sort);
+                setDist(new_sort, list[index].dist + list[index].cost);
+                //setVisited(new_sort, DONE);
+                test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
+                //break;
+
+            }    
         }
         //list.splice(index, 1);
         //count ++;
