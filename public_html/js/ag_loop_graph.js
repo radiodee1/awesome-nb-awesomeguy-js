@@ -85,14 +85,14 @@ function graphFromMap() {
     for (j = 0; j < level_h; j ++) {
         for (i = 0; i < level_w; i ++) {
             /////////////////////// conditions //////////////////
-            if ( j + 1 < level_w && (m[i][j + 1] === AG.B_BLOCK || m[i][j+1] === AG.B_LADDER )&& 
+            if ( j + 1 < level_h && (m[i][j + 1] === AG.B_BLOCK || m[i][j+1] === AG.B_LADDER )&& 
                     (m[i][j] === AG.B_SPACE || m[i][j] === AG.B_PRIZE || m[i][j] === AG.B_BIBPRIZE || // m[i][j] === AG.B_LADDER ||
                     m[i][j] === AG.B_ONEUP || m[i][j] === AG.B_KEY || m[i][j] === AG.B_INITIAL_GOAL || m[i][j] === AG.B_GOAL ||
                     m[i][j] === AG.B_MARKER || m[i][j] === AG.B_MONSTER)) {
                 floor.push( graphNode(i,j) );
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
             }
-            else if ( j + 1 < level_w && (m[i][j + 1] === AG.B_BLOCK )&& //|| m[i][j+1] === AG.B_LADDER )&& 
+            else if ( j + 1 < level_h && (m[i][j + 1] === AG.B_BLOCK )&& //|| m[i][j+1] === AG.B_LADDER )&& 
                     (m[i][j] === AG.B_SPACE || m[i][j] === AG.B_PRIZE || m[i][j] === AG.B_BIBPRIZE || m[i][j] === AG.B_LADDER ||
                     m[i][j] === AG.B_ONEUP || m[i][j] === AG.B_KEY || m[i][j] === AG.B_INITIAL_GOAL || m[i][j] === AG.B_GOAL ||
                     m[i][j] === AG.B_MARKER || m[i][j] === AG.B_MONSTER)) {
