@@ -185,33 +185,42 @@ function graphFromMap() {
     var start = graphNode(0,0);
     var stop = graphNode(0,0);
     var z = 0;
-    
+    var sample = graphNode(0,0);
     var step = 1; // 2
+    var flag = false;
     
     while ( z < len) {
         
-        if(z === 0) {
-            if (2 < len) stop = ladder[step]
-            start = ladder[0];
-        }
-        
-        //console.log(ladder[z].y + " " + ladder[z+1].y + " raw"  );
-        if ( ( z+2 < ladder.length && start.y !== ladder[z].y && (ladder[z+1].y) + 1  !== (ladder[z+step].y)  ) ||  (z >= len -1 ) ) {
-            // push two edges
+        if(z === 0 ) {
+            //if (2 < len); 
+            stop = ladder[z];
+            start = ladder[z];
+            sample = ladder[z];
             
+        }
+        if ( isInList( JSON.stringify(graphNode(stop.x, stop.y + 1)), string_ladder) ) {
+            stop = graphNode(stop.x, stop.y + 1);
+            z ++;
+            console.log(stop.y + 1);
+            //sample = ladder[z];
+        }
+        else {
+            // push two edges...
             var temp = graphEdge(start.x ,start.y, stop.x, stop.y,"ladder");
-            if (temp.cost !== 0 && start.x === stop.x ) {
+            if ((temp.cost !== 0 && temp.cost !== 1 &&  start.x === stop.x) || true ) {
                 //console.log(z + " ladder "+ JSON.stringify(temp));
                 
                 graph.push( graphEdge(start.x, start.y, stop.x, stop.y, "ladder") );
                 graph.push( graphEdge(stop.x, stop.y, start.x, start.y, "ladder" ) );
             }
-            if (z+2 < ladder.length ) start = ladder[z+step];
-            //z ++;
+            z++;
+            
+            stop = start = ladder[z];
+            
+            
         }
         
-        if (z + 1 < ladder.length) stop = ladder[z+ step];// z+2
-        z+=1;
+        
     }
     //graphLog(graph);
     var z = 0;
