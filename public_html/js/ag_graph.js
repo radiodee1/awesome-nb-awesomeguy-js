@@ -210,14 +210,9 @@ function graphSolve() {
 }
 
 function followGraph(list) {
-    //test(list.length + " length " + JSON.stringify(list[0]));
-    //var new_sort = list[0].sort;
-    //var min = HIGH;//level_w_local;
-    //var i = 0;
-    //var index = 0;
-    //var count = 0;
     
-    if (true || count < list.length) { // while
+    
+    if (true ) { // while
         var new_sort = list[0].sort;
         var min = HIGH;//level_w_local;
         var i = 0;
@@ -226,11 +221,9 @@ function followGraph(list) {
         var len = list.length;
         
         for (i = 0; i < len; i ++) {
-            //test(list.length + " length " + JSON.stringify(list[i]));
-            //var e = getEdge(list[i].sort);
-            //var k = 0;
+            
 
-            if (getVisited(list[i].to) !== DONE) {
+            if (  getVisited(list[i].to) !== DONE) {
 
 
                 if(list[i].cost < min ){// && getVisited(list[i].to) === VISITED) { // !== DONE) {
@@ -240,20 +233,13 @@ function followGraph(list) {
 
                 }
                 setVisited( list[i].to, VISITED);
+                //setVisitedEdge(list[i].sort, list[index].to,  VISITED);
 
             }
 
-            /*
-            if(false && list[i].cost < min && getVisited(list[i].to) === VISITED) { // !== DONE) {
-                min = list[i].cost;
-                new_sort = list[i].to;
-                index = i;
-
-            }
-            */
-        //}
 
             setVisited(list[index].sort, DONE);
+            //setVisitedEdge(list[index].sort, list[index].to,  DONE);
 
             if (getDist(new_sort) > list[index].cost + list[index].dist ){//&& getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
                 // 
@@ -263,6 +249,8 @@ function followGraph(list) {
                 }
                 setPrev(new_sort, list[index].sort);
                 setDist(new_sort, list[index].dist + list[index].cost);
+                //setVisited(list[index].sort, DONE);
+
                 //setVisited(new_sort, DONE);
                 test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
                 
@@ -440,6 +428,17 @@ function getVisited(label) {
         }
     }
     
+}
+
+function setVisitedEdge( from, to, val) {
+   var i = 0;
+    for (i = 0; i < graph.length; i ++) {
+        if (from === graph[i].sort && to === graph[i].to ) graph[i].visited = val;
+    }
+    var i = 0;
+    for (i = 0; i < sprite_edges.length; i ++) {
+        if (from === sprite_edges[i].sort && to === sprite_edges[i].to) sprite_edges[i].visited = val;
+    } 
 }
 
 function getEdge(label) {

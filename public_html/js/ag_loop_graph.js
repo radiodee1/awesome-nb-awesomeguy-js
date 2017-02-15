@@ -105,7 +105,7 @@ function graphFromMap() {
                 floor.push( graphNode(i,j) ); // overhang on right
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
                 
-                if(! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
+                if( m[i][j+1] !== AG.B_LADDER && ! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
                     drop.push(graphNode(i,j) );
                     string_drop.push( JSON.stringify(graphNode(i,j)) );
                 }
@@ -119,7 +119,7 @@ function graphFromMap() {
                 floor.push( graphNode(i,j) ); // overhang on left
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
                 
-                if( ! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
+                if( m[i][j+1] !== AG.B_LADDER &&  ! isInList( JSON.stringify(graphNode(i,j)), string_drop )) {
                     drop.push( graphNode(i,j) );
                     string_drop.push( JSON.stringify(graphNode(i,j)) );
                 }
@@ -186,7 +186,7 @@ function graphFromMap() {
     var stop = graphNode(0,0);
     var z = 0;
     
-    var step = 0; // 2
+    var step = 1; // 2
     
     while ( z < len) {
         
@@ -210,7 +210,7 @@ function graphFromMap() {
             //z ++;
         }
         
-        if (z + 2 < ladder.length) stop = ladder[z+ step];// 1
+        if (z + 1 < ladder.length) stop = ladder[z+ step];// z+2
         z+=1;
     }
     //graphLog(graph);
@@ -315,7 +315,7 @@ function graphDraw() {
         var ctx = c.getContext("2d");
         ctx.lineWidth = 3;
 
-        //if (y1 !== y2) continue;
+        if (x1 !== x2) continue;
          
         // lines
         ctx.moveTo(x1,y1);
