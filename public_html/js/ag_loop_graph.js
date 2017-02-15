@@ -80,6 +80,7 @@ function graphFromMap() {
     var string_ladder = [];
     var string_floor = [];
     var string_drop = [];
+    graph = [];
     
     // floor first //
     for (j = 0; j < level_h; j ++) {
@@ -99,7 +100,7 @@ function graphFromMap() {
                 floor.push( graphNode(i,j) );
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
             }
-            if (  j + 1 < level_h && i - 1 >= 0 && m[i][j] === AG.B_SPACE && m[i-1][j+1] === AG.B_BLOCK && m[i-1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
+            if (  j + 1 < level_h && i - 1 >= 0 && isLikeSpace(m[i][j])  && m[i-1][j+1] === AG.B_BLOCK && isLikeSpace(m[i-1][j])  && isLikeSpace(m[i][j+1]) ) {
                 
                 floor.push( graphNode(i,j) ); // overhang on right
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
@@ -113,7 +114,7 @@ function graphFromMap() {
                 }
 
             }
-            if ( j + 1 < level_h && i + 1 < level_w  && m[i][j] === AG.B_SPACE &&  m[i+ 1][j+1] === AG.B_BLOCK && m[i+1][j] === AG.B_SPACE && m[i][j+1] === AG.B_SPACE) {
+            if ( j + 1 < level_h && i + 1 < level_w  && isLikeSpace(m[i][j]) &&  m[i+ 1][j+1] === AG.B_BLOCK && isLikeSpace(m[i+1][j])  && isLikeSpace(m[i][j+1]) ) {
                 
                 floor.push( graphNode(i,j) ); // overhang on left
                 string_floor.push( JSON.stringify(graphNode(i,j)) );
@@ -137,7 +138,7 @@ function graphFromMap() {
                 string_ladder.push( JSON.stringify(graphNode(i,j)) );
 
             }
-            if (j + 1 < level_h && m[i][j] === AG.B_SPACE && m[i][j+1] === AG.B_LADDER) {
+            if (j + 1 < level_h &&  isLikeSpace(m[i][j])  && m[i][j+1] === AG.B_LADDER) {
                 ladder.push( graphNode(i,j) );
                 string_ladder.push( JSON.stringify(graphNode(i,j)) );
 
@@ -155,7 +156,7 @@ function graphFromMap() {
         //console.log(  "j " + j.x + " " + j.y);
         //graphLog(drop);
         
-        if (j.y + 2 < level_h && m[j.x][j.y + 1] === AG.B_SPACE && m[j.x][j.y+2] === AG.B_BLOCK) {
+        if (j.y + 2 < level_h && isLikeSpace(m[j.x][j.y + 1])  && m[j.x][j.y+2] === AG.B_BLOCK) {
             graph.push( graphEdge(j.x,j.y, j.x, j.y+1,"drop") );
             graph.push( graphEdge(j.x, j.y+1, j.x, j.y, "drop") );
             
@@ -197,7 +198,7 @@ function graphFromMap() {
             // push two edges
             
             var temp = graphEdge(start.x ,start.y, stop.x, stop.y,"ladder");
-            if (temp.cost !== 0) {
+            if (temp.cost !== 0 && start.x === stop.x ) {
                 //console.log(z + " ladder "+ JSON.stringify(temp));
                 
                 graph.push( graphEdge(start.x, start.y, stop.x, stop.y, "ladder") );
@@ -291,7 +292,12 @@ function isInList(obj, list) {
     return temp;
 }
 
-
+function isLikeSpace( label ) {
+    var temp = (label === AG.B_SPACE || label === AG.B_PRIZE || label === AG.B_BIBPRIZE ||  label === AG.B_LADDER ||
+                    label === AG.B_ONEUP || label === AG.B_KEY || label === AG.B_INITIAL_GOAL || label === AG.B_GOAL ||
+                    label === AG.B_MARKER || label === AG.B_MONSTER || label === AG.B_START);
+    return temp;
+}
 
 function graphDraw() {
     var c = document.getElementById("my_canvas");
