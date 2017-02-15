@@ -186,15 +186,17 @@ function graphFromMap() {
     var stop = graphNode(0,0);
     var z = 0;
     
+    var step = 0; // 2
+    
     while ( z < len) {
         
         if(z === 0) {
-            if (2 < len) stop = ladder[2]
+            if (2 < len) stop = ladder[step]
             start = ladder[0];
         }
         
         //console.log(ladder[z].y + " " + ladder[z+1].y + " raw"  );
-        if ( ( z+2 < ladder.length && start.y !== ladder[z].y && (ladder[z+1].y) + 1  !== (ladder[z+2].y)  ) ||  (z >= len -1 ) ) {
+        if ( ( z+2 < ladder.length && start.y !== ladder[z].y && (ladder[z+1].y) + 1  !== (ladder[z+step].y)  ) ||  (z >= len -1 ) ) {
             // push two edges
             
             var temp = graphEdge(start.x ,start.y, stop.x, stop.y,"ladder");
@@ -204,11 +206,11 @@ function graphFromMap() {
                 graph.push( graphEdge(start.x, start.y, stop.x, stop.y, "ladder") );
                 graph.push( graphEdge(stop.x, stop.y, start.x, start.y, "ladder" ) );
             }
-            if (z+2 < ladder.length ) start = ladder[z+2];
+            if (z+2 < ladder.length ) start = ladder[z+step];
             //z ++;
         }
         
-        if (z + 2 < ladder.length) stop = ladder[z+2];// 1
+        if (z + 2 < ladder.length) stop = ladder[z+ step];// 1
         z+=1;
     }
     //graphLog(graph);
@@ -319,7 +321,7 @@ function graphDraw() {
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y2);
         
-        ctx.strokeStyle = '#ff0000';
+        ctx.strokeStyle = '#00ff00';
         
         ctx.stroke();
         
