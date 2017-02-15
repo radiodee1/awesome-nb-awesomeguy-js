@@ -212,7 +212,7 @@ function graphFromMap() {
     }
     //graphLog(graph);
     var z = 0;
-    var len = floor.length - 1;
+    var len = floor.length ;//- 1;
     var start = graphNode(0,0);
     var stop = graphNode(0,0);
     while ( z < len) {
@@ -224,7 +224,6 @@ function graphFromMap() {
             
         }
         
-        //console.log(JSON.stringify(j) + " " + start.x +" " + stop.x);
         
         if  ( ( z + 1 < floor.length //&& start.x !== floor[z+1].x 
                 && floor[z].x +1 !== floor[z+1].x) || 
@@ -235,12 +234,10 @@ function graphFromMap() {
             if (z-1 >= 0) stop = floor[z]; // temporarily!
             
             
-            if (floor[z].x +1 !== floor[z+1].x) {
-                //console.log(" floor " + floor[z].x + " " + floor[z+1].x + " y:" + floor[z].y + " "+ floor[z+1].y );
-                //stop = floor[z-1];
+            if (z +1< floor.length &&  floor[z].x +1 !== floor[z+1].x) {
+                
                 z++;
-                //stop = floor[z];
-                //start = floor[z];
+                
             }
             
             var temp = graphEdge(start.x,start.y, stop.x, stop.y, "floor");
@@ -265,11 +262,10 @@ function graphFromMap() {
         }
         else {
             
-            
-            //console.log(z + " here");
-              
+                          
             j = floor[z];
-            stop = floor[z+1];
+            if (z+1 < floor.length) stop = floor[z+1];
+            else stop = floor[z];
             z++;
         }
         
@@ -311,7 +307,8 @@ function graphDraw() {
         var ctx = c.getContext("2d");
         ctx.lineWidth = 3;
 
-        if (y1 !== y2) continue;
+        //if (y1 !== y2) continue;
+         
         // lines
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y2);
