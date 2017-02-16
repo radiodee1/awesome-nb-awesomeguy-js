@@ -318,19 +318,21 @@ function graphModifySprite() {
         if (sprite[i].type === active_monster_string) {
             //var j = 0;
             var prev = getPrev(sprite[i].node);
+            //prev = getPrev(prev);
             var xloc = Math.floor(sprite[i].x / 8);
             var yloc = Math.floor(sprite[i].y / 8);
             var edge = getEdgeByPrev(sprite[i].node, prev);
             test("i node " + sprite[i].node);
             /*
             for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
-                if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
+                if ( ((edge.x1 >= xloc && xloc >= edge.x2) || (edge.x1 <= xloc && xloc <= edge.x2) ) && edge.y1 === edge.y2 && zz === edge.y1) {
                     //test("difference " + type + " " + yloc + " " + zz);
                     yloc = zz;
                     break;
                 }
             }
             */
+            
             
             
             
@@ -342,26 +344,36 @@ function graphModifySprite() {
                     test(JSON.stringify(edge));
                     if (typeof edge !== 'undefined') {
                         
+                        
+                        for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
+                            if ( ((edge.x1 >= xloc && xloc >= edge.x2) || (edge.x1 <= xloc && xloc <= edge.x2) ) && edge.y1 === edge.y2 && zz === edge.y1) {
+                                //test("difference " + type + " " + yloc + " " + zz);
+                                yloc = zz;
+                                break;
+                            }
+                        }
+                                    
+                        
                         sprite[i].move = 0;
                         if (edge.x1 === edge.x2) {
-                            if (yloc > edge.y1) {
+                            if (edge.y2 > edge.y1) {
                                 sprite[i].move = AG.UP;
                                 sprite[i].barrierx = edge.x1;
                                 sprite[i].barriery = edge.y1;
                             }
-                            else if (yloc < edge.y1) {
+                            else if (edge.y2 < edge.y1) {
                                 sprite[i].move = AG.DOWN;
                                 sprite[i].barrierx = edge.x2;
                                 sprite[i].barriery = edge.y2;
                             }
                         }
                         if (edge.y1 === edge.y2) {
-                            if (xloc > edge.x1) {
+                            if (edge.x2 > edge.x1) {
                                 sprite[i].move = AG.LEFT;
                                 sprite[i].barrierx = edge.x1;
                                 sprite[i].barriery = edge.y1;
                             }
-                            else if (xloc < edge.x1) {
+                            else if (edge.x2 < edge.x1) {
                                 sprite[i].move = AG.RIGHT;
                                 sprite[i].barrierx = edge.x2;
                                 sprite[i].barriery = edge.y2;
