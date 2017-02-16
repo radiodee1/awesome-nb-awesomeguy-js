@@ -1147,7 +1147,7 @@ function drawMonsters() {
                                 sprite[i].facingRight = true;
 
                             }
-                            if (sprite[i].move === AG.UP && map_objects[xx][yy+1] !== AG.B_BLOCK) {
+                            if (sprite[i].move === AG.UP &&  (map_objects[xx][yy+1] !== AG.B_BLOCK || map_objects[xx][yy+1] !== AG.B_LADDER)) {
                                 if (  sprite[i].y > sprite[i].barriery * 8) sprite[i].y -= move;
 
                             }
@@ -1157,6 +1157,10 @@ function drawMonsters() {
                             }
                         }
                 
+                        if ( map_objects[xx][yy+1] !== AG.B_BLOCK) {
+                            if (  sprite[i].y < level_h * 8) sprite[i].y += move;
+
+                        }
                 
                         //default is to show monster
                         visibility = show;

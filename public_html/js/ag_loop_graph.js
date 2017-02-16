@@ -169,7 +169,7 @@ function graphFromMap() {
                     var temp = graphEdge(j.x, j.y, j.x, b, "drop");
                     if (temp.cost !== 0 && temp.cost !== 1) {
                         graph.push( graphEdge( j.x, b, j.x, j.y, "drop") ); // one way... falling!
-                        graph.push( graphEdge( j.x, j.y, j.x, b, "drop") ); // one way... falling!
+                        //graph.push( graphEdge( j.x, j.y, j.x, b, "drop") ); // one way... falling!
                         //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
                         //break;
                         string_drop.push( JSON.stringify( graphNode(j.x, b)));

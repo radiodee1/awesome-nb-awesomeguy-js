@@ -339,8 +339,8 @@ function graphModifySprite() {
                         if (typeof edge2 !== 'undefined') {
                             
                             //edge = getEdgeByPrev(edge2.sort, edge2.prev);
-                            test("defined 1 " + JSON.stringify(edge));
-                            test("defined 2 " + JSON.stringify(edge2));
+                            //test("defined 1 " + JSON.stringify(edge));
+                            //test("defined 2 " + JSON.stringify(edge2));
                             //edge = edge2;
 
                         }
