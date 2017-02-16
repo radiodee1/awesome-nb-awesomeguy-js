@@ -223,7 +223,7 @@ function graphSolve() {
         }
         //if (list.length > 0) followGraph(list);
         count ++;
-        if (count > graph.length  + 4) loop = false;
+        if (count > graph.length  * 2 ) loop = false;
         if (visited.length === 0) loop = false;
     }
     test("count_set_dist:" + count_set_dist);
@@ -322,18 +322,6 @@ function graphModifySprite() {
             var xloc = Math.floor(sprite[i].x / 8);
             var yloc = Math.floor(sprite[i].y / 8);
             var edge = getEdgeByPrev(sprite[i].node, prev);
-            test("i node " + sprite[i].node);
-            /*
-            for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
-                if ( ((edge.x1 >= xloc && xloc >= edge.x2) || (edge.x1 <= xloc && xloc <= edge.x2) ) && edge.y1 === edge.y2 && zz === edge.y1) {
-                    //test("difference " + type + " " + yloc + " " + zz);
-                    yloc = zz;
-                    break;
-                }
-            }
-            */
-            
-            
             
             
             if (true ) { //j = 0; j < destination_nodes.length; j ++) {
@@ -341,12 +329,29 @@ function graphModifySprite() {
                     // check four directions... look in prev
                     
                     
-                    test(JSON.stringify(edge));
+                    //test(JSON.stringify(edge));
                     if (typeof edge !== 'undefined') {
+                        
+                        var prev2 = getPrev( edge.prev);//  edge.prev;
+                        test("prev " + prev + " " + prev2);
+                        
+                        var edge2 = getEdge(edge.prev);
+                        if (typeof edge2 !== 'undefined') {
+                            
+                            //edge = getEdgeByPrev(edge2.sort, edge2.prev);
+                            test("defined 1 " + JSON.stringify(edge));
+                            test("defined 2 " + JSON.stringify(edge2));
+                            //edge = edge2;
+
+                        }
+                        
+                       
                         
                         
                         for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
-                            if ( ((edge.x1 >= xloc && xloc >= edge.x2) || (edge.x1 <= xloc && xloc <= edge.x2) ) && edge.y1 === edge.y2 && zz === edge.y1) {
+                            if ( ((edge.x1 >= xloc && xloc >= edge.x2) || 
+                                    (edge.x1 <= xloc && xloc <= edge.x2) ) && 
+                                    edge.y1 === edge.y2 && zz === edge.y1) {
                                 //test("difference " + type + " " + yloc + " " + zz);
                                 yloc = zz;
                                 break;
@@ -356,30 +361,30 @@ function graphModifySprite() {
                         
                         sprite[i].move = 0;
                         if (edge.x1 === edge.x2) {
-                            if (edge.y2 > edge.y1) {
+                            if (Math.floor(sprite[i].y / 8) > edge.y2) {
                                 sprite[i].move = AG.UP;
-                                sprite[i].barrierx = edge.x1;
-                                sprite[i].barriery = edge.y1;
+                                sprite[i].barrierx = edge.x2;
+                                sprite[i].barriery = edge.y2;
                             }
-                            else if (edge.y2 < edge.y1) {
+                            else if (Math.floor(sprite[i].y / 8) < edge.y2) {
                                 sprite[i].move = AG.DOWN;
                                 sprite[i].barrierx = edge.x2;
                                 sprite[i].barriery = edge.y2;
                             }
                         }
                         if (edge.y1 === edge.y2) {
-                            if (edge.x2 > edge.x1) {
+                            if (Math.floor(sprite[i].x / 8) > edge.x2) {
                                 sprite[i].move = AG.LEFT;
-                                sprite[i].barrierx = edge.x1;
-                                sprite[i].barriery = edge.y1;
+                                sprite[i].barrierx = edge.x2;
+                                sprite[i].barriery = edge.y2;
                             }
-                            else if (edge.x2 < edge.x1) {
+                            else if (Math.floor(sprite[i].x / 8) < edge.x2) {
                                 sprite[i].move = AG.RIGHT;
                                 sprite[i].barrierx = edge.x2;
                                 sprite[i].barriery = edge.y2;
                             }
                         }
-                        test("sprite: " + JSON.stringify(sprite[i]));
+                        //test("sprite: " + JSON.stringify(sprite[i]));
                     }
                     //////
                 }

@@ -693,59 +693,6 @@ function collisionHelper(boxA, boxB) {
 }
 
 
-/**
- *	Used to copy 16x16 pixel sprite information from the 1D representation that
- *	is used by the java app to the 2D representation that is used by this 
- *	library
- *
- *	@param	from	1D array of sprite data pixels
- *	@param	size_l	size in pixels of 'from' array
- *	@param	to		2D array of sprite data used by library
- */
-/*
-function copyArraysExpand_16( from, size_l,  to) {
-
-
-	var i,j, k;
-	for (i = 0; i< AG.GUY_HEIGHT; i ++ ) {
-		for (j = 0; j < AG.GUY_WIDTH; j ++ ) {
-			k =( i * AG.GUY_WIDTH ) + j;
-			if ( k < size_l ) {
-				to[i][j] =  from[k];
-				//LOGE("many assignments here %i", from[k]);
-			}
-		}
-	}
-	return;
-}
-*/
-
-/**
- *	Used to copy 40x8 pixel sprite information from the 1D representation that
- *	is used by the java app to the 2D representation that is used by this 
- *	library
- *
- *	@param	from	1D array of sprite data pixels
- *	@param	size_l	size in pixels of 'from' array
- *	@param	to		2D array of sprite data used by library
- */
-
-/*
-function copyArraysExpand_8_40(from,  size_l,  to) {
-
-	var i,j, k;
-	for (i = 0; i< AG.PLATFORM_HEIGHT; i ++ ) {
-		for (j = 0; j < AG.PLATFORM_WIDTH; j ++ ) {
-			k =( i * AG.PLATFORM_WIDTH ) + j;
-			if ( k < size_l ) {
-				to[i][j] = from[k];
-			}
-		}
-	}
-	return;
-
-}
-*/
 
 function changeImageData(from, x , y,  scroll_x, scroll_y) {
     //var p = from;
@@ -1128,9 +1075,9 @@ function drawMonsters() {
 	if(monster_num > 0) {
 		for (i =  monster_offset ; i < monster_num   ; i++) {   
 			markerTest = false; 
-                        if (sprite[i].type !== "monster") continue;
+                        if (sprite[i].type !== "monster" && sprite[i].type !== "super_monster") continue;
 			
-			if (sprite[i].active === true ) {
+			if (sprite[i].active === true && sprite[i].move === 0) {
 				xx = Math.floor(sprite[i].x / 8);
 				yy = Math.floor(sprite[i].y / 8);
                                 //console.log(xx + " " + yy);
@@ -1170,26 +1117,63 @@ function drawMonsters() {
 					}
 				}
 
+                                
 				//Only show monsters that are on the screen properly
-
-
-				//default is to show monster
-				visibility = show;
-				//hide monster if...
-				if(sprite[i].x > scrollx + 32 * 8 + length ) {
-					visibility = hide;
-				}
-				if (sprite[i].x < scrollx - length) {
-					visibility = hide;
-				}
-				if (sprite[i].y > scrolly + 24 * 8 + 0){// length) {
-					visibility = hide;
-				}
-				if ( sprite[i].y < scrolly  - length) {
-					visibility = hide;
-				}
+                                
+                                
+                                
 			}
 	    	
+                        if (sprite[i].move !== 0) {
+                            move = 2;
+                            xx = Math.floor(sprite[i].x / 8);
+                            yy = Math.floor(sprite[i].y / 8);
+                            if (yy + 1 >= level_h) return;
+                            
+                            //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
+                            if (sprite[i].move === AG.LEFT && map_objects[xx][yy +1] === AG.B_BLOCK) {
+                                if (  sprite[i].x > sprite[i].barrierx * 8) {
+                                    //console.log("move left");
+                                    sprite[i].x -= move;
+                                }
+                                sprite[i].facingRight = false;
+                            }
+                            if (sprite[i].move === AG.RIGHT && map_objects[xx][yy +1] === AG.B_BLOCK) {
+                                //console.log("right?");
+                                if (  sprite[i].x < sprite[i].barrierx * 8) {
+                                    //console.log("move right");
+                                    sprite[i].x += move;
+                                }
+                                sprite[i].facingRight = true;
+
+                            }
+                            if (sprite[i].move === AG.UP && map_objects[xx][yy+1] !== AG.B_BLOCK) {
+                                if (  sprite[i].y > sprite[i].barriery * 8) sprite[i].y -= move;
+
+                            }
+                            if (sprite[i].move === AG.DOWN && map_objects[xx][yy+1] !== AG.B_BLOCK) {
+                                if (  sprite[i].y < sprite[i].barriery * 8) sprite[i].y += move;
+
+                            }
+                        }
+                
+                
+                        //default is to show monster
+                        visibility = show;
+                        //hide monster if...
+                        if(sprite[i].x > scrollx + 32 * 8 + length ) {
+                                visibility = hide;
+                        }
+                        if (sprite[i].x < scrollx - length) {
+                                visibility = hide;
+                        }
+                        if (sprite[i].y > scrolly + 24 * 8 + 0){// length) {
+                                visibility = hide;
+                        }
+                        if ( sprite[i].y < scrolly  - length) {
+                                visibility = hide;
+                        }
+                
 			//swap monsters
 			
 			sprite[i].animate ++;
