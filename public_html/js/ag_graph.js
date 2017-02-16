@@ -69,7 +69,7 @@ function graphSet(val) {
     graphInit();
     
     graphSolve();
-    //graphModifySprite();
+    graphModifySprite();
     
     self.postMessage({'cmd':'log', 'value': "END sprites " + val.sprite.length + " graph "+ val.graph.length +" END" });
     self.postMessage({'cmd':'sprites', 'value': sprite });
@@ -80,24 +80,25 @@ function graphExtraEdges() {
     test("new edges");
     var count = 0;
     var position = 0;
-    checkEdges(sprite[0], "guy");
+    checkEdges(0, type="guy");
     var i = 1;
     for (i = 1; i < sprite.length; i ++ ) {
         //test( " sprite --- " + i + " " + sprite[i].type);
         if (sprite[i].type === active_monster_string) {
             count ++;
             position = i;
-            checkEdges(sprite[i]);
+            checkEdges(i);
             //test("monster_count " + i + " " + active_monster_string + " " + sprite.length);
         }
     }
-    test("sprite_edges " + sprite_edges.length + " " + count + " " + position + " " + sprite.length);
+    //test("sprite_edges " + sprite_edges.length + " " + count + " " + position + " " + sprite.length);
 }
 
-function checkEdges(s, type="super_monster") {
+function checkEdges(index, type="super_monster") {
+    var s = sprite[index];
     var xloc = Math.floor(s.x  / 8);
     var yloc = Math.floor((s.y )/ 8)  + 1;// Math.floor(s.bottomBB/16 );
-    test(typeof s + " " + JSON.stringify(s));
+    //test(typeof s + " " + JSON.stringify(s));
     
     
     var i = 0;
@@ -109,9 +110,9 @@ function checkEdges(s, type="super_monster") {
         var t = graph[i].name;
         var s = graph[i].sort;
         
-        for (var zz = yloc - 3; zz < yloc + 3; zz ++) {
+        for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
             if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
-                test("difference " + type + " " + yloc + " " + zz);
+                //test("difference " + type + " " + yloc + " " + zz);
                 yloc = zz;
                 break;
             }
@@ -125,8 +126,8 @@ function checkEdges(s, type="super_monster") {
         }
         else {
             //yloc = Math.floor(s.y / 8 ) -0;
-            //destination_nodes.push( graphNode(xloc, yloc) );
-            s.node = yloc * level_w_local + xloc;
+            destination_nodes.push( graphNode(xloc, yloc) );
+            sprite[index].node = yloc * level_w_local + xloc;
             //test("monster " + xloc + " " + yloc);
         }    
         ////////////////////////////
@@ -136,14 +137,14 @@ function checkEdges(s, type="super_monster") {
             //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
                 
-                sprite_edges.push( graphEdge( xloc, yloc,x1, y1,  type) ); // one way...!
+                //sprite_edges.push( graphEdge( xloc, yloc,x1, y1,  type) ); // one way...!
                 sprite_edges.push( graphEdge(  xloc, yloc,x2, y2, type) ); // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
         }
         else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 && xloc === x1) {
@@ -155,12 +156,12 @@ function checkEdges(s, type="super_monster") {
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
+                sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
             }
         }
         else if (x1 === xloc && y1 === yloc) {
             // duplicate existing node?
-            test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            //test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
         }
         else {
             //test("problem graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
@@ -182,6 +183,8 @@ function graphInit() {
         sprite_edges[i].prev = UNVISITED;
         sprite_edges[i].dist = HIGH;
         sprite_edges[i].visited = UNVISITED;
+        
+        test("edges " +JSON.stringify(sprite_edges[i]));
     }
     sprite_edges.sort(function(a, b) {
         return (a.sort) - (b.sort);
@@ -220,7 +223,7 @@ function graphSolve() {
         }
         //if (list.length > 0) followGraph(list);
         count ++;
-        //if (count > graph.length / 2 + 4) loop = false;
+        if (count > graph.length  + 4) loop = false;
         if (visited.length === 0) loop = false;
     }
     test("count_set_dist:" + count_set_dist);
@@ -255,7 +258,7 @@ function followGraph(list) {
             }
 
 
-            setVisited(list[index].sort, DONE);
+            //setVisited(list[index].sort, DONE);
             //setVisitedEdge(list[index].sort, list[index].to,  DONE);
 
             if (getDist(new_sort) > list[index].cost + list[index].dist ){//&& getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
@@ -267,6 +270,7 @@ function followGraph(list) {
                 setPrev(new_sort, list[index].sort);
                 setDist(new_sort, list[index].dist + list[index].cost);
                 //setVisited(list[index].sort, DONE);
+                setVisited(list[index].sort, DONE);
 
                 //setVisited(new_sort, DONE);
                 test(" ------ prev and dist ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
@@ -290,9 +294,13 @@ function listVisited() {
         if (graph[i].visited === VISITED && list.indexOf(graph[i].sort) === -1) list.push(graph[i].sort);
     }
     for (i = 0; i < sprite_edges.length; i ++ ) {
-        if (sprite_edges[i].visited === VISITED && list.indexOf(sprite_edges[i].sort) === -1) list.push(sprite_edges[i].sort);
+        if (sprite_edges[i].visited === VISITED && list.indexOf(sprite_edges[i].sort) === -1) {
+            
+            list.push(sprite_edges[i].sort);
+            //test("examine new edges " + sprite_edges[i].sort);
+        }
     }
-    if ( true ) { // turn off listing fn
+    if ( false ) { // turn off listing fn
         var string = "";
         for (i = 0; i < list.length; i ++) {
             string = string + list[i] + " ";
@@ -303,21 +311,37 @@ function listVisited() {
 }
 
 function graphModifySprite() {
-    test("modify sprite for return");
+    test("modify sprite for return " + active_monster_string + " " + sprite.length);
     var i = 0;
     for (i = 0; i < sprite.length; i ++ ) {
+        //test("node "+sprite[i].node );
         if (sprite[i].type === active_monster_string) {
-            var j = 0;
-            for (j = 0; j < destination_nodes.length; j ++) {
-                if (destination_nodes[j].sort ===  sprite[i].node   ) {
+            //var j = 0;
+            var prev = getPrev(sprite[i].node);
+            var xloc = Math.floor(sprite[i].x / 8);
+            var yloc = Math.floor(sprite[i].y / 8);
+            var edge = getEdgeByPrev(sprite[i].node, prev);
+            test("i node " + sprite[i].node);
+            /*
+            for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
+                if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
+                    //test("difference " + type + " " + yloc + " " + zz);
+                    yloc = zz;
+                    break;
+                }
+            }
+            */
+            
+            
+            
+            if (true ) { //j = 0; j < destination_nodes.length; j ++) {
+                if ( true ) { //isInDestinationNodes(sprite[i].node)) {// destination_nodes[j].sort ===  sprite[i].node   ) {
                     // check four directions... look in prev
-                    var prev = getPrev(sprite[i].node);
-                    var xloc = Math.floor(sprite[i].x / 8);
-                    var yloc = Math.floor(sprite[i].y / 8);
-                    var edge = getEdgeByPrev(sprite[i].node, prev);
+                    
                     
                     test(JSON.stringify(edge));
                     if (typeof edge !== 'undefined') {
+                        
                         sprite[i].move = 0;
                         if (edge.x1 === edge.x2) {
                             if (yloc > edge.y1) {
@@ -343,6 +367,7 @@ function graphModifySprite() {
                                 sprite[i].barriery = edge.y2;
                             }
                         }
+                        test("sprite: " + JSON.stringify(sprite[i]));
                     }
                     //////
                 }
@@ -490,4 +515,14 @@ function getAllEdges(label) {
     }
     return list;
     
+}
+
+function isInDestinationNodes(node) {
+    for(var i = 0; i < destination_nodes.length; i ++ ) {
+        if (destination_nodes[i].node === node) {
+            test(" here " + i);
+            return true;
+        }
+    }
+    return false;
 }
