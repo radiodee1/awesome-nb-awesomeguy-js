@@ -98,35 +98,52 @@ function checkEdges(s, type="super_monster") {
     var xloc = Math.floor(s.x  / 8);
     var yloc = Math.floor((s.y )/ 8)  + 1;// Math.floor(s.bottomBB/16 );
     test(typeof s + " " + JSON.stringify(s));
-    if (type === "guy") {
-        startx = xloc;
-        starty = yloc ;
-        start_sort = yloc * level_w_local + xloc;
-        //test("guy "+ xloc +" "+ yloc);
-    }
-    else {
-        yloc = Math.floor(s.y / 8 ) -0;
-        destination_nodes.push( graphNode(xloc, yloc) );
-        s.node = yloc * level_w_local + xloc;
-        //test("monster " + xloc + " " + yloc);
-    }
+    
+    
     var i = 0;
     for (i = 0; i < graph.length; i ++) {
         var x1 = graph[i].x1;
         var y1 = graph[i].y1;
         var x2 = graph[i].x2;
         var y2 = graph[i].y2;
+        var t = graph[i].name;
+        var s = graph[i].sort;
+        
+        for (var zz = yloc - 3; zz < yloc + 3; zz ++) {
+            if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
+                test("difference " + type + " " + yloc + " " + zz);
+                yloc = zz;
+                break;
+            }
+        }
+        ////////////////////////////
+        if (type === "guy") {
+            startx = xloc;
+            starty = yloc ;
+            start_sort = yloc * level_w_local + xloc;
+            //test("guy "+ xloc +" "+ yloc);
+        }
+        else {
+            //yloc = Math.floor(s.y / 8 ) -0;
+            //destination_nodes.push( graphNode(xloc, yloc) );
+            s.node = yloc * level_w_local + xloc;
+            //test("monster " + xloc + " " + yloc);
+        }    
+        ////////////////////////////
         //test("graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
         if ( ((x1 > xloc && xloc > x2) || (x1 < xloc && xloc < x2) ) && y1 === y2 && yloc === y1) {
             // make a new horizontal edge
             //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                
+                sprite_edges.push( graphEdge( xloc, yloc,x1, y1,  type) ); // one way...!
+                sprite_edges.push( graphEdge(  xloc, yloc,x2, y2, type) ); // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                //sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
+                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
         }
         else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 && xloc === x1) {
@@ -134,16 +151,16 @@ function checkEdges(s, type="super_monster") {
             //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                if (t === "ladder") sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                //sprite_edges.push( graphEdge( xloc, yloc, x2, y2, type) ); // one way...!
+                //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
             }
         }
         else if (x1 === xloc && y1 === yloc) {
             // duplicate existing node?
-            //test("dup "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
         }
         else {
             //test("problem graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);

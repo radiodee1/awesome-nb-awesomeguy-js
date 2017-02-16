@@ -207,7 +207,7 @@ function graphFromMap() {
         else {
             // push two edges...
             var temp = graphEdge(start.x ,start.y, stop.x, stop.y,"ladder");
-            if ((temp.cost !== 0 && temp.cost !== 1 &&  start.x === stop.x) || true ) {
+            if ( temp.cost !== 0 && temp.cost !== 1 &&  start.x === stop.x ) {
                 //console.log(z + " ladder "+ JSON.stringify(temp));
                 
                 graph.push( graphEdge(start.x, start.y, stop.x, stop.y, "ladder") );
