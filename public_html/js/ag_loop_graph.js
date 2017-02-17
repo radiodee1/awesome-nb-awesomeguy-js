@@ -11,6 +11,7 @@ var worker ;
 var graph_running = false;
 var graph = [];
 
+var directions = [];
 //var drop = [];
 
 

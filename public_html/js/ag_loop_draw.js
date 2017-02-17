@@ -62,7 +62,8 @@ var Sprite = {
         move:0,
         barrierx:0,
         barriery:0,
-        node:0
+        node:0,
+        directions:0
 };
  
 //Sprite sprite[100];
@@ -1135,25 +1136,33 @@ function drawMonsters() {
                             
                             //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
                             if (sprite[i].move === AG.LEFT && map_objects[xx][yy +1] === AG.B_BLOCK) {
-                                if (  sprite[i].x > sprite[i].barrierx * 8) {
+                                if (  sprite[i].x > (sprite[i].barrierx -0) * 8) {
                                     //console.log("move left");
                                     sprite[i].x -= move;
                                 }
+                                else console.log("barrier x -- left");
+                                
                                 sprite[i].facingRight = false;
                             }
                             if (sprite[i].move === AG.RIGHT && map_objects[xx][yy +1] === AG.B_BLOCK) {
                                 //console.log("right?");
-                                if (  sprite[i].x < sprite[i].barrierx * 8) {
+                                if (  sprite[i].x < (sprite[i].barrierx + 0) * 8) {
                                     //console.log("move right");
                                     sprite[i].x += move;
                                 }
+                                else console.log("barrier x -- right");
                                 sprite[i].facingRight = true;
 
                             }
-                            if (sprite[i].move === AG.UP &&  (  map_objects[xx][yy+1] === AG.B_BLOCK ||  map_objects[xx][yy] === AG.B_LADDER || map_objects[xx][yy+1] === AG.B_LADDER)) {
-                                if (  sprite[i].y > sprite[i].barriery * 8) {
+                            if (sprite[i].move === AG.UP &&  yy + 2 < level_h && (  map_objects[xx][yy+1] === AG.B_BLOCK ||  
+                                    map_objects[xx][yy] === AG.B_LADDER // || 
+                                    //map_objects[xx][yy+1] === AG.B_LADDER //|| map_objects[xx][yy+2] === AG.B_LADDER
+                                    )) {
+                                if (  sprite[i].y > sprite[i].barriery * 8 + 0) {
                                     console.log("on ladder!");
                                     sprite[i].y -= move;
+                                    //if (sprite[i].x > sprite[i].barrierx * 8 - 8) sprite[i].x -= move;
+                                    //if (sprite[i].x < sprite[i].barrierx * 8) sprite[i].x += move;
                                 }
 
                             }
