@@ -347,7 +347,7 @@ function graphModifySprite() {
                         
                        
                         
-                        
+                        /*
                         for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
                             if ( ((edge.x1 >= xloc && xloc >= edge.x2) || 
                                     (edge.x1 <= xloc && xloc <= edge.x2) ) && 
@@ -357,6 +357,7 @@ function graphModifySprite() {
                                 break;
                             }
                         }
+                        */
                                     
                         
                         sprite[i].move = 0;
