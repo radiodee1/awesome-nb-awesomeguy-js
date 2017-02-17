@@ -346,48 +346,41 @@ function graphModifySprite() {
 
                         }
                         
-                       
-                        
-                        /*
-                        for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
-                            if ( ((edge.x1 >= xloc && xloc >= edge.x2) || 
-                                    (edge.x1 <= xloc && xloc <= edge.x2) ) && 
-                                    edge.y1 === edge.y2 && zz === edge.y1) {
-                                //test("difference " + type + " " + yloc + " " + zz);
-                                yloc = zz;
-                                break;
-                            }
+                        var node_here = edge.sort;
+                        for (var z = 0; z < 3; z ++) {
+                            var edge_here = getEdge(node_here);
+                            sprite[i].directions.push(edge_here);
+                            node_here = edge_here.prev;
                         }
-                        */
                                     
                         
                         sprite[i].move = 0;
                         //describe.move = 0;
-                        if (edge.x1 === edge.x2) {
-                            if (Math.floor(sprite[i].y / 8) > edge.y2) {
+                        if (edge.x1 === edge2.x1) {
+                            if (Math.floor(sprite[i].y / 8) > edge2.y1) {
                                 sprite[i].move = AG.UP;
-                                sprite[i].barrierx = edge.x2;
-                                sprite[i].barriery = edge.y2;
+                                sprite[i].barrierx = edge2.x1;
+                                sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.UP;
                             }
-                            else if (Math.floor(sprite[i].y / 8) < edge.y2) {
+                            else if (Math.floor(sprite[i].y / 8) < edge2.y1) {
                                 sprite[i].move = AG.DOWN;
-                                sprite[i].barrierx = edge.x2;
-                                sprite[i].barriery = edge.y2;
+                                sprite[i].barrierx = edge2.x1;
+                                sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.DOWN;
                             }
                         }
-                        if (edge.y1 === edge.y2) {
-                            if (Math.floor(sprite[i].x / 8) > edge.x2) {
+                        if (edge.y1 === edge2.y1) {
+                            if (Math.floor(sprite[i].x / 8) > edge2.x1) {
                                 sprite[i].move = AG.LEFT;
-                                sprite[i].barrierx = edge.x2;
-                                sprite[i].barriery = edge.y2;
+                                sprite[i].barrierx = edge2.x1;
+                                sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.LEFT;
                             }
-                            else if (Math.floor(sprite[i].x / 8) < edge.x2) {
+                            else if (Math.floor(sprite[i].x / 8) < edge2.x1) {
                                 sprite[i].move = AG.RIGHT;
-                                sprite[i].barrierx = edge.x2;
-                                sprite[i].barriery = edge.y2;
+                                sprite[i].barrierx = edge2.x1;
+                                sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.RIGHT;
                             }
                         }

@@ -23,7 +23,7 @@ function graphEdge(startx, starty, stopx, stopy, name="none") {
     };
 }
 
-function graphMove( edge , sprite ) {
+function graphMove( edge ) {
     var startx = edge.x1;
     var starty = edge.y1;
     var stopx = edge.x2;
@@ -43,8 +43,6 @@ function graphMove( edge , sprite ) {
         'dist': 0,
         'visited': 0,
         'name': name,
-        'move':0,
-        'next_node': 0,
-        'sprite_index':sprite
+        'move':0
     };
 }

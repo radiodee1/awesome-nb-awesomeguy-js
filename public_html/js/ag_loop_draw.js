@@ -63,7 +63,7 @@ var Sprite = {
         barrierx:0,
         barriery:0,
         node:0,
-        directions:0
+        directions:[]
 };
  
 //Sprite sprite[100];
