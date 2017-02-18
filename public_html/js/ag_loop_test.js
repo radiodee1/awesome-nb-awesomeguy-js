@@ -75,6 +75,10 @@ function testDrawLoop() {
     lives = 3;
     //preferences_collision = true;
     preferences_monsters = true;
+    if (preferences_graph_control) {
+        graphCheckForWorkers();
+        graphInit();
+    }
     
     //level = 6; // FOR TESTING FLOATING PLATFORMS
     if (! isMobile( )) {

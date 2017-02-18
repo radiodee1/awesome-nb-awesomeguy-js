@@ -25,7 +25,9 @@ function graphCheckForWorkers() {
 }
 
 function graphInit() {
-    if (! preferences_graph ) return;
+    if (! preferences_graph || ! preferences_graph_control ) return;
+    if (typeof worker !== 'undefined') worker.terminate();
+    
     worker = new Worker("js/ag_graph.js");
     
     worker.onmessage = function(e) {
@@ -63,7 +65,7 @@ function graphTest() {
 
 function graphSet() {
     
-    if (graph_running || ! preferences_graph ) return;
+    if (graph_running || ! preferences_graph || ! preferences_graph_control ) return;
     console.log("coords " + sprite[0].x + " " + sprite[0].y);
 
     sprite[0].x = guy.x;
@@ -73,7 +75,7 @@ function graphSet() {
 }
 
 function graphFromMap() {
-    if (! preferences_graph) return;
+    if (! preferences_graph || ! preferences_graph_control ) return;
     var m = map_objects;
     var floor = [];
     var ladder = [];

@@ -114,7 +114,8 @@ var preferences_monsters = false;
 var preferences_collision = false;
 var preferences_larger_screen = true;
 var preferences_sound = false;
-var preferences_graph = false;
+var preferences_graph = false; // do not touch this!!
+var preferences_graph_control = false;
 
 var animate_only = false;
 
@@ -1140,7 +1141,10 @@ function drawMonsters() {
                                     //console.log("move left");
                                     sprite[i].x -= move;
                                 }
-                                else console.log("barrier x -- left");
+                                else {
+                                    console.log("barrier x -- left");
+                                    shiftSpriteDirections(i);
+                                }
                                 
                                 sprite[i].facingRight = false;
                             }
@@ -1150,7 +1154,11 @@ function drawMonsters() {
                                     //console.log("move right");
                                     sprite[i].x += move;
                                 }
-                                else console.log("barrier x -- right");
+                                else {
+                                    console.log("barrier x -- right");
+                                    shiftSpriteDirections(i);
+
+                                }
                                 sprite[i].facingRight = true;
 
                             }
@@ -1164,10 +1172,20 @@ function drawMonsters() {
                                     //if (sprite[i].x > sprite[i].barrierx * 8 - 8) sprite[i].x -= move;
                                     //if (sprite[i].x < sprite[i].barrierx * 8) sprite[i].x += move;
                                 }
+                                else {
+                                    shiftSpriteDirections(i);
+
+                                }
 
                             }
                             if (sprite[i].move === AG.DOWN && map_objects[xx][yy+1] !== AG.B_BLOCK) {
-                                if (  sprite[i].y < sprite[i].barriery * 8) sprite[i].y += move;
+                                if (  sprite[i].y < sprite[i].barriery * 8) {
+                                    sprite[i].y += move;
+                                }
+                                else {
+                                    shiftSpriteDirections(i);
+
+                                }
 
                             }
                         }
@@ -1237,6 +1255,48 @@ function drawMonsters() {
 	return;
 	
 	
+}
+
+function shiftSpriteDirections( num ) {
+    if (typeof sprite[num] !== "undefined" && sprite[num].move !== 0) {
+        if (sprite[num].directions.length > 0) {
+            ///////////////
+            var edge2 = sprite[num].directions.shift();
+            sprite[num].move = 0;
+            //describe.move = 0;
+            if (sprite[num].barrierx === edge2.x1) {
+                if (Math.floor(sprite[num].y / 8) > edge2.y1) {
+                    sprite[num].move = AG.UP;
+                    sprite[num].barrierx = edge2.x1;
+                    sprite[num].barriery = edge2.y1;
+                    //describe.move = AG.UP;
+                }
+                else if (Math.floor(sprite[num].y / 8) < edge2.y1) {
+                    sprite[num].move = AG.DOWN;
+                    sprite[num].barrierx = edge2.x1;
+                    sprite[num].barriery = edge2.y1;
+                    //describe.move = AG.DOWN;
+                }
+            }
+            if (sprite[num].barriery === edge2.y1) {
+                if (Math.floor(sprite[num].x / 8) > edge2.x1) {
+                    sprite[num].move = AG.LEFT;
+                    sprite[num].barrierx = edge2.x1;
+                    sprite[num].barriery = edge2.y1;
+                    //describe.move = AG.LEFT;
+                }
+                else if (Math.floor(sprite[num].x / 8) < edge2.x1) {
+                    sprite[num].move = AG.RIGHT;
+                    sprite[num].barrierx = edge2.x1;
+                    sprite[num].barriery = edge2.y1;
+                    //describe.move = AG.RIGHT;
+                }
+            }
+            ///////////////
+            
+            
+        }
+    }
 }
 
 /**
@@ -1799,8 +1859,6 @@ function checkValues() {
 
 
 function setupDrawFunctionsA() {
-    graphCheckForWorkers();
-    graphInit();
     
     screen = getScreenPointer(0);
     setGuyData();

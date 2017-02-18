@@ -345,12 +345,16 @@ function graphModifySprite() {
                             //edge = edge2;
 
                         }
+                        sprite[i].directions = [];
                         
                         var node_here = edge.sort;
-                        for (var z = 0; z < 3; z ++) {
+                        for (var z = 0; z < 4; z ++) {
                             var edge_here = getEdge(node_here);
-                            sprite[i].directions.push(edge_here);
-                            node_here = edge_here.prev;
+                            if (typeof edge_here !== 'undefined') {
+                                sprite[i].directions.push(edge_here);
+                                node_here = edge_here.prev;
+                            }
+                            else break;
                         }
                                     
                         

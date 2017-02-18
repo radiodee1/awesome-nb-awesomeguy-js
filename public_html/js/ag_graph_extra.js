@@ -23,6 +23,8 @@ function graphEdge(startx, starty, stopx, stopy, name="none") {
     };
 }
 
+/*
+
 function graphMove( edge ) {
     var startx = edge.x1;
     var starty = edge.y1;
@@ -46,3 +48,4 @@ function graphMove( edge ) {
         'move':0
     };
 }
+*/
