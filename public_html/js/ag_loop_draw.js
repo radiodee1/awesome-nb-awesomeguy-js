@@ -1204,7 +1204,7 @@ function drawMonsters() {
                         if ( yy + 1 < level_h && sprite[i].move !== AG.UP && 
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
-                                //&& map_objects[xx][yy+1] !== AG.B_LADDER
+                                && map_objects[xx][yy+1] !== AG.B_LADDER
                                 //&& map_objects[xx][yy+2] !== AG.B_LADDER
                                 //&& map_objects[xx][yy+3] !== AG.B_LADDER
                                 ) {

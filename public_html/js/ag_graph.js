@@ -261,7 +261,7 @@ function extendedCheckEdges(index, direction="vertical") {
             var yy = Math.floor((sprite[index].y + 0) / 8) ;
             //var laddery = -1;
             //var move = 2;
-            //yy --;
+            yy --;
             sprite[index].y = yy * 8;
             
             test("vertical!!");
