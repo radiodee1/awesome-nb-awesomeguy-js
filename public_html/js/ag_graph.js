@@ -97,7 +97,7 @@ function graphExtraEdges() {
 
 function checkEdges(index, type="super_monster") {
     var s = sprite[index];
-    var xloc = Math.floor(s.x  / 8);
+    var xloc = Math.floor((s.x + s.rightBB/1) / 8) + 0;
     var yloc = Math.floor((s.y )/ 8)  + 1;// Math.floor(s.bottomBB/16 );
     //test(typeof s + " " + JSON.stringify(s));
     
@@ -118,6 +118,7 @@ function checkEdges(index, type="super_monster") {
                 break;
             }
         }
+        
         ////////////////////////////
         if (type === "guy") {
             startx = xloc;
@@ -127,6 +128,7 @@ function checkEdges(index, type="super_monster") {
         }
         else {
             //yloc = Math.floor(s.y / 8 ) -0;
+            
             destination_nodes.push( graphNode(xloc, yloc) );
             sprite[index].node = yloc * level_w_local + xloc;
             //test("monster " + xloc + " " + yloc);
@@ -347,11 +349,11 @@ function graphModifySprite() {
                         }
                         sprite[i].directions = [];
                         
-                        var node_here = edge.sort;
-                        for (var z = 0; z < 4; z ++) {
+                        var node_here = edge2.sort;
+                        for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
-                            if (typeof edge_here !== 'undefined') {
-                                sprite[i].directions.push(edge_here);
+                            if (typeof edge_here !== 'undefined' ) {
+                                if (z > 1) sprite[i].directions.push(edge_here);
                                 node_here = edge_here.prev;
                             }
                             else break;
