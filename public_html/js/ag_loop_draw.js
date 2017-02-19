@@ -1211,6 +1211,7 @@ function drawMonsters() {
                             if (  sprite[i].y < level_h * 8) sprite[i].y += move;
 
                         }
+                        moveSpriteToLadder(i);
                 
                         //default is to show monster
                         visibility = show;
@@ -1313,6 +1314,36 @@ function shiftSpriteDirections( num ) {
             ///////////////
             
             
+        }
+    }
+}
+
+function moveSpriteToLadder(index) {
+    if (sprite[index].type === "monster" && sprite[index].move === 0) {
+        var xx = Math.floor((sprite[index].x + 0) / 8);
+        var yy = Math.floor((sprite[index].y + 0) / 8) ;
+        var ladderx = -1;
+        var move = 2;
+        
+        if (yy + 1 >= level_h || map_objects[xx][yy+1] === AG.B_BLOCK ) return;
+        
+        for ( var i = xx - 1; i < xx + 1; i ++) {
+            if (map_objects[i][yy] === AG.B_LADDER) {
+                ladderx = i;
+                break;
+            }
+        }
+        if (ladderx === -1) return;
+        
+        var dif = ladderx * 8 - sprite[index].x;
+        
+        console.log("ladder adjust " + dif);
+        
+        if (dif > 0) {
+            sprite[index].x += move;
+        }
+        else if (dif < -3){
+            sprite[index].x -= move;
         }
     }
 }
