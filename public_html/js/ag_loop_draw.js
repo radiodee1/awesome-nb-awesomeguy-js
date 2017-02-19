@@ -1174,7 +1174,7 @@ function drawMonsters() {
 
                             }
                             if (sprite[i].move === AG.UP &&  yy + 3 < level_h && (  map_objects[xx][yy+1] === AG.B_BLOCK ||  
-                                    map_objects[xx][yy] === AG.B_LADDER  // || map_objects[xx][yy+1] === AG.B_LADDER // ||
+                                    map_objects[xx][yy] === AG.B_LADDER   || map_objects[xx][yy+1] === AG.B_LADDER // ||
                                     //map_objects[xx][yy+2] === AG.B_LADDER || map_objects[xx][yy+3] === AG.B_LADDER
                                     )) {
                                 if ( true ||  sprite[i].y > sprite[i].barriery * 8 - 0 ) {
@@ -1204,8 +1204,8 @@ function drawMonsters() {
                         if ( yy + 1 < level_h && sprite[i].move !== AG.UP && 
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
-                                && map_objects[xx][yy+1] !== AG.B_LADDER
-                                && map_objects[xx][yy+2] !== AG.B_LADDER
+                                //&& map_objects[xx][yy+1] !== AG.B_LADDER
+                                //&& map_objects[xx][yy+2] !== AG.B_LADDER
                                 //&& map_objects[xx][yy+3] !== AG.B_LADDER
                                 ) {
                             if (  sprite[i].y < level_h * 8) sprite[i].y += move;

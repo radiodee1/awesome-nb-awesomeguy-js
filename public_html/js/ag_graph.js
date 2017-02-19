@@ -134,14 +134,22 @@ function graphExtraEdges() {
     test("new edges");
     var count = 0;
     var position = 0;
-    checkEdges(0, type="guy");
+    var tot = checkEdges(0, type="guy");
+    if (tot === 0) {
+        extendedCheckEdges(0, direction="vertical");
+        checkEdges(0, type="guy");
+    }
     var i = 1;
     for (i = 1; i < sprite.length; i ++ ) {
         //test( " sprite --- " + i + " " + sprite[i].type);
         if (sprite[i].type === active_monster_string) {
             count ++;
             position = i;
-            checkEdges(i);
+            var tot = checkEdges(i);
+            if (tot === 0) {
+                extendedCheckEdges(i, direction="horizontal");
+                checkEdges(i);
+            }
             //test("monster_count " + i + " " + active_monster_string + " " + sprite.length);
         }
     }
@@ -153,7 +161,7 @@ function checkEdges(index, type="super_monster") {
     var xloc = Math.floor((s.x ) / 8) + 0;
     var yloc = Math.floor((s.y ) / 8)  + 0;// Math.floor(s.bottomBB/16 );
     //test(typeof s + " " + JSON.stringify(s));
-    
+    var tot = 0;
     
     var i = 0;
     for (i = 0; i < graph.length; i ++) {
@@ -202,26 +210,61 @@ function checkEdges(index, type="super_monster") {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
                 sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
+            tot += 2;
         }
         else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 && xloc === x1) {
             // make a new vertical edge
             //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                if (t === "ladder") sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                tot ++;
+                if ( t === "ladder") { 
+                    sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) );
+                    tot ++;
+                } // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
+                tot += 2;
             }
         }
         else if (x1 === xloc && y1 === yloc) {
             // duplicate existing node?
-            //test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            tot ++;
+            test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
         }
         else {
             //test("problem graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            //extendedCheckEdges(i);
+        }
+    }
+    return tot;
+}
 
+function extendedCheckEdges(index, direction="vertical") {
+    if (true) {
+        if (direction === "horizontal") {
+            var xx = Math.floor((sprite[index].x + 0) / 8);
+            var yy = Math.floor((sprite[index].y + 0) / 8) ;
+            //var ladderx = -1;
+            //var move = 2;
+
+            sprite[index].x = xx * 8;
+
+
+            
+        }
+    
+        if (direction === "vertical") {
+            var xx = Math.floor((sprite[index].x + 0) / 8);
+            var yy = Math.floor((sprite[index].y + 0) / 8) ;
+            //var laddery = -1;
+            //var move = 2;
+            //yy --;
+            sprite[index].y = yy * 8;
+            
+            test("vertical!!");
         }
     }
 }
