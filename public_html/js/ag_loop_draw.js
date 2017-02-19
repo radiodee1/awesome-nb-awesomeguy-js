@@ -1174,10 +1174,10 @@ function drawMonsters() {
 
                             }
                             if (sprite[i].move === AG.UP &&  yy + 3 < level_h && (  map_objects[xx][yy+1] === AG.B_BLOCK ||  
-                                    map_objects[xx][yy] === AG.B_LADDER  || map_objects[xx][yy+1] === AG.B_LADDER // ||
+                                    map_objects[xx][yy] === AG.B_LADDER  // || map_objects[xx][yy+1] === AG.B_LADDER // ||
                                     //map_objects[xx][yy+2] === AG.B_LADDER || map_objects[xx][yy+3] === AG.B_LADDER
                                     )) {
-                                if (  sprite[i].y > sprite[i].barriery * 8 - 0 ) {
+                                if ( true ||  sprite[i].y > sprite[i].barriery * 8 - 0 ) {
                                     console.log("on ladder! "+ sprite[i].y + " " + sprite[i].barriery * 8 -24);
                                     sprite[i].y -= move;
                                     //if (sprite[i].x > sprite[i].barrierx * 8 - 8) sprite[i].x -= move;

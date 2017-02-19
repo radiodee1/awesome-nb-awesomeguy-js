@@ -383,24 +383,20 @@ function graphModifySprite() {
                         test("prev " + edge.prev + /* " " + edge2.sort + */ " " +  sprite[i].node);
                         
                         
-                        if (typeof edge2 !== 'undefined') {
-                            
-                            //edge = getEdgeByPrev(edge2.sort, edge2.prev);
-                            //test("defined 1 " + JSON.stringify(edge));
-                            //test("defined 2 " + JSON.stringify(edge2));
-                            //edge = edge2;
-
-                        }
+                        
                         sprite[i].directions = [];
                         
-                        var node_here = edge.sort;
+                        var node_here = edge2.sort;
                         for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
                             if (typeof edge_here !== 'undefined' ) {
                                 if (z > 0) sprite[i].directions.push(edge_here);
                                 node_here = edge_here.prev;
                             }
-                            else break;
+                            else {
+                                test("num of directions " + z);
+                                break;
+                            }
                         }
                                     
                         
