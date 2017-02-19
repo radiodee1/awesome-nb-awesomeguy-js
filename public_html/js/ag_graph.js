@@ -50,6 +50,7 @@ var start_sort = 0;
 
 var active_monster_string = "super_monster";
 var count_set_dist = 0;
+var cancel_flag = false;
 
 importScripts("ag_graph_extra.js");
 
@@ -81,7 +82,9 @@ function test(val) {
 
 /* THE CALL TO GRAPH SET IS FOUND IN AG_LOOP_TEST.JS NEXT TO THE DRAW FUNCTIONS */
 function graphSet(val) {
-    graph = val.graph;
+    cancel_flag = false;
+    
+    //graph = val.graph;
     var sprite_in = val.sprite;
     sprite_edges = [];
     sprite = [];
@@ -107,6 +110,12 @@ function graphSet(val) {
 
     }
     
+    var graph_in = val.graph;
+    graph = [];
+    
+    for(var i = 0; i < graph_in.length; i ++ ) {
+        graph.push( graphEdge (graph_in[i].x1, graph_in[i].y1, graph_in[i].x2 ,graph_in[i].y2 , name = graph_in[i].name  ) );
+    }
     
     graphExtraEdges();
     graphInit();
@@ -443,7 +452,7 @@ function graphModifySprite() {
 }
 
 function graphCancel(val) {
-    
+    cancel_flag = val;
 }
 
 function getEdgeByPrev(node, prev){

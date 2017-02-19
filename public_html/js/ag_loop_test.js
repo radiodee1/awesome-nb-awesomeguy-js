@@ -19,6 +19,7 @@ function testPlayGameAgain() {
     }
     else if (true) {
         //testDrawBlack();
+        graphCancel();
         testDrawSplash();
         testImageMag();
         var play = confirm("Play Again?");

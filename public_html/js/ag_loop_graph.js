@@ -74,6 +74,10 @@ function graphSet() {
     graph_running = true;
 }
 
+function graphCancel() {
+    worker.postMessage({'cmd':'cancel', 'value': true});
+}
+
 function graphFromMap() {
     if (! preferences_graph || ! preferences_graph_control ) return;
     var m = map_objects;
