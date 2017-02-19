@@ -208,7 +208,7 @@ function graphFromMap() {
         if ( isInList( JSON.stringify(graphNode(stop.x, stop.y + 1)), string_ladder) ) {
             stop = graphNode(stop.x, stop.y + 1);
             z ++;
-            console.log(stop.y + 1);
+            //console.log(stop.y + 1);
             //sample = ladder[z];
         }
         else {

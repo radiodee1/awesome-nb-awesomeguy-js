@@ -123,6 +123,8 @@ function graphSet(val) {
     graphSolve();
     graphModifySprite();
     
+    if (cancel_flag) return;
+    
     self.postMessage({'cmd':'log', 'value': "END sprites " + val.sprite.length + " graph "+ val.graph.length +" END" });
     self.postMessage({'cmd':'sprites', 'value': sprite });
 
@@ -277,7 +279,7 @@ function graphSolve() {
         }
         //if (list.length > 0) followGraph(list);
         count ++;
-        if (count > graph.length  * 2 ) loop = false;
+        if (count > graph.length  * 2 || cancel_flag) loop = false;
         if (visited.length === 0) loop = false;
     }
     test("count_set_dist:" + count_set_dist);
@@ -453,6 +455,7 @@ function graphModifySprite() {
 
 function graphCancel(val) {
     cancel_flag = val;
+    test("graph cancel!!");
 }
 
 function getEdgeByPrev(node, prev){
