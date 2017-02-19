@@ -139,8 +139,8 @@ function graphExtraEdges() {
 
 function checkEdges(index, type="super_monster") {
     var s = sprite[index];
-    var xloc = Math.floor((s.x + s.rightBB - s.leftBB) / 8) + 0;
-    var yloc = Math.floor((s.y + s.bottomBB - s.topBB)/ 8)  + 0;// Math.floor(s.bottomBB/16 );
+    var xloc = Math.floor((s.x ) / 8) + 0;
+    var yloc = Math.floor((s.y ) / 8)  + 0;// Math.floor(s.bottomBB/16 );
     //test(typeof s + " " + JSON.stringify(s));
     
     
@@ -169,7 +169,7 @@ function checkEdges(index, type="super_monster") {
             //test("guy "+ xloc +" "+ yloc);
         }
         else {
-            //yloc = Math.floor(s.y / 8 ) -0;
+            //yloc = Math.floor(s.y / 8 ) +1;
             
             destination_nodes.push( graphNode(xloc, yloc) );
             sprite[index].node = yloc * level_w_local + xloc;
@@ -362,11 +362,12 @@ function graphModifySprite() {
         //test("node "+sprite[i].node );
         if (sprite[i].type === active_monster_string) {
             //var j = 0;
-            var prev = getPrev(sprite[i].node);
+            //var prev = getPrev(sprite[i].node);
             //prev = getPrev(prev);
-            var xloc = Math.floor(sprite[i].x / 8);
-            var yloc = Math.floor(sprite[i].y / 8);
-            var edge = getEdgeByPrev(sprite[i].node, prev);
+            //var xloc = Math.floor(sprite[i].x / 8);
+            //var yloc = Math.floor(sprite[i].y / 8);
+            //var edge = getEdgeByPrev(sprite[i].node, prev);
+            var edge = getEdge(sprite[i].node);
             //var describe = graphMove(edge, i);
             
             if (true ) { //j = 0; j < destination_nodes.length; j ++) {
@@ -375,12 +376,13 @@ function graphModifySprite() {
                     
                     
                     //test(JSON.stringify(edge));
-                    if (typeof edge !== 'undefined') {
-                        
-                        var prev2 = getPrev( edge.prev);//  edge.prev;
-                        test("prev " + prev + " " + prev2);
+                    if (typeof edge !== 'undefined' && edge.prev !== -1) {
                         
                         var edge2 = getEdge(edge.prev);
+                        //var prev2 = getPrev( edge.prev);//  edge.prev;
+                        test("prev " + edge.prev + /* " " + edge2.sort + */ " " +  sprite[i].node);
+                        
+                        
                         if (typeof edge2 !== 'undefined') {
                             
                             //edge = getEdgeByPrev(edge2.sort, edge2.prev);
@@ -391,7 +393,7 @@ function graphModifySprite() {
                         }
                         sprite[i].directions = [];
                         
-                        var node_here = edge2.sort;
+                        var node_here = edge.sort;
                         for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
                             if (typeof edge_here !== 'undefined' ) {
