@@ -155,7 +155,7 @@ function checkEdges(index, type="super_monster") {
             //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                if (t === "ladder") sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                if (true || t === "ladder") sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
