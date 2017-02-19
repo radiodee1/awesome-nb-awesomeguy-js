@@ -1143,7 +1143,7 @@ function drawMonsters() {
 
                         if (sprite[i].move !== 0) {
                             xx = Math.floor((sprite[i].x + 0)/ 8);
-                            yy = Math.floor((sprite[i].y + 0) / 8);
+                            yy = Math.floor((sprite[i].y + 0) / 8) ;
         	    	    if (yy + 1 >= level_h) return;
                             
                             //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
@@ -1206,7 +1206,7 @@ function drawMonsters() {
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
                                 && map_objects[xx][yy+2] !== AG.B_LADDER
-                                && map_objects[xx][yy+3] !== AG.B_LADDER
+                                //&& map_objects[xx][yy+3] !== AG.B_LADDER
                                 ) {
                             if (  sprite[i].y < level_h * 8) sprite[i].y += move;
 

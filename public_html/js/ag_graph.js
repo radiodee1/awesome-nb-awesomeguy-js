@@ -14,6 +14,25 @@ AG.LEFT = 37;
 AG.RIGHT = 39;
 AG.JUMP = 90;
 
+var Sprite = {
+	x:0, 
+        y:0, 
+        animate:0,
+	facingRight:0, 
+        active:0, 
+        visible:0,
+	leftBB:0, 
+        rightBB:0, 
+        topBB:0, 
+        bottomBB:0,
+        type:"none",
+        move:0,
+        barrierx:0,
+        barriery:0,
+        node:0,
+        directions:[]
+};
+
 var HIGH = 99999;
 var VISITED = 1;
 var DONE = 2;
@@ -63,8 +82,31 @@ function test(val) {
 /* THE CALL TO GRAPH SET IS FOUND IN AG_LOOP_TEST.JS NEXT TO THE DRAW FUNCTIONS */
 function graphSet(val) {
     graph = val.graph;
-    sprite = val.sprite;
+    var sprite_in = val.sprite;
     sprite_edges = [];
+    sprite = [];
+    
+    for(var i = 0; i < sprite_in.length; i ++) {
+        
+        sprite.push(Object.assign({},Sprite));
+        
+        sprite[i].x = sprite_in[i].x;
+        sprite[i].y = sprite_in[i].y;
+        sprite[i].leftBB = sprite_in[i].leftBB;
+        sprite[i].rightBB = sprite_in[i].rightBB;
+        sprite[i].topBB = sprite_in[i].topBB;
+        sprite[i].bottomBB = sprite_in[i].bottomBB;
+        sprite[i].type = sprite_in[i].type;
+        
+        sprite[i].facingRight = sprite_in[i].facingRight;
+        sprite[i].visible = sprite_in[i].visible;
+        sprite[i].active = sprite_in[i].active;
+        sprite[i].animate = sprite_in[i].animate;
+        sprite[i].node = sprite_in[i].node;
+
+
+    }
+    
     
     graphExtraEdges();
     graphInit();
@@ -97,8 +139,8 @@ function graphExtraEdges() {
 
 function checkEdges(index, type="super_monster") {
     var s = sprite[index];
-    var xloc = Math.floor((s.x + s.rightBB/1) / 8) + 0;
-    var yloc = Math.floor((s.y )/ 8)  + 1;// Math.floor(s.bottomBB/16 );
+    var xloc = Math.floor((s.x + s.rightBB - s.leftBB) / 8) + 0;
+    var yloc = Math.floor((s.y + s.bottomBB - s.topBB)/ 8)  + 0;// Math.floor(s.bottomBB/16 );
     //test(typeof s + " " + JSON.stringify(s));
     
     
@@ -155,7 +197,7 @@ function checkEdges(index, type="super_monster") {
             //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (type !== "guy") {
                 sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                if (true || t === "ladder") sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                if (t === "ladder") sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
             }
             else {
                 sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
@@ -353,7 +395,7 @@ function graphModifySprite() {
                         for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
                             if (typeof edge_here !== 'undefined' ) {
-                                if (z > 1) sprite[i].directions.push(edge_here);
+                                if (z > 0) sprite[i].directions.push(edge_here);
                                 node_here = edge_here.prev;
                             }
                             else break;
