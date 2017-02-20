@@ -48,6 +48,9 @@ var startx = 0;
 var starty = 0;
 var start_sort = 0;
 
+//var rx = -1;
+//var ry = -1;
+
 var active_monster_string = "super_monster";
 var count_set_dist = 0;
 var cancel_flag = false;
@@ -94,7 +97,7 @@ function graphSet(val) {
         sprite.push(Object.assign({},Sprite));
         
         sprite[i].x = sprite_in[i].x;
-        sprite[i].y = sprite_in[i].y;
+        sprite[i].y = sprite_in[i].y ;
         sprite[i].leftBB = sprite_in[i].leftBB;
         sprite[i].rightBB = sprite_in[i].rightBB;
         sprite[i].topBB = sprite_in[i].topBB;
@@ -172,13 +175,20 @@ function checkEdges(index, type="super_monster") {
         var t = graph[i].name;
         var s = graph[i].sort;
         
-        for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
-            if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
-                //test("difference " + type + " " + yloc + " " + zz);
-                yloc = zz;
-                break;
+        if (true ) { //(ry === -1 || rx === -1) && type !== "guy") {
+            //rx = 0;
+            for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
+                if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
+                    test("difference " + type + " " + yloc + " " + zz);
+                    //ry = yloc - zz;
+                    yloc = zz;
+                    break;
+                }
+                
             }
         }
+        //xloc += rx;
+        //yloc += ry;
         
         ////////////////////////////
         if (type === "guy") {
@@ -188,7 +198,7 @@ function checkEdges(index, type="super_monster") {
             //test("guy "+ xloc +" "+ yloc);
         }
         else {
-            //yloc = Math.floor(s.y / 8 ) +1;
+            //yloc = Math.floor(s.y / 8 ) -2;
             
             destination_nodes.push( graphNode(xloc, yloc) );
             sprite[index].node = yloc * level_w_local + xloc;

@@ -332,7 +332,7 @@ function graphDraw() {
         var ctx = c.getContext("2d");
         ctx.lineWidth = 3;
 
-        if (x1 !== x2) continue;
+        //if (x1 !== x2) continue;
          
         // lines
         ctx.moveTo(x1,y1);
