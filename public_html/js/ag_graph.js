@@ -465,31 +465,35 @@ function graphModifySprite() {
                         sprite[i].move = 0;
                         //describe.move = 0;
                         if (edge.x1 === edge2.x1) {
-                            if (Math.floor(sprite[i].y / 8) > edge2.y1) {
+                            if ((sprite[i].y ) >= edge2.y1 * 8) {
                                 sprite[i].move = AG.UP;
                                 sprite[i].barrierx = edge2.x1;
-                                sprite[i].barriery = edge2.y1 -1;
+                                sprite[i].barriery = edge2.y1 ;
                                 //describe.move = AG.UP;
+                                test("up " + i);
                             }
-                            else if (Math.floor(sprite[i].y / 8) < edge2.y1) {
+                            else if ((sprite[i].y ) < edge2.y1 * 8) {
                                 sprite[i].move = AG.DOWN;
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.DOWN;
+                                test("down "+ i);
                             }
                         }
-                        if (edge.y1 === edge2.y1) {
-                            if (Math.floor(sprite[i].x / 8) > edge2.x1) {
+                        else if (edge.y1 === edge2.y1) {
+                            if ((sprite[i].x ) >= edge2.x1 * 8) {
                                 sprite[i].move = AG.LEFT;
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.LEFT;
+                                test("left " + i);
                             }
-                            else if (Math.floor(sprite[i].x / 8) < edge2.x1) {
+                            else if ((sprite[i].x ) < edge2.x1 * 8) {
                                 sprite[i].move = AG.RIGHT;
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.RIGHT;
+                                test("right " + i)
                             }
                         }
                         //test("sprite: " + JSON.stringify(sprite[i]));
