@@ -39,7 +39,7 @@ function graphInit() {
                 console.log(data.value);
                 break;
             case 'sprites':
-                console.log(data.value.length);
+                
                 graphSprites(data.value);
                 break;
         }
@@ -176,6 +176,7 @@ function graphFromMap() {
                     var temp = graphEdge(j.x, j.y, j.x, b, "drop");
                     if (temp.cost !== 0 && temp.cost !== 1) {
                         graph.push( graphEdge( j.x, b, j.x, j.y, "drop") ); // one way... falling!
+                        
                         //graph.push( graphEdge( j.x, j.y, j.x, b, "drop") ); // one way... falling!
                         //console.log( JSON.stringify(graphEdge(j.x, j.y, j.x, a)) +" drop");
                         //break;

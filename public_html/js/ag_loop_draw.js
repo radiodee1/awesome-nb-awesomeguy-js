@@ -1147,7 +1147,7 @@ function drawMonsters() {
         	    	    if (yy + 1 >= level_h) return;
                             
                             //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
-                            if (sprite[i].move === AG.LEFT && map_objects[xx][yy +1] === AG.B_BLOCK) {
+                            if (sprite[i].move === AG.LEFT && (  map_objects[xx][yy +1] === AG.B_BLOCK ||map_objects[xx-1][yy+1 ] === AG.B_BLOCK  )) {
                                 if (  sprite[i].x > (sprite[i].barrierx -0) * 8) {
                                     //console.log("move left");
                                     sprite[i].x -= move;
@@ -1173,11 +1173,11 @@ function drawMonsters() {
                                 sprite[i].facingRight = true;
 
                             }
-                            if (sprite[i].move === AG.UP &&  yy + 3 < level_h && (  map_objects[xx][yy+1] === AG.B_BLOCK ||  
-                                    map_objects[xx][yy] === AG.B_LADDER   || map_objects[xx][yy+1] === AG.B_LADDER // ||
+                            if (sprite[i].move === AG.UP &&  yy + 2 < level_h && (  map_objects[xx][yy+1] === AG.B_BLOCK ||  map_objects[xx][yy+2] === AG.B_BLOCK ||  
+                                    map_objects[xx][yy] === AG.B_LADDER   || map_objects[xx ][yy+1] === AG.B_LADDER // ||
                                     //map_objects[xx][yy+2] === AG.B_LADDER || map_objects[xx][yy+3] === AG.B_LADDER
                                     )) {
-                                if ( true ||  sprite[i].y > sprite[i].barriery * 8 - 0 ) {
+                                if (   sprite[i].y > sprite[i].barriery * 8 -8 ) {
                                     console.log("on ladder! "+ sprite[i].y + " " + sprite[i].barriery * 8 -24);
                                     sprite[i].y -= move;
                                     //if (sprite[i].x > sprite[i].barrierx * 8 - 8) sprite[i].x -= move;
@@ -1189,9 +1189,10 @@ function drawMonsters() {
                                 }
 
                             }
-                            if (sprite[i].move === AG.DOWN && (map_objects[xx][yy+1] !== AG.B_BLOCK || map_objects[xx][yy+1] === AG.B_LADDER )) {
-                                if (  sprite[i].y < sprite[i].barriery * 8) {
+                            if (sprite[i].move === AG.DOWN && false && ( map_objects[xx][yy+1] !== AG.B_BLOCK || map_objects[xx][yy+1] === AG.B_LADDER )) {
+                                if (  sprite[i].y < sprite[i].barriery * 8 ) {
                                     sprite[i].y += move;
+                                    console.log("down:");
                                 }
                                 else {
                                     shiftSpriteDirections(i);
@@ -1201,14 +1202,17 @@ function drawMonsters() {
                             }
                         }
                 
-                        if ( yy + 1 < level_h && sprite[i].move === 0 && //AG.UP && 
+                        if ( yy + 1 < level_h && // sprite[i].move === 0 && //AG.UP && 
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
                                 //&& map_objects[xx][yy+2] !== AG.B_LADDER
                                 //&& map_objects[xx][yy+3] !== AG.B_LADDER
                                 ) {
-                            if (  sprite[i].y < level_h * 8) sprite[i].y += move;
+                            if (  sprite[i].y < level_h * 8) {
+                                console.log("also down:");
+                                sprite[i].y += move;
+                            }
 
                         }
                         //moveSpriteToLadder(i);
