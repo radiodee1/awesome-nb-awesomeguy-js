@@ -115,7 +115,7 @@ var preferences_collision = false;
 var preferences_larger_screen = true;
 var preferences_sound = false;
 var preferences_graph = false; // do not touch this!!
-var preferences_graph_control = false;
+var preferences_graph_control = true;
 
 var animate_only = false;
 
@@ -1079,7 +1079,7 @@ function drawMonsters() {
 			markerTest = false; 
                         if (sprite[i].type !== "monster" && sprite[i].type !== "super_monster") continue;
 			
-			if (sprite[i].active === true && sprite[i].move === 0) {
+			if (sprite[i].active === true && sprite[i].move === 0 && ! preferences_graph_control ) {
 				xx = Math.floor(sprite[i].x / 8);
 				yy = Math.floor(sprite[i].y / 8);
                                 //console.log(xx + " " + yy);
@@ -1201,7 +1201,7 @@ function drawMonsters() {
                             }
                         }
                 
-                        if ( yy + 1 < level_h && sprite[i].move !== AG.UP && 
+                        if ( yy + 1 < level_h && sprite[i].move === 0 && //AG.UP && 
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
@@ -1211,7 +1211,7 @@ function drawMonsters() {
                             if (  sprite[i].y < level_h * 8) sprite[i].y += move;
 
                         }
-                        moveSpriteToLadder(i);
+                        //moveSpriteToLadder(i);
                 
                         //default is to show monster
                         visibility = show;

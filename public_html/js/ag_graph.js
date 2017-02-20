@@ -249,7 +249,7 @@ function extendedCheckEdges(index, direction="vertical") {
             var yy = Math.floor((sprite[index].y + 0) / 8) ;
             //var ladderx = -1;
             //var move = 2;
-
+            //xx --;
             sprite[index].x = xx * 8;
 
 
@@ -261,7 +261,7 @@ function extendedCheckEdges(index, direction="vertical") {
             var yy = Math.floor((sprite[index].y + 0) / 8) ;
             //var laddery = -1;
             //var move = 2;
-            yy --;
+            //yy --;
             sprite[index].y = yy * 8;
             
             test("vertical!!");
@@ -342,17 +342,38 @@ function followGraph(list) {
         for (i = 0; i < len; i ++) {
             
 
-            if (  getVisited(list[i].to) !== DONE) {
+            if (  getVisited(list[i].to) !== DONE || true ) {
 
 
-                if(list[i].cost < min ){// && getVisited(list[i].to) === VISITED) { // !== DONE) {
+                if(list[i].cost < min || true){
                     min = list[i].cost;
                     new_sort = list[i].to;
                     index = i;
+                    /////////////////////////
+                    if (getDist(new_sort) > list[index].cost + list[index].dist ){
+                        // 
+                        if (list[index].dist === HIGH) {
+                            setDist(list[index].sort, 0);
+                            test("should be start node " + list[0].sort + " " + start_sort);
+                        }
+                        setPrev(new_sort, list[index].sort);
+                        setDist(new_sort, list[index].dist + list[index].cost);
+                        //setVisited(list[index].sort, DONE);
+                        setVisited(list[index].sort, DONE);
+
+                        //setVisited(new_sort, DONE);
+                        test(" ------ prev and dist 2 ------ " +JSON.stringify(list[index]) + " -> " + JSON.stringify(getEdge(new_sort)));
+
+                        count_set_dist ++;
+                        //break;
+
+                    }    
+                    ////////////////////////
+                    
 
                 }
                 setVisited( list[i].to, VISITED);
-                //setVisitedEdge(list[i].sort, list[index].to,  VISITED);
+                
 
             }
 
@@ -360,7 +381,7 @@ function followGraph(list) {
             //setVisited(list[index].sort, DONE);
             //setVisitedEdge(list[index].sort, list[index].to,  DONE);
 
-            if (getDist(new_sort) > list[index].cost + list[index].dist ){//&& getVisited(new_sort) !== DONE ){//|| getPrev(new_sort) === UNVISITED){
+            if (getDist(new_sort) > list[index].cost + list[index].dist ){
                 // 
                 if (list[index].dist === HIGH) {
                     setDist(list[index].sort, 0);
@@ -423,6 +444,7 @@ function graphModifySprite() {
             //var edge = getEdgeByPrev(sprite[i].node, prev);
             var edge = getEdge(sprite[i].node);
             //var describe = graphMove(edge, i);
+            test("follow 1 " + JSON.stringify(edge));
             
             if (true ) { //j = 0; j < destination_nodes.length; j ++) {
                 if ( true ) { //isInDestinationNodes(sprite[i].node)) {// destination_nodes[j].sort ===  sprite[i].node   ) {
@@ -434,7 +456,7 @@ function graphModifySprite() {
                         
                         var edge2 = getEdge(edge.prev);
                         //var prev2 = getPrev( edge.prev);//  edge.prev;
-                        test("prev " + edge.prev + /* " " + edge2.sort + */ " " +  sprite[i].node);
+                        test("follow 2 prev " + edge.prev + /* " " + edge2.sort + */ " " +  sprite[i].node);
                         
                         
                         
@@ -444,7 +466,7 @@ function graphModifySprite() {
                         for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
                             if (typeof edge_here !== 'undefined' ) {
-                                if (z > 0) sprite[i].directions.push(edge_here);
+                                if (z > 1) sprite[i].directions.push(edge_here);
                                 node_here = edge_here.prev;
                             }
                             else {
