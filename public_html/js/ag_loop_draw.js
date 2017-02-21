@@ -1148,9 +1148,9 @@ function drawMonsters() {
                             
                             //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
                             if (sprite[i].move === AG.LEFT && (  
-                                    map_objects[xx][yy +1] === AG.B_BLOCK ||map_objects[xx-0][yy+2 ] === AG.B_BLOCK  ) 
+                                    map_objects[xx][yy +1] === AG.B_BLOCK ||map_objects[xx-1][yy+2 ] === AG.B_BLOCK  ) 
                                     ) {
-                                if (  sprite[i].x > (sprite[i].barrierx ) * 8) {
+                                if (  sprite[i].x > (sprite[i].barrierx ) * 8 ) {
                                     //console.log("move left");
                                     sprite[i].x -= move;
                                 }
@@ -1182,7 +1182,7 @@ function drawMonsters() {
                                     map_objects[xx][yy] === AG.B_LADDER   || map_objects[xx ][yy+1] === AG.B_LADDER  ||
                                     map_objects[xx][yy+2] === AG.B_LADDER || map_objects[xx][yy+3] === AG.B_LADDER
                                     )) {
-                                if (   sprite[i].y > sprite[i].barriery * 8 ) {
+                                if (   sprite[i].y > sprite[i].barriery * 8 - 8 ) {
                                     console.log("up ladder! "+ sprite[i].y + " " + sprite[i].barriery * 8 );
                                     sprite[i].y -= move;
                                     
@@ -1205,8 +1205,9 @@ function drawMonsters() {
 
                             }
                         }
-                
-                        if ( yy + 1 < level_h && // sprite[i].move === 0 && //AG.UP && 
+                        
+                        ////// like gravity for monsters ////////
+                        if ( yy + 1 < level_h && // sprite[i].move !==  AG.UP && sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
@@ -1215,7 +1216,7 @@ function drawMonsters() {
                                 ) {
                             if (   sprite[i].y < level_h * 8) {
                                 console.log("also down:");
-                                sprite[i].y += 1;//move;
+                                sprite[i].y += move;
                             }
 
                         }
@@ -1292,32 +1293,37 @@ function shiftSpriteDirections( num ) {
             sprite[num].move = 0;
             //describe.move = 0;
             if (sprite[num].barrierx === edge2.x1) {
-                if (Math.floor(sprite[num].y / 8) > edge2.y1) {
+                if ((sprite[num].y ) > edge2.y1 * 8) {
                     sprite[num].move = AG.UP;
                     sprite[num].barrierx = edge2.x1;
                     sprite[num].barriery = edge2.y1;
                     //describe.move = AG.UP;
                 }
-                else if (Math.floor(sprite[num].y / 8) < edge2.y1) {
+                else if ((sprite[num].y ) < edge2.y1 * 8) {
                     sprite[num].move = AG.DOWN;
                     sprite[num].barrierx = edge2.x1;
                     sprite[num].barriery = edge2.y1;
                     //describe.move = AG.DOWN;
                 }
             }
-            if (sprite[num].barriery === edge2.y1) {
-                if (Math.floor(sprite[num].x / 8) > edge2.x1) {
+            else if (sprite[num].barriery === edge2.y1) {
+                if ((sprite[num].x ) > edge2.x1 * 8) {
                     sprite[num].move = AG.LEFT;
                     sprite[num].barrierx = edge2.x1;
                     sprite[num].barriery = edge2.y1;
                     //describe.move = AG.LEFT;
                 }
-                else if (Math.floor(sprite[num].x / 8) < edge2.x1) {
+                else if ((sprite[num].x ) < edge2.x1 * 8) {
                     sprite[num].move = AG.RIGHT;
                     sprite[num].barrierx = edge2.x1;
                     sprite[num].barriery = edge2.y1;
                     //describe.move = AG.RIGHT;
                 }
+            }
+            else {
+                sprite[num].move = 0;// AG.RIGHT;
+                sprite[num].barrierx = 0;//edge2.x1;
+                sprite[num].barriery = 0;//edge2.y1;
             }
             ///////////////
             
