@@ -1182,7 +1182,7 @@ function drawMonsters() {
                                     map_objects[xx][yy] === AG.B_LADDER   || map_objects[xx ][yy+1] === AG.B_LADDER  ||
                                     map_objects[xx][yy+2] === AG.B_LADDER || map_objects[xx][yy+3] === AG.B_LADDER
                                     )) {
-                                if (   sprite[i].y > sprite[i].barriery * 8 - 8 ) {
+                                if (   sprite[i].y > sprite[i].barriery * 8  ) {
                                     console.log("up ladder! "+ sprite[i].y + " " + sprite[i].barriery * 8 );
                                     sprite[i].y -= move;
                                     

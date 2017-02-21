@@ -14,6 +14,56 @@ AG.LEFT = 37;
 AG.RIGHT = 39;
 AG.JUMP = 90;
 
+
+AG.B_START = 5;
+AG.B_SPACE = 0;
+AG.B_LADDER = 444;
+AG.B_BLOCK = 442;
+AG.B_GOAL = 1;//446;
+AG.B_KEY = 445; 
+AG.B_PRIZE =  447;
+AG.B_MONSTER = 443;
+AG.B_MARKER = 441; 
+AG.B_DEATH = 439 ;
+AG.B_ONEUP = 438 ;
+AG.B_BIBPRIZE = 440 ;
+AG.B_PLATFORM = 437 ;
+AG.B_INITIAL_GOAL = 446;// 500;
+ 
+AG.TILEMAP_WIDTH = 224;
+AG.TILEMAP_HEIGHT = 128;
+ 
+AG.TILE_WIDTH = 8;
+AG.TILE_HEIGHT = 8;
+ 
+AG.GUY_WIDTH = 16;
+AG.GUY_HEIGHT = 16;
+AG.GUY_CHEAT = 3;
+ 
+AG.MONSTER_WIDTH = 16;
+AG.MONSTER_HEIGHT = 16;
+ 
+AG.PLATFORM_WIDTH = 40;
+AG.PLATFORM_HEIGHT = 8;
+ 
+AG.MAP_WIDTH = 96;
+AG.MAP_HEIGHT = 96;
+ 
+AG.SCREEN_WIDTH = 256;
+AG.SCREEN_HEIGHT = 192;
+    
+AG.MONSTER_TOTAL = 50;
+AG.PLATFORM_TOTAL = 20;
+
+AG.SCREEN_TILES_H = 32;
+AG.SCREEN_TILES_V = 24;
+
+AG.NUM_LEVELS = 10;
+
+AG.FRAMES_PER_SECOND = 3;
+	
+
+
 var Sprite = {
 	x:0, 
         y:0, 
@@ -43,7 +93,7 @@ var sprite_edges = [];
 var sprite = [];
 var destination_nodes = [];
 var directions = [];
-//var location = [];
+var map = [];
 
 var startx = 0;
 var starty = 0;
@@ -110,7 +160,10 @@ function graphSet(val) {
         sprite[i].active = sprite_in[i].active;
         sprite[i].animate = sprite_in[i].animate;
         sprite[i].node = sprite_in[i].node;
-
+        sprite[i].directions = [];
+        for (var j = 0; j < sprite_in[i].directions.length; j ++) {
+            sprite[i].directions.push(sprite_in[i].directions[j]);
+        }
 
     }
     
@@ -120,6 +173,8 @@ function graphSet(val) {
     for(var i = 0; i < graph_in.length; i ++ ) {
         graph.push( graphEdge (graph_in[i].x1, graph_in[i].y1, graph_in[i].x2 ,graph_in[i].y2 , name = graph_in[i].name  ) );
     }
+    
+    map = val.map;
     
     graphExtraEdges();
     graphInit();
@@ -184,7 +239,7 @@ function checkEdges(index, type="super_monster") {
             //rx = 0;
             for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
                 if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
-                    test("difference " + type + " " + yloc + " " + zz);
+                    test("difference " + type + " " + yloc + " " + xloc + "," + zz);
                     //ry = yloc - zz;
                     yloc = zz;
                     break;
@@ -203,8 +258,8 @@ function checkEdges(index, type="super_monster") {
             //test("guy "+ xloc +" "+ yloc);
         }
         else {
-            //yloc = Math.floor(s.y / 8 ) -2;
-            
+            //yloc = Math.ciel((s.y + 0 )/ 8 ) +2 ;
+            //xloc += 1;
             destination_nodes.push( graphNode(xloc, yloc) );
             sprite[index].node = yloc * level_w_local + xloc;
             //test("monster " + xloc + " " + yloc);
@@ -460,6 +515,7 @@ function graphModifySprite() {
                         test("follow 2 prev " + i + " -- " + edge.prev + /* " " + edge2.sort + */ " " +  sprite[i].node);
                         
                         
+                        //if (sprite[i].directions.length > 0) return;
                         
                         sprite[i].directions = [];
                         
@@ -467,7 +523,7 @@ function graphModifySprite() {
                         for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
                             if (typeof edge_here !== 'undefined' ) {
-                                if (z >= 1) sprite[i].directions.push(edge_here);
+                                if (z >= 2) sprite[i].directions.push(edge_here);
                                 node_here = edge_here.prev;
                             }
                             else {
@@ -475,12 +531,19 @@ function graphModifySprite() {
                                 break;
                             }
                         }
-                                    
                         
+                        var oldx = Math.floor(sprite[i].x / 8);
+                        var oldy = Math.floor(sprite[i].y / 8);
+                        
+                        test("difference "+ i +" edge here " + edge.x1 + "," + edge.y1  + " -> " + edge2.x1 + "," + edge2.y1 + " old:" + oldx + ","+ oldy);
+                        
+                        var old_move = sprite[i].move;
                         sprite[i].move = 0;
-                        //describe.move = 0;
-                        if (edge.x1 === edge2.x1) {
-                            if ((sprite[i].y ) >= edge2.y1 * 8) {
+                        
+                        if (edge.x1 === edge2.x1 ){//|| edge.x1 === oldx ) {
+                            
+                            if ((sprite[i].y ) > edge2.y1 * 8) {
+                                //if (Math.floor(sprite[i].y/8) !== edge2.y1) test("here");
                                 sprite[i].move = AG.UP;
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1 ;
@@ -496,7 +559,7 @@ function graphModifySprite() {
                             }
                         }
                         else if (edge.y1 === edge2.y1) {
-                            if ((sprite[i].x ) >= edge2.x1 * 8 ) {
+                            if ((sprite[i].x ) > edge2.x1 * 8 ) {
                                 sprite[i].move = AG.LEFT;
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
@@ -520,6 +583,13 @@ function graphModifySprite() {
                         //sprite[i].directions = directions.length;
                         //directions.push(describe);
                         //directions[directions.length - 1].next_node = directions.length;
+                        if (oldx === edge.x1 && oldy <= edge.y1 && map[oldx][oldy ] === AG.B_LADDER) {
+                            sprite[i].move = AG.UP;
+                            sprite[i].barrierx = oldx;
+                            sprite[i].barriery = oldy  -1;
+                            sprite[i].directions = [];
+                            test("up here " + i);
+                        }
                     }
                     //////
                 }

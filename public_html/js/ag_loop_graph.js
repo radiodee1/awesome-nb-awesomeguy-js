@@ -70,7 +70,7 @@ function graphSet() {
 
     sprite[0].x = guy.x;
     sprite[0].y = guy.y;
-    worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': graph } });
+    worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': graph , 'map': map_objects } });
     graph_running = true;
 }
 
