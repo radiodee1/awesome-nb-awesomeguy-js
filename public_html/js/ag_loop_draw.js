@@ -1150,7 +1150,7 @@ function drawMonsters() {
                             
                             //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
                             if (sprite[i].move === AG.LEFT && (  
-                                    map_objects[xx][yy +1] === AG.B_BLOCK ||map_objects[xx-1][yy+2 ] === AG.B_BLOCK  ) 
+                                    map_objects[xx][yy +1] === AG.B_BLOCK ||map_objects[xx][yy+2 ] === AG.B_BLOCK  ) 
                                     ) {
                                 if (  sprite[i].x > (sprite[i].barrierx ) * 8 ) {
                                     //console.log("move left");
@@ -1163,8 +1163,8 @@ function drawMonsters() {
                                 
                                 sprite[i].facingRight = false;
                             }
-                            if (sprite[i].move === AG.RIGHT && (
-                                    map_objects[xx][yy +1] === AG.B_BLOCK )//||map_objects[xx-0][yy+2 ] === AG.B_BLOCK) 
+                            if (sprite[i].move === AG.RIGHT && ( 
+                                    map_objects[xx][yy +1] === AG.B_BLOCK ||map_objects[xx][yy+1 ] === AG.B_LADDER) 
                                     ) {
                                 //console.log("right?");
                                 if (  sprite[i].x < (sprite[i].barrierx + 0) * 8) {
@@ -1209,7 +1209,7 @@ function drawMonsters() {
                         }
                         
                         ////// like gravity for monsters ////////
-                        if ( yy + 1 < level_h && // sprite[i].move !==  AG.UP && sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
+                        if ( yy + 1 < level_h &&  sprite[i].move ===  0 && // sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
