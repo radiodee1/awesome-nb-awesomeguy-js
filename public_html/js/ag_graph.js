@@ -599,15 +599,7 @@ function graphModifySprite() {
                         
                         if(sprite[i].move === 0) sprite[i].node = -1;
                         
-                        if (oldx === edge.x1 && oldy <= edge.y1 && false){// && map[oldx][oldy ] === AG.B_LADDER) {
-                            sprite[i].move = AG.UP;
-                            sprite[i].barrierx = oldx;
-                            sprite[i].barriery = oldy  -1;
-                            sprite[i].directions = [];
-                            test("up here " + i);
-                            //sprite[i].node = 0;
-
-                        }
+                        
                     }
                     //////
                 }
