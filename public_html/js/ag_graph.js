@@ -206,7 +206,7 @@ function graphExtraEdges() {
     var i = 1;
     for (i = 1; i < sprite.length; i ++ ) {
         
-        if (sprite[i].type === active_monster_string && sprite[i].node < 0) {
+        if (sprite[i].type === active_monster_string && (sprite[i].node < 0 || false)) {
             count ++;
             //position = i;
             var tot = checkEdges(i);
@@ -519,7 +519,7 @@ function graphModifySprite() {
                         
                         var edge2 = getEdge(edge.prev);
                         //var prev2 = getPrev( edge.prev);//  edge.prev;
-                        test("follow 2 prev " + i + " -- " + edge.prev + /* " " + edge2.sort + */ " " +  sprite[i].node);
+                        test("follow 2 prev " + i + " -- " + edge.prev + " " +  sprite[i].node);
                         
                         
                         //if (sprite[i].directions.length > 0) return;
@@ -530,7 +530,7 @@ function graphModifySprite() {
                         for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
                             if (typeof edge_here !== 'undefined' ) {
-                                if (z >= 1) sprite[i].directions.push(edge_here);
+                                if (z >= 2) sprite[i].directions.push(edge_here);
                                 node_here = edge_here.prev;
                             }
                             else {
@@ -583,19 +583,23 @@ function graphModifySprite() {
                                 sprite[i].move = AG.RIGHT;
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
-                                //describe.move = AG.RIGHT;
+                                
                                 test("right " + i)
                             }
                             //else sprite[i].node = 0;
 
                         }
                         else {
+                            
+                            
                             sprite[i].move = 0;//AG.RIGHT;
                             sprite[i].barrierx = 0;//edge2.x1;
                             sprite[i].barriery = 0;//edge2.y1;
                         }
                         
-                        if (oldx === edge.x1 && oldy <= edge.y1){// && map[oldx][oldy ] === AG.B_LADDER) {
+                        if(sprite[i].move === 0) sprite[i].node = -1;
+                        
+                        if (oldx === edge.x1 && oldy <= edge.y1 && false){// && map[oldx][oldy ] === AG.B_LADDER) {
                             sprite[i].move = AG.UP;
                             sprite[i].barrierx = oldx;
                             sprite[i].barriery = oldy  -1;

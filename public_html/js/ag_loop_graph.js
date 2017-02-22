@@ -71,7 +71,8 @@ function graphSet() {
     sprite[0].x = guy.x;
     sprite[0].y = guy.y;
     worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': graph , 'map': map_objects } });
-    graph_running = true;
+    
+    graph_running = true; // comment out this line while testing new follow code...
 }
 
 function graphCancel() {
@@ -349,6 +350,7 @@ function graphDraw() {
     }
 }
 
+/*
 function drawNodes(list) {
     var c = document.getElementById("my_canvas");
     
@@ -376,3 +378,4 @@ function drawNodes(list) {
         ctx.stroke();
     }
 }
+*/
