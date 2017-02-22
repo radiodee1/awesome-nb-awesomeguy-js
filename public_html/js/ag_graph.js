@@ -79,7 +79,7 @@ var Sprite = {
         move:0,
         barrierx:0,
         barriery:0,
-        node:0,
+        node:-1,
         directions:[]
 };
 
@@ -94,6 +94,7 @@ var sprite = [];
 var destination_nodes = [];
 var directions = [];
 var map = [];
+var location = [];
 
 var startx = 0;
 var starty = 0;
@@ -194,8 +195,8 @@ function graphExtraEdges() {
     var count = 0;
     var position = 0;
     
-    //location = [];
-    //for(var j = 0; j < sprite.length; j ++) location.push( graphNode(-1,-1));
+    location = [];
+    for(var j = 0; j < sprite.length; j ++) location.push( graphNode(-1,-1));
     
     var tot = checkEdges(0, type="guy");
     if (tot === 0) {
@@ -204,10 +205,10 @@ function graphExtraEdges() {
     }
     var i = 1;
     for (i = 1; i < sprite.length; i ++ ) {
-        //test( " sprite --- " + i + " " + sprite[i].type);
-        if (sprite[i].type === active_monster_string) {
+        
+        if (sprite[i].type === active_monster_string && sprite[i].node < 0) {
             count ++;
-            position = i;
+            //position = i;
             var tot = checkEdges(i);
             if (tot === 0) {
                 extendedCheckEdges(i, direction="horizontal");
@@ -236,19 +237,22 @@ function checkEdges(index, type="super_monster") {
         var s = graph[i].sort;
         
         if (true ) { //(ry === -1 || rx === -1) && type !== "guy") {
-            //rx = 0;
+            
             for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
                 if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
-                    test("difference " + type + " " + yloc + " " + xloc + "," + zz);
+                    test("difference " + index + " "+ type + " " + yloc + " " + xloc + "," + zz);
                     //ry = yloc - zz;
                     yloc = zz;
+                    location[index].x = xloc;
+                    location[index].y = yloc;
+        
                     break;
                 }
                 
             }
         }
-        //xloc += rx;
-        //yloc += ry;
+        //location[index].x = xloc;
+        //location[index].y = yloc;
         
         ////////////////////////////
         if (type === "guy") {
@@ -498,14 +502,17 @@ function graphModifySprite() {
         //test("node "+sprite[i].node );
         if (sprite[i].type === active_monster_string) {
             
-            var edge = getEdge(sprite[i].node);
+            //var edge = getEdge(sprite[i].node);
             //var describe = graphMove(edge, i);
-            test("follow 1 " + JSON.stringify(edge));
+            //test("follow 1 " + JSON.stringify(edge));
             
             if (true ) { 
-                if ( true ) { 
-                    // check four directions... look in prev
+                if ( sprite[i].node >= 0 ) { 
                     
+                    // check four directions... look in prev
+                    var edge = getEdge(sprite[i].node);
+                    //var describe = graphMove(edge, i);
+                    test("follow 1 " + JSON.stringify(edge));
                     
                     //test(JSON.stringify(edge));
                     if (typeof edge !== 'undefined' && edge.prev !== -1) {
@@ -523,7 +530,7 @@ function graphModifySprite() {
                         for (var z = 0; z < 5; z ++) {
                             var edge_here = getEdge(node_here);
                             if (typeof edge_here !== 'undefined' ) {
-                                if (z >= 2) sprite[i].directions.push(edge_here);
+                                if (z >= 1) sprite[i].directions.push(edge_here);
                                 node_here = edge_here.prev;
                             }
                             else {
@@ -532,15 +539,15 @@ function graphModifySprite() {
                             }
                         }
                         
-                        var oldx = Math.floor(sprite[i].x / 8);
-                        var oldy = Math.floor(sprite[i].y / 8);
+                        var oldx = location[i].x;// Math.floor(sprite[i].x / 8);
+                        var oldy = location[i].y;// Math.floor(sprite[i].y / 8);
                         
                         test("difference "+ i +" edge here " + edge.x1 + "," + edge.y1  + " -> " + edge2.x1 + "," + edge2.y1 + " old:" + oldx + ","+ oldy);
                         
-                        var old_move = sprite[i].move;
+                        //var old_move = sprite[i].move;
                         sprite[i].move = 0;
                         
-                        if (edge.x1 === edge2.x1 ){//|| edge.x1 === oldx ) {
+                        if (edge.x1 === edge2.x1 ){
                             
                             if ((sprite[i].y ) > edge2.y1 * 8) {
                                 //if (Math.floor(sprite[i].y/8) !== edge2.y1) test("here");
@@ -549,6 +556,8 @@ function graphModifySprite() {
                                 sprite[i].barriery = edge2.y1 ;
                                 //describe.move = AG.UP;
                                 test("up " + i);
+                                //sprite[i].node = 0;
+
                             }
                             else if ((sprite[i].y ) < edge2.y1 * 8) {
                                 sprite[i].move = AG.DOWN;
@@ -556,7 +565,11 @@ function graphModifySprite() {
                                 sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.DOWN;
                                 test("down "+ i);
+                                //sprite[i].node = 0;
+
                             }
+                            //else sprite[i].node = 0;
+
                         }
                         else if (edge.y1 === edge2.y1) {
                             if ((sprite[i].x ) > edge2.x1 * 8 ) {
@@ -573,26 +586,28 @@ function graphModifySprite() {
                                 //describe.move = AG.RIGHT;
                                 test("right " + i)
                             }
+                            //else sprite[i].node = 0;
+
                         }
                         else {
                             sprite[i].move = 0;//AG.RIGHT;
                             sprite[i].barrierx = 0;//edge2.x1;
                             sprite[i].barriery = 0;//edge2.y1;
                         }
-                        //test("sprite: " + JSON.stringify(sprite[i]));
-                        //sprite[i].directions = directions.length;
-                        //directions.push(describe);
-                        //directions[directions.length - 1].next_node = directions.length;
-                        if (oldx === edge.x1 && oldy <= edge.y1 && map[oldx][oldy ] === AG.B_LADDER) {
+                        
+                        if (oldx === edge.x1 && oldy <= edge.y1){// && map[oldx][oldy ] === AG.B_LADDER) {
                             sprite[i].move = AG.UP;
                             sprite[i].barrierx = oldx;
                             sprite[i].barriery = oldy  -1;
                             sprite[i].directions = [];
                             test("up here " + i);
+                            //sprite[i].node = 0;
+
                         }
                     }
                     //////
                 }
+                
             }
         }
     }

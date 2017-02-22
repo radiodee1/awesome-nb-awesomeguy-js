@@ -62,7 +62,7 @@ var Sprite = {
         move:0,
         barrierx:0,
         barriery:0,
-        node:0,
+        node:-1,
         directions:[]
 };
  
@@ -474,6 +474,8 @@ function addMonster(monster_x, monster_y, monster_animate) {
     sprite[sprite_num].rightBB = 16;
     
     sprite[sprite_num].type = "monster";
+      
+    //sprite[sprite_num].node = 1;
       
     sprite_num ++;
     monster_num = sprite_num;
@@ -1286,6 +1288,9 @@ function drawMonsters() {
 
 function shiftSpriteDirections( num ) {
     console.log("<----- shift sprite directions");
+    sprite[num].node = -1;
+    //return;
+    
     if (typeof sprite[num] !== "undefined" && sprite[num].move !== 0) {
         if (sprite[num].directions.length > 0) {
             ///////////////
