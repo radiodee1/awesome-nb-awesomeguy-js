@@ -142,6 +142,8 @@ function graphSet(val) {
     cancel_flag = false;
     
     //graph = val.graph;
+    //sprite = val.sprite;
+    
     var sprite_in = val.sprite;
     sprite_edges = [];
     sprite = [];
@@ -170,6 +172,7 @@ function graphSet(val) {
 
     }
     
+    
     var graph_in = val.graph;
     graph = [];
     
@@ -197,7 +200,7 @@ function graphSet(val) {
 }
 
 function graphExtraEdges() {
-    test("new edges");
+    //test("new edges");
     var count = 0;
     var position = 0;
     
@@ -218,10 +221,8 @@ function graphExtraEdges() {
                 extendedCheckEdges(i, direction="horizontal");
                 checkEdges(i);
             }
-            //test("monster_count " + i + " " + active_monster_string + " " + sprite.length);
         }
     }
-    //test("sprite_edges " + sprite_edges.length + " " + count + " " + position + " " + sprite.length);
 }
 
 function checkEdges(index, type="super_monster") {
@@ -244,7 +245,7 @@ function checkEdges(index, type="super_monster") {
             
             for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
                 if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
-                    test("difference " + index + " "+ type + " " + yloc + " " + xloc + "," + zz);
+                    //test("difference " + index + " "+ type + " " + yloc + " " + xloc + "," + zz);
                     //ry = yloc - zz;
                     yloc = zz;
                     location[index].x = xloc;
@@ -276,7 +277,7 @@ function checkEdges(index, type="super_monster") {
         if (x1 === xloc && y1 === yloc) {
             // duplicate existing node?
             tot ++;
-            test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            //test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             //break;
         }
         //test("graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
@@ -353,7 +354,7 @@ function extendedCheckEdges(index, direction="vertical") {
             //yy --;
             sprite[index].y = yy * 8;
             
-            test("vertical!!");
+            //test("vertical!!");
         }
     }
 }
@@ -372,7 +373,7 @@ function graphInit() {
         sprite_edges[i].dist = HIGH;
         sprite_edges[i].visited = UNVISITED;
         
-        test("edges " +JSON.stringify(sprite_edges[i]));
+        //test("edges " +JSON.stringify(sprite_edges[i]));
     }
     sprite_edges.sort(function(a, b) {
         return (a.sort) - (b.sort);
@@ -380,7 +381,7 @@ function graphInit() {
 }
 
 function graphSolve() {
-    test("solve " + start_sort + " new-edges:" + sprite_edges.length);
+    //test("solve " + start_sort + " new-edges:" + sprite_edges.length);
     count_set_dist = 0;
     var loop = true;
     var count = 0;
@@ -458,16 +459,11 @@ function followGraph(list) {
 
                     }    
                     
-                    
-
                 }
                 setVisited( list[i].to, VISITED);
                 
-
             }
 
-
-            
         }
         //list.splice(index, 1);
         //count ++;
@@ -494,7 +490,7 @@ function listVisited() {
         for (i = 0; i < list.length; i ++) {
             string = string + list[i] + " ";
         } 
-        test("list "+ list.length + " : " + string);
+        //test("list "+ list.length + " : " + string);
     }
     return list;
 }
@@ -528,6 +524,7 @@ function graphModifySprite() {
                         
                         //if (sprite[i].directions.length > 0) return;
                         
+                        /*
                         sprite[i].directions = [];
                         
                         var node_here = edge.sort;
@@ -538,15 +535,16 @@ function graphModifySprite() {
                                 node_here = edge_here.prev;
                             }
                             else {
-                                test("num of directions " + z);
+                                //test("num of directions " + z);
                                 break;
                             }
                         }
+                        */
                         
-                        var oldx = location[i].x;// Math.floor(sprite[i].x / 8);
-                        var oldy = location[i].y;// Math.floor(sprite[i].y / 8);
+                        //var oldx = location[i].x;// Math.floor(sprite[i].x / 8);
+                        //var oldy = location[i].y;// Math.floor(sprite[i].y / 8);
                         
-                        test("difference "+ i +" edge here " + edge.x1 + "," + edge.y1  + " -> " + edge2.x1 + "," + edge2.y1 + " old:" + oldx + ","+ oldy);
+                        //test("difference "+ i +" edge here " + edge.x1 + "," + edge.y1  + " -> " + edge2.x1 + "," + edge2.y1 + " old:" + oldx + ","+ oldy);
                         
                         var old_move = sprite[i].move;
                         sprite[i].move = 0;
@@ -559,7 +557,7 @@ function graphModifySprite() {
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1 ;
                                 //describe.move = AG.UP;
-                                test("up " + i);
+                                //test("up " + i);
                                 //sprite[i].node = 0;
 
                             }
@@ -568,7 +566,7 @@ function graphModifySprite() {
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.DOWN;
-                                test("down "+ i);
+                                //test("down "+ i);
                                 //sprite[i].node = 0;
 
                             }
@@ -582,14 +580,14 @@ function graphModifySprite() {
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
                                 //describe.move = AG.LEFT;
-                                test("left " + i);
+                                //test("left " + i);
                             }
                             else if ((sprite[i].x  ) < edge2.x1 * 8) {
                                 sprite[i].move = AG.RIGHT;
                                 sprite[i].barrierx = edge2.x1;
                                 sprite[i].barriery = edge2.y1;
                                 
-                                test("right " + i)
+                                //test("right " + i)
                             }
                             //else sprite[i].node = 0;
 
@@ -607,11 +605,16 @@ function graphModifySprite() {
                             spriteReset(i);
                         }
                         ////////////////////////// map here ///////////////////////
+                        /*
                         var xx = Math.floor((sprite[i].x + 0)/ 8);
                         var yy = Math.floor((sprite[i].y + 0) / 8) ;
                         if (map[xx][yy+1] === AG.B_SPACE && map[xx][yy+2] === AG.B_LADDER) {
-                            spriteReset(i);
+                            //spriteReset(i);
                         }
+                        if (map[xx][yy] === AG.B_SPACE && map[xx][yy+1] === AG.B_SPACE && map[xx][yy+2] === AG.B_BLOCK && map[xx][yy +3] === AG.B_BLOCK && sprite[i].move === AG.UP) {
+                            //spriteReset(i);
+                        }
+                        */
                         
                     }
                     //////
@@ -627,7 +630,7 @@ function spriteReset(i) {
     sprite[i].barrierx = 0;//edge2.x1;
     sprite[i].barriery = 0;//edge2.y1;
     sprite[i].node = -1;
-    test("reset here");
+    //test("reset here");
 }
 
 function graphCancel(val) {

@@ -66,13 +66,13 @@ function graphTest() {
 function graphSet() {
     
     if (graph_running || ! preferences_graph || ! preferences_graph_control ) return;
-    console.log("coords " + sprite[0].x + " " + sprite[0].y);
+    //console.log("coords " + sprite[0].x + " " + sprite[0].y);
 
     sprite[0].x = guy.x;
     sprite[0].y = guy.y;
-    worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': graph , 'map': map_objects } });
+    worker.postMessage({'cmd':'set', 'value' : {'sprite': sprite ,'graph': graph  } });
     
-    graph_running = true; // comment out this line while testing new follow code...
+    graph_running = true; 
 }
 
 function graphCancel() {
