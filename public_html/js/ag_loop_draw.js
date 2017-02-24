@@ -22,6 +22,7 @@ var monster_a;//[16][16];
 var monster_b;//[16][16];
 var monster_c;//[16][16];
 var monster_d;//[16][16];
+var monster_u;
  
 var platform_a;//[8][40];
 
@@ -295,6 +296,8 @@ function setMonsterData() {
 	monster_b = copyArraysExpand_tileset("monster_r1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
 	monster_c = copyArraysExpand_tileset("monster_l0", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
 	monster_d = copyArraysExpand_tileset("monster_l1", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+	monster_u = copyArraysExpand_tileset("monster_ud", AG.MONSTER_WIDTH, AG.MONSTER_HEIGHT);
+
 }
  
  
@@ -1072,6 +1075,7 @@ function drawMonsters() {
 	var visibility = false;
         var length = 16;// 16
 
+        var is_up_down = false;
 	//var index_num = 0;
 	
 	
@@ -1079,6 +1083,7 @@ function drawMonsters() {
 	if(monster_num > 0) {
 		for (i =  monster_offset ; i < monster_num   ; i++) {   
 			markerTest = false; 
+                        is_up_down = false;
                         if (sprite[i].type !== "monster" && sprite[i].type !== "super_monster") continue;
 			
 			if (sprite[i].active === true && sprite[i].move === 0 ){// && ! preferences_graph_control ) {
@@ -1146,7 +1151,7 @@ function drawMonsters() {
                         if (sprite[i].move !== 0) {
                             xx = Math.floor((sprite[i].x + 0)/ 8);
                             yy = Math.floor((sprite[i].y + 0) / 8) ;
-        	    	    if (yy + 1 >= level_h) return;
+        	    	    if (yy + 1 >= level_h) continue;
                             
                             //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
                             if (sprite[i].move === AG.LEFT && (  
@@ -1187,6 +1192,7 @@ function drawMonsters() {
                                 if (   sprite[i].y > sprite[i].barriery * 8  ) {
                                     //console.log("up ladder! "+ sprite[i].y + " " + sprite[i].barriery * 8 );
                                     sprite[i].y -= move;
+                                    is_up_down = true;
                                     
                                 }
                                 else {
@@ -1199,6 +1205,7 @@ function drawMonsters() {
                                 if (  sprite[i].y < sprite[i].barriery * 8 ) {
                                     sprite[i].y += move;
                                     //console.log("down:");
+                                    is_up_down = true;
                                 }
                                 else {
                                     shiftSpriteDirections(i);
@@ -1216,7 +1223,9 @@ function drawMonsters() {
                                 && map_objects[xx][yy+2] !== AG.B_LADDER
                                 //&& map_objects[xx][yy+3] !== AG.B_LADDER
                                 ) {
+                            
                             if (   sprite[i].y < level_h * 8) {
+                                is_up_down = true;
                                 //console.log("also down:");
                                 sprite[i].y += move;
                             }
@@ -1250,7 +1259,12 @@ function drawMonsters() {
 			
 			if(sprite[i].visible === true && visibility === show) {
 				
-	    		if(sprite[i].facingRight === true) {
+                                if (is_up_down === true) {
+                                    drawSprite_16(monster_u, sprite[i].x, sprite[i].y, 
+							scrollx, scrolly, PAINT_TRANSPARENT, 0);
+                                }
+                                
+                                else if(sprite[i].facingRight === true) {
 					if(z === 0) {
 						//(R.drawable.monster_r0);
 						drawSprite_16(monster_a, sprite[i].x, sprite[i].y, 
