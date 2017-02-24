@@ -325,7 +325,9 @@ function setLevelData(a,  b, horizontal, vertical) {
 
 
 	var i,j;
-	
+	keysonlevel = false;
+        exitblocked = false;
+        
 	// FIRST PASS ///////////////
 	for (i = 0 ; i < vertical ; i ++ ) {
 		for (j = 0; j < horizontal ; j ++ ) {
@@ -1534,7 +1536,7 @@ function collisionWithMonsters() {
  */
 
 function collisionWithObjects( j,  i,  num) {
-    if (!keysonlevel) return;
+    //if (!keysonlevel) return;
 
     keySprite.x = j * 8;
     keySprite.y = i * 8;
