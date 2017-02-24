@@ -1220,9 +1220,10 @@ function drawMonsters() {
 
                             }
                         }
-                        
+                        if (yy + 1 >= level_h) continue;
+                        if (xx  >= level_w) continue;
                         ////// like gravity for monsters ////////
-                        if ( yy + 1 < level_h &&  sprite[i].move ===  0 && // sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
+                        if ( yy + 2 < level_h &&  sprite[i].move ===  0 && // sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
