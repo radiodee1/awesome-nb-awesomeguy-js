@@ -1098,14 +1098,18 @@ function drawMonsters() {
 
 					sprite[i].x = sprite[i].x + move;
 					// marker test
-                                        if (xx + 2 >= level_w - 2) xx = level_w - 2;
+                                        if (xx + 3 >= level_w - 3 || typeof map_objects[xx+2] === "undefined") {
+                                            xx = level_w - 3;
+                                            //sprite[i].x -= 8 * 2;
+                                            continue;
+                                        }
 					if( map_objects[xx+2][yy] === AG.B_BLOCK  ) markerTest = true;
 					if( map_objects[xx+2][yy] === AG.B_MARKER ) markerTest = true;
 					if( map_objects[ xx+2][yy+1] === 0) markerTest = true;
-					if(map_objects[xx+2][yy+1] !== AG.B_BLOCK && map_objects[ xx-1][yy] === AG.B_LADDER) {
+					//if(map_objects[xx+2][yy+1] !== AG.B_BLOCK && map_objects[ xx-1][yy] === AG.B_LADDER) {
                                             //sprite[i].x += move;
                                             //markerTest = true;
-                                        }
+                                        //}
 
                                         // turn monster
 
@@ -1125,10 +1129,10 @@ function drawMonsters() {
                                         if(map_objects[xx][yy] === AG.B_BLOCK) markerTest = true;
 					if(map_objects[xx][yy] === AG.B_MARKER) markerTest = true;
 					if(map_objects[xx-1][yy+1] === 0) markerTest = true;
-					if(map_objects[xx-1][yy+1] !== AG.B_BLOCK && map_objects[ xx -1][yy] === AG.B_LADDER) {
+					//if(map_objects[xx-1][yy+1] !== AG.B_BLOCK && map_objects[ xx -1][yy] === AG.B_LADDER) {
                                             //sprite[i].x -= move;
                                             //markerTest = true;
-                                        }
+                                        //}
 
                                         // turn monster
 					if (sprite[i].x < 8 || markerTest === true) {
@@ -1152,7 +1156,7 @@ function drawMonsters() {
                             xx = Math.floor((sprite[i].x + 0)/ 8);
                             yy = Math.floor((sprite[i].y + 0) / 8) ;
         	    	    if (yy + 1 >= level_h) continue;
-                            
+                            if (xx  >= level_w) continue;
                             //console.log(" ----- here ----- " + JSON.stringify(sprite[i]));
                             if (sprite[i].move === AG.LEFT && (  
                                     map_objects[xx][yy +1] === AG.B_BLOCK ||map_objects[xx][yy+2 ] === AG.B_BLOCK  ) 
