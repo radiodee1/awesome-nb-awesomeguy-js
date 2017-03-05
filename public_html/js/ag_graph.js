@@ -281,46 +281,50 @@ function checkEdges(index, type="super_monster") {
             //break;
         }
         //test("graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
-        else if ( ((x1 > xloc && xloc > x2) || (x1 < xloc && xloc < x2) ) && y1 === y2 && yloc === y1) {
+        else if ( ((x1 > xloc && xloc > x2) || (x1 < xloc && xloc < x2) ) && y1 === y2){// && yloc === y1) {
             // make a new horizontal edge
             //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
-            if (type !== "guy") {
-                sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
-                
-                //sprite_edges.push( graphEdge( xloc, yloc,x1, y1,  type) ); // one way...!
-                sprite_edges.push( graphEdge(  xloc, yloc,x2, y2, type) ); // one way...!
+            if ( yloc === y1 ) {
+                if (type !== "guy") {
+                    sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
+                    //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+
+                    //sprite_edges.push( graphEdge( xloc, yloc,x1, y1,  type) ); // one way...!
+                    sprite_edges.push( graphEdge(  xloc, yloc,x2, y2, type) ); // one way...!
+                }
+                else {
+                    sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
+                    sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
+                }
+                tot += 2;
             }
-            else {
-                sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) ); // one way...!
-            }
-            tot += 2;
         }
-        else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 && xloc === x1) {
+        else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 ) { // && xloc === x1) {
             // make a new vertical edge
             //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
-            if (type !== "guy") {
-                sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-
-                tot ++;
-                if ( true ) { // used to test for ladder...
-                    sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) );
-                    //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) );
+            if (xloc === x1 ) {
+                if (type !== "guy") {
+                    sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
+                    //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
 
                     tot ++;
-                } 
-                else {
-                    // same as above!!
-                    //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) );
-                    //tot ++;
+                    if ( true ) { // used to test for ladder...
+                        sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) );
+                        //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) );
+
+                        tot ++;
+                    } 
+                    else {
+                        // same as above!!
+                        //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) );
+                        //tot ++;
+                    }
                 }
-            }
-            else {
-                sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
-                sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
-                tot += 2;
+                else {
+                    sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
+                    sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
+                    tot += 2;
+                }
             }
         }
         
