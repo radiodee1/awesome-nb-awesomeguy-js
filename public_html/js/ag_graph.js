@@ -231,6 +231,9 @@ function checkEdges(index, type="super_monster") {
     var yloc = Math.floor((s.y ) / 8)  + 0;// Math.floor(s.bottomBB/16 );
     //test(typeof s + " " + JSON.stringify(s));
     var tot = 0;
+    var dist = HIGH;
+    var old_dist = HIGH;
+    var dist_index = 0;
     
     var i = 0;
     for (i = 0; i < graph.length; i ++) {
@@ -241,7 +244,7 @@ function checkEdges(index, type="super_monster") {
         var t = graph[i].name;
         var s = graph[i].sort;
         
-        if (true ) { //(ry === -1 || rx === -1) && type !== "guy") {
+        if (type !== "guy" && false ) { //(ry === -1 || rx === -1) && type !== "guy") {
             
             for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
                 if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
@@ -284,6 +287,12 @@ function checkEdges(index, type="super_monster") {
         else if ( ((x1 > xloc && xloc > x2) || (x1 < xloc && xloc < x2) ) && y1 === y2){// && yloc === y1) {
             // make a new horizontal edge
             //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
+            dist = y1 - yloc;// - y1;
+            if (dist < old_dist && dist >= 0) {
+                old_dist = dist;
+                dist_index = i;
+            }
+            
             if ( yloc === y1 ) {
                 if (type !== "guy") {
                     sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
@@ -301,8 +310,10 @@ function checkEdges(index, type="super_monster") {
         }
         else if ( ((y1 > yloc && yloc > y2) || (y1 < yloc && yloc < y2) ) && x1 === x2 ) { // && xloc === x1) {
             // make a new vertical edge
-            //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             if (xloc === x1 ) {
+                //test("vertical "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + i + " " +type);
+                
+                
                 if (type !== "guy") {
                     sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
                     //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
@@ -333,11 +344,29 @@ function checkEdges(index, type="super_monster") {
             //extendedCheckEdges(i);
         }
     }
+    if (tot === 0){// && type === "guy") {
+        var i = dist_index;
+        //test (type + " " + i);
+        sprite_edges.push( graphEdge( xloc, graph[i].y1, graph[i].x1, graph[i].y1, type) ); // one way...!
+        sprite_edges.push( graphEdge( graph[i].x2, graph[i].y2, xloc, graph[i].y1, type) ); // one way...!
+        
+        sprite_edges.push( graphEdge( xloc, graph[i].y1, graph[i].x2, graph[i].y1, type) ); // one way...!
+        sprite_edges.push( graphEdge( graph[i].x1, graph[i].y2, xloc, graph[i].y1, type) ); // one way...!
+        yloc = graph[i].y1;
+        
+        if (type === "guy") {
+            startx = xloc;
+            starty = yloc ;
+            start_sort = yloc * level_w_local + xloc;
+        }
+        tot += 4;
+    }
+    
     return tot;
 }
 
 function extendedCheckEdges(index, direction="vertical") {
-    if (true) {
+    if (false) {
         if (direction === "horizontal") {
             var xx = Math.floor((sprite[index].x + 0) / 8);
             var yy = Math.floor((sprite[index].y + 0) / 8) ;
@@ -522,33 +551,8 @@ function graphModifySprite() {
                     if (typeof edge !== 'undefined' && edge.prev !== -1) {
                         
                         var edge2 = getEdge(edge.prev);
-                        //var prev2 = getPrev( edge.prev);//  edge.prev;
-                        //test("follow 2 prev " + i + " -- " + edge.prev + " " +  sprite[i].node);
                         
-                        
-                        //if (sprite[i].directions.length > 0) return;
-                        
-                        /*
-                        sprite[i].directions = [];
-                        
-                        var node_here = edge.sort;
-                        for (var z = 0; z < 5; z ++) {
-                            var edge_here = getEdge(node_here);
-                            if (typeof edge_here !== 'undefined' ) {
-                                if (z >= 1) sprite[i].directions.push(edge_here);
-                                node_here = edge_here.prev;
-                            }
-                            else {
-                                //test("num of directions " + z);
-                                break;
-                            }
-                        }
-                        */
-                        
-                        //var oldx = location[i].x;// Math.floor(sprite[i].x / 8);
-                        //var oldy = location[i].y;// Math.floor(sprite[i].y / 8);
-                        
-                        //test("difference "+ i +" edge here " + edge.x1 + "," + edge.y1  + " -> " + edge2.x1 + "," + edge2.y1 + " old:" + oldx + ","+ oldy);
+                        if (typeof edge2 === "undefined") continue;
                         
                         var old_move = sprite[i].move;
                         sprite[i].move = 0;
