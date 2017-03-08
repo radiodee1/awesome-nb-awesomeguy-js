@@ -1310,11 +1310,11 @@ function drawMonsters() {
 }
 
 function shiftSpriteDirections( num ) {
-    //console.log("<----- shift sprite directions");
+    console.log("<----- shift sprite directions");
     sprite[num].node = -1;
-    return;
+    //return;
     
-    /*
+    
     if (typeof sprite[num] !== "undefined" && sprite[num].move !== 0) {
         if (sprite[num].directions.length > 0) {
             ///////////////
@@ -1353,13 +1353,16 @@ function shiftSpriteDirections( num ) {
                 sprite[num].move = 0;// AG.RIGHT;
                 sprite[num].barrierx = 0;//edge2.x1;
                 sprite[num].barriery = 0;//edge2.y1;
+                sprite[num].node = -1;
             }
             ///////////////
             
             
         }
+        else sprite[num].node = -1;
+        
     }
-    */
+    
 }
 
 /* only call this during monster up/down movements */
@@ -1367,7 +1370,10 @@ function moveSpriteToLadder(index) {
     var move = 2;
     if (sprite[index].type === "monster" ) {
         var xx = sprite[index].x % 8;
-        if (xx > 2) {
+        var x = Math.floor(sprite[index].x / 8);
+        var y = Math.floor(sprite[index].y / 8);
+        
+        if (xx > 2 && map_objects[x][y ] === AG.B_LADDER) {
             sprite[index].x -= move;
         }
     }

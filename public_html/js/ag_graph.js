@@ -244,7 +244,7 @@ function checkEdges(index, type="super_monster") {
         var t = graph[i].name;
         var s = graph[i].sort;
         
-        if (type !== "guy" && false ) { //(ry === -1 || rx === -1) && type !== "guy") {
+        if (type !== "guy"  ) { //(ry === -1 || rx === -1) && type !== "guy") {
             
             for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
                 if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
@@ -358,6 +358,10 @@ function checkEdges(index, type="super_monster") {
             startx = xloc;
             starty = yloc ;
             start_sort = yloc * level_w_local + xloc;
+        }
+        else {
+            sprite[index].node = yloc * level_w_local + xloc;
+ 
         }
         tot += 4;
     }
@@ -612,18 +616,17 @@ function graphModifySprite() {
                             //sprite[i].node = -1;
                             spriteReset(i);
                         }
-                        ////////////////////////// map here ///////////////////////
-                        /*
-                        var xx = Math.floor((sprite[i].x + 0)/ 8);
-                        var yy = Math.floor((sprite[i].y + 0) / 8) ;
-                        if (map[xx][yy+1] === AG.B_SPACE && map[xx][yy+2] === AG.B_LADDER) {
-                            //spriteReset(i);
-                        }
-                        if (map[xx][yy] === AG.B_SPACE && map[xx][yy+1] === AG.B_SPACE && map[xx][yy+2] === AG.B_BLOCK && map[xx][yy +3] === AG.B_BLOCK && sprite[i].move === AG.UP) {
-                            //spriteReset(i);
-                        }
-                        */
                         
+                        
+                    }
+                    //////
+                    
+                    if (typeof edge2 !== "undefined") {
+                        var saved = getEdge(edge2.prev);
+                        sprite[i].directions = [];
+                        if (typeof saved !== "undefined") {
+                            sprite[i].directions.push(saved);
+                        }
                     }
                     //////
                 }
