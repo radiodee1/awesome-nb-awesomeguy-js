@@ -52,7 +52,14 @@ function graphInit() {
 }
 
 function graphSprites(val) {
-    sprite = val;
+    for (var i = 0; i < val.length; i ++ ) {
+        sprite[i].barrierx = val[i].barrierx;
+        sprite[i].barriery = val[i].barriery;
+        sprite[i].move = val[i].move;
+        sprite[i].node = val[i].node;
+
+    }
+    //sprite = val;
     graph_running = false;
 }
 
