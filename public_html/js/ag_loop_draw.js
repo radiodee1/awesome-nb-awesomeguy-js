@@ -1314,17 +1314,17 @@ function drawMonsters() {
 }
 
 function shiftSpriteDirections( num ) {
-    console.log("<----- shift sprite directions");
+    console.log("<----- shift sprite directions " + num + " " + sprite[num].directions.length);
     //sprite[num].node = -1;
     //sprite[num].move = 0;
-    return;
+    //return;
     
-    /*
-    if (typeof sprite[num] !== "undefined" && sprite[num].move !== 0) {
+    
+    if (typeof sprite[num] !== "undefined" ){//&& sprite[num].move !== 0) {
         if (sprite[num].directions.length > 0) {
             ///////////////
             var edge2 = sprite[num].directions.shift();
-            sprite[num].move = 0;
+            //sprite[num].move = 0;
             //describe.move = 0;
             if (sprite[num].barrierx === edge2.x1) {
                 if ((sprite[num].y ) > edge2.y1 * 8) {
@@ -1355,19 +1355,19 @@ function shiftSpriteDirections( num ) {
                 }
             }
             else {
-                sprite[num].move = 0;// AG.RIGHT;
-                sprite[num].barrierx = 0;//edge2.x1;
-                sprite[num].barriery = 0;//edge2.y1;
-                sprite[num].node = -1;
+                //sprite[num].move = 0;// AG.RIGHT;
+                //sprite[num].barrierx = 0;//edge2.x1;
+                //sprite[num].barriery = 0;//edge2.y1;
+                //sprite[num].node = -1;
             }
             ///////////////
             
             
         }
-        else sprite[num].node = -1;
+        //else sprite[num].node = -1;
         
     }
-    */
+    
     
 }
 

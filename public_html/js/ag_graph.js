@@ -595,13 +595,16 @@ function graphModifySprite() {
                         
                     }
                     //////
+                    sprite[i].directions = [];
+                    saved = edge2;
+                    var count = 0;
                     
-                    if (typeof edge2 !== "undefined") {
-                        var saved = getEdge(edge2.prev);
-                        sprite[i].directions = [];
+                    while (typeof saved !== "undefined" && count < 5) {
+                        var saved = getEdge(saved.prev);
                         if (typeof saved !== "undefined") {
                             sprite[i].directions.push(saved);
                         }
+                        count ++;
                     }
                     //////
                 }
