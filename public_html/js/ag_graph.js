@@ -511,10 +511,12 @@ function listVisited() {
     var i =0;
     var list = [];
     for(i = 0; i < graph.length; i ++) {
-        if (graph[i].visited === VISITED && list.indexOf(graph[i].sort) === -1) list.push(graph[i].sort);
+        if (graph[i].visited === VISITED && list.indexOf(graph[i].sort) === -1) {
+            list.push(graph[i].sort);
+        }
     }
     for (i = 0; i < sprite_edges.length; i ++ ) {
-        if (sprite_edges[i].visited === VISITED && list.indexOf(sprite_edges[i].sort) === -1) {
+        if (sprite_edges[i].visited === VISITED  && list.indexOf(sprite_edges[i].sort) === -1) {
             
             list.push(sprite_edges[i].sort);
             //test("examine new edges " + sprite_edges[i].sort);
