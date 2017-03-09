@@ -57,6 +57,9 @@ function graphSprites(val) {
         sprite[i].barriery = val[i].barriery;
         sprite[i].move = val[i].move;
         sprite[i].node = val[i].node;
+        //for(var j = 0; j < val[i].directions.length; j ++) {
+        //    sprite[i].directions.push(val[i].directions[j]);
+        //}
 
     }
     //sprite = val;
