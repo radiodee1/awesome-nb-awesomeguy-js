@@ -278,10 +278,18 @@ function checkEdges(index, type="super_monster") {
             // duplicate existing node?
             tot ++;
             //test("dup "+s +" "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
-            //break;
+            if (type === "guy") {
+                startx = xloc;
+                starty = yloc ;
+                start_sort = yloc * level_w_local + xloc;
+            }
+            else {
+                sprite[index].node = yloc * level_w_local + xloc;
+                //destination_nodes.push( graphNode(xloc, yloc) );
+            }
         }
         //test("graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
-        else if ( ((x1 > xloc && xloc > x2) || (x1 < xloc && xloc < x2) ) && y1 === y2){// && yloc === y1) {
+        else if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2){// && yloc === y1) {
             // make a new horizontal edge
             //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
             dist = y1 - yloc;// - y1;
@@ -315,20 +323,16 @@ function checkEdges(index, type="super_monster") {
                     sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
                     //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
 
-                    tot ++;
-                    if ( true ) { // used to test for ladder...
-                        sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) );
+                    
+                    //if ( true ) { // used to test for ladder...
+                    sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) );
                         //sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) );
 
-                        tot ++;
-                    } 
-                    else {
-                        // same as above!!
-                        //sprite_edges.push( graphEdge( x2, y2, xloc, yloc, type) );
-                        //tot ++;
-                    }
+                    tot += 2;
+                    //} 
+                    
                 }
-                else {
+                else if (false) {
                     sprite_edges.push( graphEdge( xloc, yloc, x1, y1, type) ); // one way...!
                     sprite_edges.push( graphEdge( x1, y1, xloc, yloc, type) ); // one way...!
                     tot += 2;
@@ -336,10 +340,7 @@ function checkEdges(index, type="super_monster") {
             }
         }
         
-        else {
-            //test("problem graph " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
-            //extendedCheckEdges(i);
-        }
+        
     }
     if (tot === 0){// && type === "guy") {
         var i = dist_index;
