@@ -206,21 +206,15 @@ function graphExtraEdges() {
     
     
     var tot = checkEdges(0, type="guy");
-    if (tot === 0) {
-        extendedCheckEdges(0, direction="vertical");
-        checkEdges(0, type="guy");
-    }
+    
     var i = 1;
     for (i = 1; i < sprite.length; i ++ ) {
         
-        if (sprite[i].type === active_monster_string && (sprite[i].node < 0)){// || location[i].x === -1 || location[i].y === -1 )) {
+        if (sprite[i].type === active_monster_string && (sprite[i].node < 0)){ 
             count ++;
             //position = i;
             var tot = checkEdges(i);
-            if (tot === 0) {
-                extendedCheckEdges(i, direction="horizontal");
-                checkEdges(i);
-            }
+            
         }
     }
 }
@@ -244,7 +238,8 @@ function checkEdges(index, type="super_monster") {
         var t = graph[i].name;
         var s = graph[i].sort;
         
-        if (type !== "guy"  ) { //(ry === -1 || rx === -1) && type !== "guy") {
+        /*
+        if (type !== "guy" && false ) { 
             
             for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
                 if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
@@ -261,8 +256,9 @@ function checkEdges(index, type="super_monster") {
         }
         //location[index].x = xloc;
         //location[index].y = yloc;
-        
+        */
         ////////////////////////////
+        
         if (type === "guy") {
             startx = xloc;
             starty = yloc ;
@@ -275,7 +271,8 @@ function checkEdges(index, type="super_monster") {
             destination_nodes.push( graphNode(xloc, yloc) );
             sprite[index].node = yloc * level_w_local + xloc;
             //test("monster " + xloc + " " + yloc);
-        }    
+        }
+        
         ////////////////////////////
         if (x1 === xloc && y1 === yloc) {
             // duplicate existing node?
@@ -361,7 +358,7 @@ function checkEdges(index, type="super_monster") {
         }
         else {
             sprite[index].node = yloc * level_w_local + xloc;
- 
+            //destination_nodes.push( graphNode(xloc, yloc) );
         }
         tot += 4;
     }
@@ -786,6 +783,7 @@ function getAllEdges(label) {
     
 }
 
+/*
 function isInDestinationNodes(node) {
     for(var i = 0; i < destination_nodes.length; i ++ ) {
         if (destination_nodes[i].node === node) {
@@ -795,3 +793,4 @@ function isInDestinationNodes(node) {
     }
     return false;
 }
+*/
