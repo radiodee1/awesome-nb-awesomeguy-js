@@ -94,7 +94,6 @@ var sprite = [];
 var destination_nodes = [];
 var directions = [];
 var map = [];
-var location = [];
 
 var startx = 0;
 var starty = 0;
@@ -180,9 +179,6 @@ function graphSet(val) {
         graph.push( graphEdge (graph_in[i].x1, graph_in[i].y1, graph_in[i].x2 ,graph_in[i].y2 , name = graph_in[i].name  ) );
     }
     
-    location = [];
-    for(var j = 0; j < sprite.length; j ++) location.push( graphNode(-1,-1));
-    
     
     map = val.map;
     
@@ -203,14 +199,14 @@ function graphExtraEdges() {
     //test("new edges");
     var count = 0;
     var position = 0;
-    
+    destination_nodes = [];
     
     var tot = checkEdges(0, type="guy");
     
     var i = 1;
     for (i = 1; i < sprite.length; i ++ ) {
         
-        if (sprite[i].type === active_monster_string && (sprite[i].node < 0)){ 
+        if (sprite[i].type === active_monster_string && (sprite[i].move <= 0 )){ 
             count ++;
             //position = i;
             var tot = checkEdges(i);
@@ -222,13 +218,13 @@ function graphExtraEdges() {
 function checkEdges(index, type="super_monster") {
     var s = sprite[index];
     var xloc = Math.floor((s.x ) / 8) ;
-    var yloc = Math.floor((s.y ) / 8)  + 0;// Math.floor(s.bottomBB/16 );
-    //test(typeof s + " " + JSON.stringify(s));
+    var yloc = Math.floor((s.y ) / 8)  + 0;
+    
     var tot = 0;
     var dist = HIGH;
     var old_dist = HIGH;
     var dist_index = 0;
-    
+        
     var i = 0;
     for (i = 0; i < graph.length; i ++) {
         var x1 = graph[i].x1;
@@ -238,25 +234,7 @@ function checkEdges(index, type="super_monster") {
         var t = graph[i].name;
         var s = graph[i].sort;
         
-        /*
-        if (type !== "guy" && false ) { 
-            
-            for (var zz = yloc - 2; zz < yloc + 2; zz ++) {
-                if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2 && zz === y1) {
-                    //test("difference " + index + " "+ type + " " + yloc + " " + xloc + "," + zz);
-                    //ry = yloc - zz;
-                    yloc = zz;
-                    location[index].x = xloc;
-                    location[index].y = yloc;
         
-                    break;
-                }
-                
-            }
-        }
-        //location[index].x = xloc;
-        //location[index].y = yloc;
-        */
         ////////////////////////////
         
         if (type === "guy") {
@@ -292,7 +270,7 @@ function checkEdges(index, type="super_monster") {
         else if ( ((x1 >= xloc && xloc >= x2) || (x1 <= xloc && xloc <= x2) ) && y1 === y2){// && yloc === y1) {
             // make a new horizontal edge
             //test("horizontal "+ x1 + " " + y1 + " " + x2 + " " + y2 + " " + type);
-            dist = y1 - yloc;// - y1;
+            dist = y1 - yloc ;// - y1;
             if (dist < old_dist && dist >= 0) {
                 old_dist = dist;
                 dist_index = i;
@@ -536,12 +514,9 @@ function graphModifySprite() {
     test("modify sprite for return " + active_monster_string + " " + sprite.length);
     var i = 0;
     for (i = 0; i < sprite.length; i ++ ) {
-        //test("node "+sprite[i].node );
+        
         if (sprite[i].type === active_monster_string) {
             
-            //var edge = getEdge(sprite[i].node);
-            //var describe = graphMove(edge, i);
-            //test("follow 1 " + JSON.stringify(edge));
             
             if (true ) { 
                 if ( sprite[i].node >= 0 ) { 
@@ -559,7 +534,7 @@ function graphModifySprite() {
                         if (typeof edge2 === "undefined") continue;
                         
                         var old_move = sprite[i].move;
-                        sprite[i].move = 0;
+                        //sprite[i].move = 0;
                         
                         if (edge.x1 === edge2.x1 ){
                             
@@ -607,14 +582,14 @@ function graphModifySprite() {
                         else {
                             
                             
-                            sprite[i].move = 0;//AG.RIGHT;
-                            sprite[i].barrierx = 0;//edge2.x1;
-                            sprite[i].barriery = 0;//edge2.y1;
+                            //sprite[i].move = 0;//AG.RIGHT;
+                            //sprite[i].barrierx = 0;//edge2.x1;
+                            //sprite[i].barriery = 0;//edge2.y1;
                         }
                         
                         if(sprite[i].move === 0 ){ //|| old_move !== sprite[i].move) {
                             //sprite[i].node = -1;
-                            spriteReset(i);
+                            //spriteReset(i);
                         }
                         
                         

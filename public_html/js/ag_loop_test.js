@@ -86,10 +86,9 @@ function testDrawLoop() {
     
         loop_handle = setInterval( function() {
             testPlayGameAgain();
-            //testDraw();
-
+            
             //console.log("30");
-        }, 40);//30
+        }, 40);//40
     }
 }
 

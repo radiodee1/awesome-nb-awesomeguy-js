@@ -1152,10 +1152,10 @@ function drawMonsters() {
                         
                         move = 2;
                         
-                        if (sprite[i].move === 0) sprite[i].node = -1;
+                        //if (sprite[i].move === 0) sprite[i].node = -1;
 
                         if (sprite[i].move !== 0) {
-                            xx = Math.floor((sprite[i].x + 0)/ 8);
+                            xx = Math.floor((sprite[i].x + 0) / 8);
                             yy = Math.floor((sprite[i].y + 0) / 8) ;
         	    	    if (yy + 1 >= level_h) continue;
                             if (xx  >= level_w) continue;
@@ -1225,7 +1225,7 @@ function drawMonsters() {
                         if (yy + 1 >= level_h) continue;
                         if (xx  >= level_w) continue;
                         ////// like gravity for monsters ////////
-                        if ( yy + 2 < level_h &&  (sprite[i].move ===  0 || sprite[i].move === AG.DOWN) && // sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
+                        if ( yy + 2 < level_h &&  (sprite[i].move ===  AG.DOWN || sprite[i].move === AG.DOWN) && // sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
@@ -1276,6 +1276,7 @@ function drawMonsters() {
                                 }
                                 
                                 else if(sprite[i].facingRight === true) {
+                                        moveSpriteToBox(i);
 					if(z === 0) {
 						//(R.drawable.monster_r0);
 						drawSprite_16(monster_a, sprite[i].x, sprite[i].y, 
@@ -1289,6 +1290,7 @@ function drawMonsters() {
 					}
 				}
 				else if (!sprite[i].facingRight === true) {
+                                        moveSpriteToBox(i);
 					if(z === 0) {
 						//(R.drawable.monster_l0);
 						drawSprite_16(monster_c, sprite[i].x, sprite[i].y, 
@@ -1313,8 +1315,8 @@ function drawMonsters() {
 
 function shiftSpriteDirections( num ) {
     console.log("<----- shift sprite directions");
-    sprite[num].node = -1;
-    sprite[num].move = 0;
+    //sprite[num].node = -1;
+    //sprite[num].move = 0;
     return;
     
     /*
@@ -1380,6 +1382,20 @@ function moveSpriteToLadder(index) {
         if (xx > 3 && map_objects[x][y ] === AG.B_LADDER && 
                 (sprite[index].move === AG.UP || sprite[index].move === AG.DOWN)) {
             sprite[index].x -= move;
+        }
+    }
+}
+
+function moveSpriteToBox(index) {
+    var move = 2;
+    if (sprite[index].type === "monster" ) {
+        var yy = sprite[index].y % 8;
+        var x = Math.floor(sprite[index].x / 8);
+        var y = Math.floor(sprite[index].y / 8);
+        
+        if (yy > 3 && map_objects[x][y ] === AG.B_SPACE && 
+                (sprite[index].move === AG.LEFT || sprite[index].move === AG.RIGHT)) {
+            sprite[index].y -= move;
         }
     }
 }
