@@ -1320,7 +1320,7 @@ function shiftSpriteDirections( num ) {
     //return;
     
     
-    if (typeof sprite[num] !== "undefined" ){//&& sprite[num].move !== 0) {
+    if (typeof sprite[num] !== "undefined" && sprite[num].move !== 0) {
         if (sprite[num].directions.length > 0) {
             ///////////////
             var edge2 = sprite[num].directions.shift();
