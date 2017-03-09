@@ -707,7 +707,10 @@
 							//mGameV.decrementLives();
                                                         is_game_death = true;
                                                         is_end_level = true;
+                                                        endlevel = true;
+                                                        is_level_death = true;
                                                         lives --;
+                                                        level --;
                                                         setSoundOw();
 							//mmEffect(SFX_OW);
 							//mSounds.playSound(SoundPoolManager.SOUND_OW);
