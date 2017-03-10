@@ -1222,15 +1222,16 @@ function drawMonsters() {
 
                             }
                         }
+                        
                         if (yy + 1 >= level_h) continue;
                         if (xx  >= level_w) continue;
+                        
                         ////// like gravity for monsters ////////
                         if ( yy + 2 < level_h &&  (sprite[i].move ===  AG.DOWN || sprite[i].move === AG.DOWN) && // sprite[i].move !==  AG.RIGHT && sprite[i].move !==  AG.LEFT &&  
                                 map_objects[xx][yy+1] !== AG.B_BLOCK 
                                 && map_objects[xx][yy] !== AG.B_LADDER 
                                 && map_objects[xx][yy+1] !== AG.B_LADDER
                                 && map_objects[xx][yy+2] !== AG.B_LADDER
-                                //&& map_objects[xx][yy+3] !== AG.B_LADDER
                                 ) {
                             
                             if (   sprite[i].y < level_h * 8) {
@@ -1240,7 +1241,12 @@ function drawMonsters() {
                             }
 
                         }
-                        //moveSpriteToLadder(i);
+                        
+                        ////// change image of monster when hanging /////
+                        if (yy + 2 < level_h && map_objects[xx][yy+1] === AG.B_SPACE 
+                                && map_objects[xx][yy+2] === AG.B_SPACE) {
+                            is_up_down = true;
+                        }
                 
                         //default is to show monster
                         visibility = show;
@@ -1314,10 +1320,10 @@ function drawMonsters() {
 }
 
 function shiftSpriteDirections( num ) {
-    console.log("<----- shift sprite directions " + num + " " + sprite[num].directions.length);
+    //console.log("<----- shift sprite directions " + num + " " + sprite[num].directions.length);
     //sprite[num].node = -1;
     //sprite[num].move = 0;
-    //return;
+    return;
     
     
     if (typeof sprite[num] !== "undefined" && sprite[num].move !== 0) {
