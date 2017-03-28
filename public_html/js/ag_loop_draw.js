@@ -378,7 +378,10 @@ function setLevelData(a,  b, horizontal, vertical) {
 }
 
 function addSprite(x,y,left,right,top,bottom) {
+    
     var i = sprite_num;
+    if (i >= 100) return i;
+    
     sprite[i].x = x;
     sprite[i].y = y;
     sprite[i].animate = 1;
@@ -464,7 +467,7 @@ function getObjectsCell(map_x, map_y) {
  */ 
 function addMonster(monster_x, monster_y, monster_animate) {
 
-
+    if (sprite_num >= 100) return;
 
     sprite[sprite_num].x = monster_x ;
     sprite[sprite_num].y = monster_y ;
@@ -510,6 +513,7 @@ function inactivateMonster(num) {
  */ 
 function addPlatform(platform_x, platform_y) {
 
+    if (sprite_num >= 100) return;
 
 
     sprite[sprite_num].x = platform_x ;
