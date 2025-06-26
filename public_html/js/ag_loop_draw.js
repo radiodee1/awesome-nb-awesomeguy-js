@@ -766,18 +766,18 @@ function copyArraysExpand_tileset (from, width, height) {
     
     var id = from.split(".");
     
-    var img_id = document.getElementById(id[0]);
-    
-    var canvas = $("<canvas id='canvas_" + id[0] + "' width="+ width +" height=" + height +" >" );
+        var canvas = $("<canvas  id=\"canvas_" + id[0] + "\" width=\""+ width +"\" height=\"" + height +"\" >" );
     canvas.appendTo("head");
     var canvas_id = document.getElementById("canvas_"+ id[0]);
     var ctx = canvas_id.getContext("2d");
+    var img_id = document.getElementById(id[0]);
+    
+
     ctx.drawImage(img_id,0,0);
     
+
     var ctx = canvas_id.getContext("2d");
-    
-    
-    
+        
     var z = ctx.getImageData(0,0, width, height);
 
     return z;
