@@ -66,7 +66,7 @@ function testDraw() {
     graphSet();
     
     //graphDraw();
-    
+    //testImageMag();    
 }
 
 function testDrawLoop() {
@@ -145,7 +145,8 @@ function testDrawSplash() {
 }
 
 function testImageMag() {
-    //console.log("mag");
+    
+    //console.log('larger_screen', preferences_larger_screen);
     if (! preferences_larger_screen ) return;
     var c = document.getElementById("my_canvas");
     var ctx = c.getContext("2d");
@@ -153,9 +154,13 @@ function testImageMag() {
     var cc = document.getElementById("my_large_canvas");
     var cctx = cc.getContext("2d");
     var image = new Image();
+    //var image = document.createElement("img")
     image.src = c.toDataURL();
-    //cctx.putImageData(img, 0,0, 0,0, 512, 384);
-    cctx.drawImage(image, 0,0, 512, 384);
+
+    image.onload = () => {
+        cctx.drawImage(image, 0,0, 512, 384);
+
+    }
 }
 
 function isMobile() {
