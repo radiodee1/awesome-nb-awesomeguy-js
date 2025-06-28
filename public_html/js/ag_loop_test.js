@@ -163,6 +163,52 @@ function testImageMag() {
     }
 }
 
+const MESSAGE_START_QUES = 1;
+const MESSAGE_OW = 2;
+const MESSAGE_GAME_OVER = 3;
+const MESSAGE_NEW_GAME_QUES = 4;
+
+function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
+
+    var id = '';
+    if (message == MESSAGE_START_QUES) {
+        id = 'message_start';
+    }
+    if (message == MESSAGE_OW) {
+        id = 'message_ow';
+    }
+    if (message == MESSAGE_GAME_OVER) {
+        id = "message_go";
+    }
+    if (message == MESSAGE_NEW_GAME_QUES) {
+        id = "message_ng";
+    }
+    var image = document.getElementById(id);
+    var c = document.getElementById("my_canvas");
+    var ctx = c.getContext("2d");
+    ctx.drawImage(image, 0,0, 512, 384);
+
+    if (is_waiting) {
+        // wait for key press 
+        document.addEventListener('keydown', function(event) {
+            console.log("Key pressed:", event.key);
+            return;
+        });
+        return; //necessary??
+    }
+    else if (timeout > 0) {
+        // wait determined amount of time 
+        setTimeout(function() {
+            // Code to execute after the delay
+            console.log("This message appears after 'timeout' seconds.");
+            return;
+        }, 1000 * timeout); 
+        return; //necessary??
+    }
+
+}
+
+
 function isMobile() {
   return window.mobilecheck() ;
 }
