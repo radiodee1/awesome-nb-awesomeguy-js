@@ -19,8 +19,10 @@ function testPlayGameAgain() {
     }
     else if (true) {
         //testDrawBlack();
+
         graphCancel();
         testDrawSplash();
+
         testImageMag();
         var play = confirm("Play Again?");
         if ( ! play ) {
@@ -50,7 +52,7 @@ function testAdvanceLevel() {
 }
 
 function testDraw() {
-    
+
     setPanelScroll(scrollx, scrolly);
     
     checkRegularCollisions();
@@ -130,7 +132,8 @@ function testDrawBlack() {
 }
 
 function testDrawSplash() {
-    
+    //testPicMessage(MESSAGE_START_QUES, true, 3);
+
     splash_num ++;
     if (splash_num > 3) splash_num = 1;
     if (splash_num === 1) id = "splash1";
@@ -168,8 +171,8 @@ const MESSAGE_OW = 2;
 const MESSAGE_GAME_OVER = 3;
 const MESSAGE_NEW_GAME_QUES = 4;
 
-function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
-
+async function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
+    var wait_for_continue = false;
     var id = '';
     if (message == MESSAGE_START_QUES) {
         id = 'message_start';
@@ -183,31 +186,43 @@ function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
     if (message == MESSAGE_NEW_GAME_QUES) {
         id = "message_ng";
     }
+    console.log('message', id);
+
     var image = document.getElementById(id);
     var c = document.getElementById("my_canvas");
     var ctx = c.getContext("2d");
+    //ctx.drawImage(image, 0,0, 512, 384);
     ctx.drawImage(image, 0,0, 512, 384);
+
 
     if (is_waiting) {
         // wait for key press 
-        document.addEventListener('keydown', function(event) {
-            console.log("Key pressed:", event.key);
+        //const key = await waitForAnyKey();
+        wait_for_continue = true;
+        //$.blockUI();
+        document.addEventListener('keydown', function (event) {
+            console.log('key', event.key);
+            wait_for_continue = false;
+            //$.unblockUI()
             return;
-        });
-        return; //necessary??
+        })
+        return;
+        //console.log('key', key);
+        //return; //necessary??
     }
     else if (timeout > 0) {
         // wait determined amount of time 
-        setTimeout(function() {
-            // Code to execute after the delay
-            console.log("This message appears after 'timeout' seconds.");
-            return;
-        }, 1000 * timeout); 
-        return; //necessary??
+        await delay(1000 * timeout);
+        return;
+
+        //if (! wait_for_continue) return; //necessary??
     }
 
 }
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function isMobile() {
   return window.mobilecheck() ;

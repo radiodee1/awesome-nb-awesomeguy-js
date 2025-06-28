@@ -2003,7 +2003,6 @@ function setupDrawFunctionsA() {
     level = 1;
     //score = 10;
     //lives = 3;
-    
 }
 
 function setupDrawFunctionsB(){
