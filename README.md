@@ -1,4 +1,4 @@
-# awesome-nb-awesomeguy-js
+# agjs - Awesome Guy Java Script
 
 This game works well on Google Chrome from the 2017.03.01 time period (version 49.0.2623.75). Firefox works on the small screen only, the big screen lagging behind a second or two. If you are attached to Firefox disable the big screen and play on the small screen.
 
