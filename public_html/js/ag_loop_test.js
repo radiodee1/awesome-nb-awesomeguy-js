@@ -9,6 +9,12 @@
 
 function testPlayGameAgain() {
     //level = 0;
+    if (wait_for_continue  ) {
+
+        testPicMessage(MESSAGE_START_QUES, false, 3);
+        testImageMag();
+        return;
+    }
     if (play_again && is_game_running) {
         testAdvanceLevel() ;
         
@@ -22,12 +28,16 @@ function testPlayGameAgain() {
 
         graphCancel();
         testDrawSplash();
-
+    
         testImageMag();
         var play = confirm("Play Again?");
         if ( ! play ) {
             clearInterval(loop_handle);
             play_again = false;
+
+            testPicMessage(MESSAGE_GAME_OVER, false, 30);
+            testImageMag();
+            return; 
         }
         else {
             change_level();
@@ -37,6 +47,7 @@ function testPlayGameAgain() {
             lives = 3;
             score = 10;
             is_game_running = true;
+            wait_for_continue = true;
         }
     }
 }
@@ -132,8 +143,6 @@ function testDrawBlack() {
 }
 
 function testDrawSplash() {
-    //testPicMessage(MESSAGE_START_QUES, true, 3);
-
     splash_num ++;
     if (splash_num > 3) splash_num = 1;
     if (splash_num === 1) id = "splash1";
@@ -171,8 +180,7 @@ const MESSAGE_OW = 2;
 const MESSAGE_GAME_OVER = 3;
 const MESSAGE_NEW_GAME_QUES = 4;
 
-async function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
-    var wait_for_continue = false;
+function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
     var id = '';
     if (message == MESSAGE_START_QUES) {
         id = 'message_start';
@@ -196,33 +204,44 @@ async function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
 
 
     if (is_waiting) {
-        // wait for key press 
-        //const key = await waitForAnyKey();
-        wait_for_continue = true;
-        //$.blockUI();
-        document.addEventListener('keydown', function (event) {
-            console.log('key', event.key);
-            wait_for_continue = false;
-            //$.unblockUI()
-            return;
-        })
+        testPicWaitInput();
         return;
-        //console.log('key', key);
-        //return; //necessary??
     }
     else if (timeout > 0) {
-        // wait determined amount of time 
-        await delay(1000 * timeout);
+        testPicWaitTime( 1000 * timeout )
         return;
 
-        //if (! wait_for_continue) return; //necessary??
     }
 
 }
 
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+var wait_for_continue = true;
+
+
+function testPicWaitInput () {
+    wait_for_continue = true;
+    document.addEventListener('keydown',  (event) => {
+        console.log('key', event.key);
+        wait_for_continue = false;
+    })
+    //timeout_id = await delay(20 * 1000);
+    //console.log('timeout_id', timeout_id);
+    return;
+
 }
+
+function testPicWaitTime (timeout) {
+    wait_for_continue = true;
+    setTimeout(() => {
+        wait_for_continue = false;
+    }, timeout);
+    console.log('timeout', timeout);
+    //await delay( timeout );
+}
+
+//function delay(ms) {
+//  return new Promise(resolve => setTimeout(resolve, ms));
+//}
 
 function isMobile() {
   return window.mobilecheck() ;
