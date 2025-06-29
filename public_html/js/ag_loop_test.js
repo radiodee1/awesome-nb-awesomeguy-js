@@ -9,13 +9,13 @@ var old_lives = -1;
 
 function testPlayGameAgain() {
     //level = 0;
-    if (old_lives != lives && old_lives != -1) {
+    if (old_lives != lives && old_lives != -1 ) {
         testPicMessage(MESSAGE_OW, false, 1.5);
         old_lives = lives;
         console.log('MESSAGE_OW', MESSAGE_OW);
         return;
     }
-    else if (wait_for_continue  ) {
+    else if (wait_for_continue ) {
         old_lives = lives;
         testPicMessage(MESSAGE_START_QUES, false, 3);
         testImageMag();
@@ -29,6 +29,7 @@ function testPlayGameAgain() {
     else if (play_again && !is_game_running) {
         level = 0;
         is_end_level = true;
+        old_lives = lives;
     }
     else if (true) {
         //testDrawBlack();
@@ -231,8 +232,6 @@ function testPicWaitInput () {
         console.log('key', event.key);
         wait_for_continue = false;
     })
-    //timeout_id = await delay(20 * 1000);
-    //console.log('timeout_id', timeout_id);
     return;
 
 }
@@ -242,13 +241,7 @@ function testPicWaitTime (timeout) {
     setTimeout(() => {
         wait_for_continue = false;
     }, timeout);
-    console.log('timeout', timeout);
-    //await delay( timeout );
 }
-
-//function delay(ms) {
-//  return new Promise(resolve => setTimeout(resolve, ms));
-//}
 
 function isMobile() {
   return window.mobilecheck() ;
