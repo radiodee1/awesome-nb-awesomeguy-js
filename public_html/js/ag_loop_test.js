@@ -5,16 +5,23 @@
  */
 
 
-
+var old_lives = -1;
 
 function testPlayGameAgain() {
     //level = 0;
-    if (wait_for_continue  ) {
-
+    if (old_lives != lives && old_lives != -1) {
+        testPicMessage(MESSAGE_OW, false, 1.5);
+        old_lives = lives;
+        console.log('MESSAGE_OW', MESSAGE_OW);
+        return;
+    }
+    else if (wait_for_continue  ) {
+        old_lives = lives;
         testPicMessage(MESSAGE_START_QUES, false, 3);
         testImageMag();
         return;
     }
+    //////////////////////////////
     if (play_again && is_game_running) {
         testAdvanceLevel() ;
         
@@ -185,13 +192,13 @@ function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
     if (message == MESSAGE_START_QUES) {
         id = 'message_start';
     }
-    if (message == MESSAGE_OW) {
+    else if (message == MESSAGE_OW) {
         id = 'message_ow';
     }
-    if (message == MESSAGE_GAME_OVER) {
+    else if (message == MESSAGE_GAME_OVER) {
         id = "message_go";
     }
-    if (message == MESSAGE_NEW_GAME_QUES) {
+    else if (message == MESSAGE_NEW_GAME_QUES) {
         id = "message_ng";
     }
     console.log('message', id);
