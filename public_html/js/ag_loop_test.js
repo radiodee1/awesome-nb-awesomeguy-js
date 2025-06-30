@@ -6,16 +6,18 @@
 
 
 var old_lives = -1;
+var is_initial_message = true;
 
 function testPlayGameAgain() {
     //level = 0;
-    if (old_lives != lives && old_lives != -1 ) {
+    if ((old_lives > lives && old_lives != -1 && lives > 0 )||wait_for_continue == MESSAGE_OW){
         testPicMessage(MESSAGE_OW, false, 1.5);
+        testImageMag();
         old_lives = lives;
         console.log('MESSAGE_OW', MESSAGE_OW);
         return;
     }
-    else if (wait_for_continue ) {
+    else if ((is_game_running && play_again && is_end_level && is_initial_message ) ) {
         old_lives = lives;
         testPicMessage(MESSAGE_START_QUES, false, 3);
         testImageMag();
@@ -42,7 +44,7 @@ function testPlayGameAgain() {
         if ( ! play ) {
             clearInterval(loop_handle);
             play_again = false;
-
+            is_initial_message = true;
             testPicMessage(MESSAGE_GAME_OVER, false, 30);
             testImageMag();
             return; 
@@ -55,7 +57,9 @@ function testPlayGameAgain() {
             lives = 3;
             score = 10;
             is_game_running = true;
-            wait_for_continue = true;
+
+            old_lives = lives;
+            is_initial_message = true;
         }
     }
 }
@@ -189,6 +193,10 @@ const MESSAGE_GAME_OVER = 3;
 const MESSAGE_NEW_GAME_QUES = 4;
 
 function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
+    if (wait_for_continue != message && wait_for_continue != -1) {
+        return;
+    }
+    //wait_for_continue = message;
     var id = '';
     if (message == MESSAGE_START_QUES) {
         id = 'message_start';
@@ -210,36 +218,47 @@ function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
     //ctx.drawImage(image, 0,0, 512, 384);
     ctx.drawImage(image, 0,0, 512, 384);
 
-
-    if (is_waiting) {
-        testPicWaitInput();
+    if (wait_for_continue != -1) {
         return;
     }
-    else if (timeout > 0) {
-        testPicWaitTime( 1000 * timeout )
+
+    if (is_waiting) {
+        testPicWaitInput(message);
+        return;
+    }
+    else if ( timeout > 0) {
+        testPicWaitTime(message, 1000 * timeout )
         return;
 
     }
 
 }
 
-var wait_for_continue = true;
+var wait_for_continue = -1;
 
 
-function testPicWaitInput () {
-    wait_for_continue = true;
+function testPicWaitInput (wait_num) {
+    wait_for_continue = wait_num;
     document.addEventListener('keydown',  (event) => {
         console.log('key', event.key);
-        wait_for_continue = false;
+        wait_for_continue = -1;
     })
     return;
 
 }
 
-function testPicWaitTime (timeout) {
-    wait_for_continue = true;
+function testPicWaitTime (wait_num, timeout) {
+    if (wait_for_continue != -1) {
+        return;
+    }
+    wait_for_continue = wait_num;
     setTimeout(() => {
-        wait_for_continue = false;
+        if (wait_for_continue == MESSAGE_START_QUES) {
+            is_initial_message = false;
+        }
+        console.log('message wait_for_continue timer', wait_for_continue);
+        wait_for_continue = -1; 
+        
     }, timeout);
 }
 
