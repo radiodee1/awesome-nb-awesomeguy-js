@@ -10,11 +10,11 @@ var is_initial_message = true;
 
 function testPlayGameAgain() {
     //level = 0;
+
     if ((old_lives > lives && old_lives != -1 && lives > 0 )||wait_for_continue == MESSAGE_OW){
         testPicMessage(MESSAGE_OW, false, 1.5);
         testImageMag();
         old_lives = lives;
-        console.log('MESSAGE_OW', MESSAGE_OW);
         return;
     }
     else if ((is_game_running && play_again && is_end_level && is_initial_message ) ) {
