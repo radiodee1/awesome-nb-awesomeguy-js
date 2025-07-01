@@ -216,7 +216,7 @@ function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
     var c = document.getElementById("my_canvas");
     var ctx = c.getContext("2d");
     //ctx.drawImage(image, 0,0, 512, 384);
-    ctx.drawImage(image, 0,0, 512, 384);
+    ctx.drawImage(image, 0,0, 256, 192);
 
     if (wait_for_continue != -1) {
         return;
