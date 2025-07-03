@@ -282,7 +282,7 @@ function test_pixels(p=100, dim='width', g=512) {
     else {
         r = goal;
     }
-    if (! isMobile() && w > 0) {
+    if (! isMobile() ) {
         if (dim == 'width') {
             return goal;
         }
