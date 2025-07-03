@@ -124,12 +124,6 @@ and open the template in the editor.
                 $("#my_canvas").show();
                 
             }
-            ///////////////
-            function set_size() {
-                const table = document.getElementById('my_large_canvas');
-                table.width = test_pixels(100,'width');
-                table.height = test_pixels(100,'height');
-            }
         </script>
     </head>
     <body>
@@ -192,19 +186,19 @@ and open the template in the editor.
 
         </div>
         <div id="page_buttons" class="w3-container w3-light-grey">
-            <table style="border-collapse: collapse; border: 0px">
+            <table id="button_table" style="border-collapse: collapse; border: 0px">
                 <tbody>
-                    <tr><td></td><td></td><td></td> <td><img src="img/button_up.png"></td> <td></td> </tr>
+                    <tr><td></td><td></td><td></td> <td><img class='direction_button' src="img/button_up.png"></td> <td></td> </tr>
                     <tr>
-                        <td><img src="img/button_b.png"></td>
-                        <td><img src="img/button_center_tx.png"></td>
-                        <td><img src="img/button_left.png"></td> 
-                        <td><img src="img/button_center_tx.png"></td> 
-                        <td><img src="img/button_right.png"></td>
+                        <td><img class="direction_button" src="img/button_b.png"></td>
+                        <td><img class="direction_button" src="img/button_center_tx.png"></td>
+                        <td><img class="direction_button" src="img/button_left.png"></td> 
+                        <td><img class="direction_button" src="img/button_center_tx.png"></td> 
+                        <td><img class="direction_button" src="img/button_right.png"></td>
                         
                         
                     </tr>
-                    <tr><td></td><td></td><td></td> <td><img src="img/button_down.png"></td> <td></td> </tr>
+                    <tr><td></td><td></td><td></td> <td><img class="direction_button" src="img/button_down.png"></td> <td></td> </tr>
 
                 </tbody>
             </table>
@@ -244,5 +238,31 @@ and open the template in the editor.
 
             </div>
         </div>
+        <script>
+            ///////////////
+            function set_size() {
+                const w = window.innerWidth ;
+
+                const large_canvas = document.getElementById('my_large_canvas');
+                large_canvas.style.width = test_pixels(100,'width') + 'px';
+                large_canvas.style.height = test_pixels(100,'height') + 'px';
+
+                if (! isMobile()) {
+                    return;
+                }
+                const buttons = document.getElementsByClassName('direction_button');
+                for(let i = 0; i < buttons.length; i ++) {
+                    buttons[i].style.width = ( w * 20 / 100 ) + 'px';
+                    buttons[i].style.height = ( w * 20 / 100 ) + 'px';
+
+                    console.log('buttons here', test_pixels(20, 'width', 256));
+                }
+            }
+
+            set_size();
+
+        </script>
+
+
     </body>
 </html>
