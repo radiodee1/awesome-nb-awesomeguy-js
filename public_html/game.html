@@ -184,6 +184,7 @@ and open the template in the editor.
             <canvas  crossorigin="anonymous" id='my_canvas' width='256' height='192' style='border:1px solid #000000;' ></canvas><br>
             <canvas  crossorigin="anonymous" id='my_large_canvas' width='512' height='384' style='border:1px solid #000000;' ></canvas>
 
+        <div id="test_container" ></div>
         </div>
         <div id="page_buttons" class="w3-container w3-light-grey">
             <table id="button_table" style="border-collapse: collapse; border: 0px">
@@ -205,7 +206,6 @@ and open the template in the editor.
 
 
         </div>
-        <!-- div id="test_container" ></div -->
         <div id="page_footer" class="w3-container w3-light-grey">
             <div id="page_settings" style="width:256px ;display: none;border: 1px #000000 solid">
                 <input id="small_screen_checkbox" class="w3-check" type="checkbox" checked="checked" onclick="click_small();">
@@ -249,10 +249,10 @@ and open the template in the editor.
                     return;
                 }
                 const large_canvas = document.getElementById('my_large_canvas');
-                large_canvas.style.width = test_pixels(100,'width',w) + 'px';
-                large_canvas.style.height = test_pixels(100,'height',w) + 'px';
-                large_canvas.width = test_pixels(100,'width',w) + 'px';
-                large_canvas.height = test_pixels(100,'height',w) + 'px';
+                large_canvas.style.width = test_pixels(100,'width', w) + 'px';
+                large_canvas.style.height = test_pixels(100,'height', w) + 'px';
+                large_canvas.width = test_pixels(100,'width', w) + 'px';
+                large_canvas.height = test_pixels(100,'height', w) + 'px';
 
 
 
@@ -269,10 +269,11 @@ and open the template in the editor.
                 page_buttons.style.padding = 0;
                 page_buttons.style.margin = 0;
 
-                //const test_container = document.getElementById('test_container');
-                //test_container.innerHTML(w );
             }
             test_set_w_h (window.innerWidth, window.innerHeight);
+            
+            const test_container = document.getElementById('test_container');
+            test_container.innerHTML(window.innerWidth );
 
             set_size();
 
