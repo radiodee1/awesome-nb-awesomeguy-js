@@ -241,7 +241,7 @@ and open the template in the editor.
         <script>
             ///////////////
             function set_size() {
-                const w = window.innerWidth ;
+                const w = Math.min( window.innerWidth , window.screen.width);
 
                 const large_canvas = document.getElementById('my_large_canvas');
                 large_canvas.style.width = test_pixels(100,'width') + 'px';
