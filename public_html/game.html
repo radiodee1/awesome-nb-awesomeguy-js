@@ -255,6 +255,12 @@ and open the template in the editor.
                     buttons[i].style.width = ( w * 20 / 100 ) + 'px';
                     buttons[i].style.height = ( w * 20 / 100 ) + 'px';
                 }
+
+                const page_content = document.getElementById('page_content');
+                page_content.style.padding-left = '0px';
+                const page_buttons = document.getElementById('page_buttons');
+                page_buttons.style.padding-left = '0px';
+
             }
             test_set_w_h (window.innerWidth, window.innerHeight);
 
