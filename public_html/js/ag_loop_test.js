@@ -274,7 +274,7 @@ function test_set_w_h (w, h) {
 
 // use only for my_large_canvas!!
 function test_pixels(p=100, dim='width', g=512) {
-    const w =  Math.floor(mobile_pixels_w / 100 * p);
+    const w =  Math.floor(window.innerWidth / 100 * p);
     const goal = g;
     if ( w < goal ) {
         r = w;

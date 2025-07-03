@@ -243,7 +243,7 @@ and open the template in the editor.
         </div>
         <script>
             function set_size() {
-                const w = Math.min( window.innerWidth , window.screen.width);
+                const w = window.innerWidth; // Math.min( window.innerWidth , window.screen.width);
 
                 if (! isMobile()  ) {
                     return;
