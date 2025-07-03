@@ -202,6 +202,9 @@ and open the template in the editor.
 
                 </tbody>
             </table>
+
+            <div id="test_container" ></div>
+
         </div>
         <div id="page_footer" class="w3-container w3-light-grey">
             <div id="page_settings" style="width:256px ;display: none;border: 1px #000000 solid">
@@ -266,6 +269,8 @@ and open the template in the editor.
                 page_buttons.style.padding = 0;
                 page_buttons.style.margin = 0;
 
+                const test_container = document.getElementById('test_container');
+                test_container.innerHTML(w );
             }
             test_set_w_h (window.innerWidth, window.innerHeight);
 
