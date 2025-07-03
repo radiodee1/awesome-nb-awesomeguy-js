@@ -272,6 +272,7 @@ function test_pixels(p=100, dim='width', g=512) {
     else {
         r = goal;
     }
+    console.log('buttons', r, w);
     const h = Math.floor(r / 4 * 3);
     if (dim == 'width') {
         return r;
