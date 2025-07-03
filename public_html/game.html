@@ -124,6 +124,12 @@ and open the template in the editor.
                 $("#my_canvas").show();
                 
             }
+            ///////////////
+            function set_size() {
+                const table = document.getElementById('my_large_canvas');
+                table.width = test_pixels(100,'width');
+                table.height = test_pixels(100,'height');
+            }
         </script>
     </head>
     <body>

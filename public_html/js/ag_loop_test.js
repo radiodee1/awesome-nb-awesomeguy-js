@@ -182,7 +182,9 @@ function testImageMag() {
     image.src = c.toDataURL();
 
     image.onload = () => {
-        cctx.drawImage(image, 0,0, 512, 384);
+        //cctx.drawImage(image, 0,0, 512, 384);
+        cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
+
 
     }
 }
@@ -236,7 +238,6 @@ function testPicMessage(message = 1, is_waiting = false, timeout = 1) {
 
 var wait_for_continue = -1;
 
-
 function testPicWaitInput (wait_num) {
     wait_for_continue = wait_num;
     document.addEventListener('keydown',  (event) => {
@@ -262,8 +263,26 @@ function testPicWaitTime (wait_num, timeout) {
     }, timeout);
 }
 
+function test_pixels(p=100, dim='width') {
+    const w = Math.floor(window.innerWidth / 100 * p);
+    const goal = 512;
+    if ( w < goal ) {
+        r = w;
+    }
+    else {
+        r = goal;
+    }
+    const h = Math.floor(r / 4 * 3);
+    if (dim == 'width') {
+        return r;
+    }
+    else {
+        return h;
+    }
+}
+
 function isMobile() {
-  return window.mobilecheck() ;
+  return window.mobilecheck() || false;
 }
 
 window.mobilecheck = function() {
