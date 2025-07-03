@@ -242,12 +242,15 @@ and open the template in the editor.
             function set_size() {
                 const w = Math.min( window.innerWidth , window.screen.width);
 
-                if (! isMobile() && false ) {
+                if (! isMobile()  ) {
                     return;
                 }
                 const large_canvas = document.getElementById('my_large_canvas');
                 large_canvas.style.width = test_pixels(100,'width') + 'px';
                 large_canvas.style.height = test_pixels(100,'height') + 'px';
+                large_canvas.width = test_pixels(100,'width') + 'px';
+                large_canvas.height = test_pixels(100,'height') + 'px';
+
 
 
                 const buttons = document.getElementsByClassName('direction_button');
