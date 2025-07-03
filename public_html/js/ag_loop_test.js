@@ -295,8 +295,8 @@ function test_pixels(p=100, dim='width', g=512) {
             return Math.floor( goal / 4 * 3 );
         }
     }
-    console.log('buttons', r, w);
     let h = Math.floor(r / 4 * 3);
+    console.log('buttons', r, w, h);
     if (dim == 'width') {
         return r;
     }
