@@ -280,6 +280,7 @@ function test_set_w_h (w, h) {
 function test_pixels(p=100, dim='width', g=512) {
     const w =  Math.floor(mobile_pixels_w / 100 * p);
     const goal = g;
+    var r = 0;
     if ( w < goal ) {
         r = w;
     }
