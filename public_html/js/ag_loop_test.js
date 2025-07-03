@@ -264,7 +264,7 @@ function testPicWaitTime (wait_num, timeout) {
 
 // use only for my_large_canvas!!
 function test_pixels(p=100, dim='width', g=512) {
-    const w = Math.min( Math.floor(window.innerWidth / 100 * p), Math.floor(window.screen.width / 100 * p) );
+    const w =  Math.floor(window.innerWidth / 100 * p);
     const goal = g;
     if ( w < goal  ) {
         r = w;
