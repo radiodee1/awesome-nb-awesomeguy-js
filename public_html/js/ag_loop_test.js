@@ -301,12 +301,12 @@ function test_pixels(p=100, dim='width', g=512) {
 }
 
 function isMobile() {
-  return isMobileUserAgent();
+    return isMobileUserAgent();
 }
 
 function isMobileUserAgent() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 }
 
 
