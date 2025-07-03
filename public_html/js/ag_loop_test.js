@@ -182,7 +182,7 @@ function testImageMag() {
 
     image.onload = () => {
         //cctx.drawImage(image, 0,0, 512, 384);
-        cctx.drawImage(image, 0,0, test_pixels(100, 'width', mobile_pixels_w), test_pixels(100, 'height', mobile_pixels_w));
+        cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
 
 
     }
@@ -281,6 +281,14 @@ function test_pixels(p=100, dim='width', g=512) {
     }
     else {
         r = goal;
+    }
+    if (! isMobile()) {
+        if (dim == 'width') {
+            return goal;
+        }
+        else {
+            return Math.floor( goal / 4 * 3 );
+        }
     }
     console.log('buttons', r, w);
     const h = Math.floor(r / 4 * 3);
