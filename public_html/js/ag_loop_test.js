@@ -262,9 +262,19 @@ function testPicWaitTime (wait_num, timeout) {
     }, timeout);
 }
 
+var mobile_pixels_w = window.innerWidth;
+var mobile_pixels_h = window.innerHeight;
+
+function test_set_w_h (w, h) {
+
+    mobile_pixels_w = w;
+    mobile_pixels_h = h;
+}
+
+
 // use only for my_large_canvas!!
 function test_pixels(p=100, dim='width', g=512) {
-    const w =  Math.floor(window.innerWidth / 100 * p);
+    const w =  Math.floor(mobile_pixels_w / 100 * p);
     const goal = g;
     if ( w < goal  ) {
         r = w;
