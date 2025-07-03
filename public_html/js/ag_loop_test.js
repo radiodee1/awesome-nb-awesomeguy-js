@@ -267,7 +267,7 @@ var mobile_pixels_h = window.innerHeight;
 
 function test_set_w_h (w, h) {
     // set width and height
-    if (w === 0 || h === 0 ) {
+    if (w == 0 || h == 0 ) {
         w = window.innerWidth;
         h = window.innerHeight;
     }
