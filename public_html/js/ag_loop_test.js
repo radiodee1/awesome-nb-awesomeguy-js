@@ -268,8 +268,8 @@ var mobile_pixels_h = window.innerHeight;
 function test_set_w_h (w, h) {
     // set width and height
     if (w === 0 || h === 0 ) {
-        w = 512;
-        h = 384;
+        w = window.innerHeight;
+        h = window.innerWidth;
     }
     mobile_pixels_w = w;
     mobile_pixels_h = h;
@@ -280,7 +280,7 @@ function test_set_w_h (w, h) {
 function test_pixels(p=100, dim='width', g=512) {
     const w =  Math.floor(mobile_pixels_w / 100 * p);
     const goal = g;
-    var r = 0;
+    var r = w;
     if ( w < goal ) {
         r = w;
     }
