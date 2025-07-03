@@ -280,14 +280,14 @@ function test_set_w_h (w, h) {
 function test_pixels(p=100, dim='width', g=512) {
     const w =  Math.floor(mobile_pixels_w / 100 * p);
     const goal = g;
-    var r = w;
+    let r = w;
     if ( w < goal ) {
         r = w;
     }
     else {
         r = goal;
     }
-    if (! isMobile() ) {
+    if (! isMobile() && false ) {
         if (dim == 'width') {
             return goal;
         }
@@ -296,7 +296,7 @@ function test_pixels(p=100, dim='width', g=512) {
         }
     }
     console.log('buttons', r, w);
-    const h = Math.floor(r / 4 * 3);
+    let h = Math.floor(r / 4 * 3);
     if (dim == 'width') {
         return r;
     }
