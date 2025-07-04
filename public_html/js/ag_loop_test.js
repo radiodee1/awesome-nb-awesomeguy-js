@@ -182,13 +182,13 @@ function testImageMag() {
     var img = ctx.getImageData(0,0,256,192);
     var cc = document.getElementById("my_large_canvas");
     var cctx = cc.getContext("2d");
-    var image = new Image();
-    //var image = document.createElement("img")
-    image.src = c.toDataURL();
     
     cctx.imageSmoothingEnabled = false;
     cctx.imageSmoothingQuality = 'high';
 
+    var image = new Image();
+    //var image = document.createElement("img")
+    image.src = c.toDataURL();
     image.addEventListener('load', () => {
         cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
 
