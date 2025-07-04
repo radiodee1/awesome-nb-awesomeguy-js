@@ -11,10 +11,11 @@ var is_initial_message = true;
 function testPlayGameAgain() {
     //level = 0;
 
-    if ((old_lives > lives && old_lives != -1 && lives > 0 )||wait_for_continue == MESSAGE_OW){
+    if ((old_lives > lives && old_lives != -1 && lives > 0 ) || is_game_death ||wait_for_continue == MESSAGE_OW){
         testPicMessage(MESSAGE_OW, false, 1.5);
         testImageMag();
         old_lives = lives;
+        is_game_death = false;
         return;
     }
     else if ((is_game_running && play_again && is_end_level && is_initial_message ) ) {
@@ -26,7 +27,7 @@ function testPlayGameAgain() {
     //////////////////////////////
     if (play_again && is_game_running) {
         testAdvanceLevel() ;
-        
+        //old_lives = lives;    
     }
     else if (play_again && !is_game_running) {
         level = 0;
@@ -69,6 +70,7 @@ function testAdvanceLevel() {
         level ++;
         is_end_level = false;
         testDrawPrep();
+        old_lives = lives;
     }
     testDraw();
     testImageMag();
@@ -287,6 +289,7 @@ function test_pixels(p=100, dim='width', g=512) {
     else {
         r = goal;
     }
+    /*
     if (! isMobile() && false ) {
         if (dim == 'width') {
             return goal;
@@ -295,6 +298,7 @@ function test_pixels(p=100, dim='width', g=512) {
             return Math.floor( goal / 4 * 3 );
         }
     }
+    */
     let h = Math.floor(r / 4 * 3);
     console.log('buttons', r, w, h);
     if (dim == 'width') {
