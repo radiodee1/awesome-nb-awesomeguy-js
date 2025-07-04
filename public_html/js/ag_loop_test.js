@@ -181,6 +181,8 @@ function testImageMag() {
     var image = new Image();
     //var image = document.createElement("img")
     image.src = c.toDataURL();
+    
+    cctx.imageSmoothingEnabled = false;
 
     image.onload = () => {
         //cctx.drawImage(image, 0,0, 512, 384);
