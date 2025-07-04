@@ -302,29 +302,34 @@ and open the template in the editor.
             set_size();
 
             function game_move_left() {
+                if (! isMobile()) return;
                 move_lr = - MOVE_CONST;
                 console.log('buttons', move_lr, move_ud, move_jump)
             }
 
             function game_move_right() {
+                if (! isMobile()) return;
                 move_lr = MOVE_CONST;
                 console.log('buttons', move_lr, move_ud, move_jump)
 
             }
 
             function game_move_up() {
+                if (! isMobile()) return;
                 move_ud = - MOVE_CONST;
                 console.log('buttons', move_lr, move_ud, move_jump)
 
             }
 
             function game_move_down() {
+                if (! isMobile()) return;
                 move_ud = MOVE_CONST;
                 console.log('buttons', move_lr, move_ud, move_jump)
 
             }
 
             function game_move_jump() {
+                if (! isMobile()) return;
                 move_jump = MOVE_CONST;
                 console.log('buttons', move_lr, move_ud, move_jump)
 
@@ -334,6 +339,7 @@ and open the template in the editor.
                 move_jump = 0;
                 move_ud = 0;
                 move_lr = 0;
+                console.log('buttons touchend');
             });
         </script>
 
