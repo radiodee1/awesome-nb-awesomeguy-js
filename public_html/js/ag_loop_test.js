@@ -183,6 +183,7 @@ function testImageMag() {
     image.src = c.toDataURL();
     
     cctx.imageSmoothingEnabled = false;
+    cctx.imageSmoothingQuality = 'high';
 
     image.onload = () => {
         //cctx.drawImage(image, 0,0, 512, 384);
