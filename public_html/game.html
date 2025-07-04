@@ -341,12 +341,12 @@ and open the template in the editor.
             // Iterate through the anchor elements and add a touchend listener
             anchorElements.forEach(anchor => {
                 anchor.addEventListener('touchend', (event) => {
-                // Your code here to handle the touchend event
-                console.log('Touch ended on an anchor element:', event.target);
-                move_jump = 0;
-                move_ud = 0;
-                move_lr = 0;
-                // You can access touch details from the event object, e.g., event.changedTouches
+                    // Your code here to handle the touchend event
+                    console.log('Touch ended on an anchor element:', event.target);
+                    move_jump = 0;
+                    move_ud = 0;
+                    move_lr = 0;
+                    // You can access touch details from the event object, e.g., event.changedTouches
                 });
             });
 
