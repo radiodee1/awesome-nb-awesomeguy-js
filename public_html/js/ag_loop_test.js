@@ -185,10 +185,14 @@ function testImageMag() {
     cctx.imageSmoothingEnabled = false;
     cctx.imageSmoothingQuality = 'high';
 
-    image.onload = () => {
+    image.addEventListener('load', () => {
         cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
+
+    })
+    //image.onload = () => {
+    //    cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
         //cctx.drawImage(image, 0,0);
-    }
+    //}
 }
 
 const MESSAGE_START_QUES = 1;
