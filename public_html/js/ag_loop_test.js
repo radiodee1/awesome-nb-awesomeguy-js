@@ -183,8 +183,8 @@ function testImageMag() {
     image.src = c.toDataURL();
 
     image.onload = () => {
-        //cctx.drawImage(image, 0,0, 512, 384);
-        cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
+        cctx.drawImage(image, 0,0, 512, 384);
+        //cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
 
 
     }
