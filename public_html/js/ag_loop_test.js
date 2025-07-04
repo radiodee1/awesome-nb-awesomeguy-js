@@ -189,10 +189,11 @@ function testImageMag() {
     var image = new Image();
     //var image = document.createElement("img")
     image.src = c.toDataURL();
-    image.addEventListener('load', () => {
+    image.id = 'my_large_canvas_image';
+    image.addEventListener('load', (event) => {
         cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
-
-    })
+        console.log('buttons', event.target.id);
+    }, true);
     //image.onload = () => {
     //    cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
         //cctx.drawImage(image, 0,0);
