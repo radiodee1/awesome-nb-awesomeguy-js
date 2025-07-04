@@ -186,11 +186,8 @@ function testImageMag() {
     cctx.imageSmoothingQuality = 'high';
 
     image.onload = () => {
-        //cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
-        cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'),0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
-
-
-
+        cctx.drawImage(image, 0,0, test_pixels(100, 'width'), test_pixels(100, 'height'));
+        //cctx.drawImage(image, 0,0);
     }
 }
 
