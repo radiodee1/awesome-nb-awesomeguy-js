@@ -175,6 +175,10 @@ function testImageMag() {
     if (! preferences_larger_screen ) return;
     var c = document.getElementById("my_canvas");
     var ctx = c.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingQuality = 'high';
+
+
     var img = ctx.getImageData(0,0,256,192);
     var cc = document.getElementById("my_large_canvas");
     var cctx = cc.getContext("2d");
