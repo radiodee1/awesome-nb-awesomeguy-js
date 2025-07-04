@@ -189,17 +189,37 @@ and open the template in the editor.
         <div id="page_buttons" class="w3-container w3-light-grey">
             <table id="button_table" style="border-collapse: collapse; border: 0px">
                 <tbody>
-                    <tr><td></td><td></td><td></td> <td><img class='direction_button' src="img/button_up.png"></td> <td></td> </tr>
+                    <tr><td></td><td></td><td></td> <td>
+                            <a href="javascript:game_move_up();">
+                                <img class='direction_button' src="img/button_up.png">
+                            </a></td> <td></td> </tr>
                     <tr>
-                        <td><img class="direction_button" src="img/button_b.png"></td>
-                        <td><img class="direction_button" src="img/button_center_tx.png"></td>
-                        <td><img class="direction_button" src="img/button_left.png"></td> 
-                        <td><img class="direction_button" src="img/button_center_tx.png"></td> 
-                        <td><img class="direction_button" src="img/button_right.png"></td>
+                        <td>
+                            <a href="javascript:game_move_jump();">
+                                <img class="direction_button" src="img/button_b.png">
+                            </a></td>
+                        <td>
+                            <a><img class="direction_button" src="img/button_center_tx.png">
+                            </a></td>
+                        <td>
+                            <a href="javascript:game_move_left();">
+                                <img class="direction_button" src="img/button_left.png">
+                            </a></td> 
+                        <td>
+                            <a>
+                                <img class="direction_button" src="img/button_center_tx.png">
+                            </a></td> 
+                        <td>
+                            <a href="javascript:game_move_right();">
+                                <img class="direction_button" src="img/button_right.png">
+                            </a></td>
                         
                         
                     </tr>
-                    <tr><td></td><td></td><td></td> <td><img class="direction_button" src="img/button_down.png"></td> <td></td> </tr>
+                    <tr><td></td><td></td><td></td> <td>
+                            <a href="javascript:game_move_down();">
+                                <img class="direction_button" src="img/button_down.png">
+                            </a></td> <td></td> </tr>
 
                 </tbody>
             </table>
@@ -281,6 +301,34 @@ and open the template in the editor.
 
             set_size();
 
+            function game_move_left() {
+                move_lr = - MOVE_CONST;
+                console.log('buttons', move_lr, move_ud, move_jump)
+            }
+
+            function game_move_right() {
+                move_lr = MOVE_CONST;
+                console.log('buttons', move_lr, move_ud, move_jump)
+
+            }
+
+            function game_move_up() {
+                move_ud = - MOVE_CONST;
+                console.log('buttons', move_lr, move_ud, move_jump)
+
+            }
+
+            function game_move_down() {
+                move_ud = MOVE_CONST;
+                console.log('buttons', move_lr, move_ud, move_jump)
+
+            }
+
+            function game_move_jump() {
+                move_jump = MOVE_CONST;
+                console.log('buttons', move_lr, move_ud, move_jump)
+
+            }
         </script>
 
 
