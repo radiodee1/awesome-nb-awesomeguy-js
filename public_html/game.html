@@ -335,14 +335,14 @@ and open the template in the editor.
 
             }
 
-                        // Select all anchor elements
+            // Select all anchor elements
             const anchorElements = document.querySelectorAll('a');
 
             // Iterate through the anchor elements and add a touchend listener
             anchorElements.forEach(anchor => {
                 anchor.addEventListener('touchend', (event) => {
                     // Your code here to handle the touchend event
-                    console.log('Touch ended on an anchor element:', event.target);
+                    //console.log('Touch ended on an anchor element:', event.target);
                     move_jump = 0;
                     move_ud = 0;
                     move_lr = 0;
