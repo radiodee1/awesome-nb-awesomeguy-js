@@ -304,37 +304,57 @@ and open the template in the editor.
             function game_move_left() {
                 if (! isMobile()) return;
                 move_lr = - MOVE_CONST;
-                console.log('buttons', move_lr, move_ud, move_jump)
+                console.log('buttons', move_lr, move_ud, move_jump);
+                cancel_lr();
             }
 
             function game_move_right() {
                 if (! isMobile()) return;
                 move_lr = MOVE_CONST;
-                console.log('buttons', move_lr, move_ud, move_jump)
-
+                console.log('buttons', move_lr, move_ud, move_jump);
+                cancel_lr();
             }
 
             function game_move_up() {
                 if (! isMobile()) return;
                 move_ud = - MOVE_CONST;
-                console.log('buttons', move_lr, move_ud, move_jump)
-
+                console.log('buttons', move_lr, move_ud, move_jump);
+                cancel_ud();
             }
 
             function game_move_down() {
                 if (! isMobile()) return;
                 move_ud = MOVE_CONST;
-                console.log('buttons', move_lr, move_ud, move_jump)
-
+                console.log('buttons', move_lr, move_ud, move_jump);
+                cancel_ud();
             }
 
             function game_move_jump() {
                 if (! isMobile()) return;
                 move_jump = MOVE_CONST;
-                console.log('buttons', move_lr, move_ud, move_jump)
-
+                console.log('buttons', move_lr, move_ud, move_jump);
+                cancel_jump();
             }
 
+            function cancel_lr() {
+                setTimeout( function () {
+                    move_lr = 0;
+                } , 300);
+            }
+
+            function cancel_ud() {
+                setTimeout( function () {
+                    move_ud = 0;
+                } , 300 )
+            }
+
+            function cancel_jump() {
+                setTimeout( function () {
+                    move_jump = 0;
+                } )
+            }
+
+            /*
             // Select all anchor elements
             const anchorElements = document.querySelectorAll('a');
 
@@ -349,6 +369,8 @@ and open the template in the editor.
                     // You can access touch details from the event object, e.g., event.changedTouches
                 });
             });
+            */
+
 
         </script>
 
